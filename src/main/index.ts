@@ -17,9 +17,10 @@ const windowOptions = {
   webPreferences: {
     nodeIntegration: true
   },
-  // frame: false,
-  transparent: true,
-  titleBarStyle: 'hidden',
+  width: 1000,
+  height: 1000,
+  frame: false,
+  // transparent: true,
 }
 
 function createMainWindow() {
@@ -33,7 +34,7 @@ function createMainWindow() {
   //   window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
   // }
 
-  window.loadURL(`file:///Users/jgray/Documents/annotate/src/main/index.html`);
+  window.loadURL(`file:///Users/jgray/Documents/annotate/dist/main/index.html`);
 
 
   window.on('closed', () => {

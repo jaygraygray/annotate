@@ -2,10 +2,11 @@
   "name": "annotate",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/main/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "electron-webpack dev"
+    "dev": "npm run compile && electron-webpack dev && cp src/main/index.html dist/main/index.html ",
+    "compile": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "electron-builder": "^22.9.1",
     "electron-webpack": "^2.8.2",
     "roughjs": "^4.3.1",
+    "typescript": "^4.0.3",
     "webpack": "4.42.1"
   },
   "dependencies": {
