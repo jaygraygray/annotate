@@ -24,18 +24,12 @@ const windowOptions = {
 }
 
 function createMainWindow() {
-  const window = new BrowserWindow(windowOptions)
+  const window = new BrowserWindow(windowOptions);
 
-  // if (isDevelopment) {
-  //   window.webContents.openDevTools()
-  // }
-
-  // if (isDevelopment) {
-  //   window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
-  // }
-
-  window.loadURL(`file:///Users/jgray/Documents/annotate/dist/main/index.html`);
-
+  if (isDevelopment) {
+    window.loadURL(`http://localhost:8080/`);
+    window.webContents.openDevTools();
+  }
 
   window.on('closed', () => {
     mainWindow = null

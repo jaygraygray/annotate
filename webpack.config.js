@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/app/index.tsx',
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './src',
@@ -28,6 +28,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "woah dude",
+      template: path.resolve(__dirname, "src", "app", "index.html")
     }),
     new CleanWebpackPlugin()
   ],

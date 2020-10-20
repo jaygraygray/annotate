@@ -1,21 +1,21 @@
-import rough from 'roughjs';
+// import rough from 'roughjs';
+console.log("the wrong index")
+// const canvasEl = ''
 
-const canvasEl = ''
+// function render() {
+//   const canvas = document.createElement('canvas');
+//   let roughCanvas = rough.canvas(canvas);
+  
+//   roughCanvas.line(60, 60, 300, 60, { strokeWidth: 10 });
+  
+//   roughCanvas.circle(100, 100, 100, { fill: "pink", bowing: 10, });
+  
+//   roughCanvas.rectangle(120, 15, 80, 80);
+  
+//   roughCanvas.linearPath([[690, 10], [790, 20], [750, 120], [690, 100]]);
+// }
 
-function render() {
-  const canvas = document.createElement('canvas');
-  let roughCanvas = rough.canvas(canvas);
-  
-  roughCanvas.line(60, 60, 300, 60, { strokeWidth: 10 });
-  
-  roughCanvas.circle(100, 100, 100, { fill: "pink", bowing: 10, });
-  
-  roughCanvas.rectangle(120, 15, 80, 80);
-  
-  roughCanvas.linearPath([[690, 10], [790, 20], [750, 120], [690, 100]]);
-}
-
-document.body.appendChild(render());
+// document.body.appendChild(render());
 
 /**
  * each shape will be its own hook

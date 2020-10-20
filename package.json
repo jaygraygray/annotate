@@ -5,13 +5,18 @@
   "main": "dist/main/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run compile && electron-webpack dev && cp src/main/index.html dist/main/index.html ",
-    "compile": "tsc"
+    "dev:shell": "electron-webpack dev",
+    "dev:app": "webpack-dev-server --open",
+    "build:shell": "electron-webpack",
+    "build:app": "webpack"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^14.11.10",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
@@ -20,8 +25,10 @@
     "electron": "^10.1.3",
     "electron-builder": "^22.9.1",
     "electron-webpack": "^2.8.2",
+    "electron-webpack-ts": "^4.0.1",
     "html-webpack-plugin": "^4.5.0",
     "roughjs": "^4.3.1",
+    "ts-loader": "^8.0.5",
     "typescript": "^4.0.3",
     "webpack": "4.42.1"
   },
@@ -29,5 +36,13 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "source-map-support": "^0.5.19"
+  },
+  "electronWebpack": {
+    "main": {
+      "sourceDirectory": "src/shell/main"
+    },
+    "renderer": {
+      "sourceDirectory": "src/shell/renderer"
+    }
   }
 }
