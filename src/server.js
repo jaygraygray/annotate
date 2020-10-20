@@ -8,13 +8,9 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const config = require('../webpack.config');
 const compiler = webpack(config);
 
-// if (process.env.NODE_ENV !== 'dev') {
-
-// } else {
-//   app.use(webpackDevMiddleware(compiler, {
-//     publicPath: config.output.publicPath,
-//   }));
-// }
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath,
+}));
 
 app.get('*', (req, res) => {
   res.sendFile(`${__dirname}/index.html`);
