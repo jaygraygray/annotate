@@ -19,8 +19,7 @@ const windowOptions = {
   },
   width: 1000,
   height: 1000,
-  frame: false,
-  // transparent: true,
+  transparent: true,
 }
 
 function createMainWindow() {
@@ -28,7 +27,7 @@ function createMainWindow() {
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:8080/`);
-    window.webContents.openDevTools();
+    // window.webContents.openDevTools();
   }
 
   window.on('closed', () => {
