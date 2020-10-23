@@ -1,7 +1,11 @@
 // @ts-nocheck
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
 import rough from "../../node_modules/roughjs/bundled/rough.cjs";
 import { trackMousePosition }  from './Mouse';
+import { AqueWrapper } from "./AqueWrapper";
+import { BehaviorSubject } from "rxjs";
+import { Aquedux } from "aquedux";
+// import { map } from "rxjs/operators";
 
 const Block = ({
   x, y, show
@@ -38,6 +42,20 @@ export const App = (props) => {
     }
   }, [svgRef])
 
+  const $coords = useMemo(() => new BehaviorSubject({ x: 0, y: 0 }), []);
+
+  const handleDraw = useCallback((e) => {
+    e.preventDefault();
+    const { clientX, clientY } = e;
+    $coords.next({ x: clientX, y: clientY })  
+    if (svgRef.current) {
+      
+      const rc = rough.svg(svgRef.current);
+      let node = rc.rectangle(10, 200, $coords.value.x, 35);
+      setNode(node.outerHTML)
+    }
+  }, [$coords])
+
 
   const generateNodeHtml = (x, y, length) => {
     if (svgRef.current) {
@@ -60,42 +78,19 @@ export const App = (props) => {
     shapeRef.current.anchors = { originX: clientX, originY: clientY }
   }
 
-  // track coordinates of mouse on screen
-  // capture differences
-  const handleDraw = (e) => {
-    e.preventDefault();
-    captureAnchor(e)
-    const { clientX, clientY } = e;
-    if (shapeRef.current && shapeRef.current.anchors) {
-      
-      console.log("x", x)
-    }
-  }
-
-
-
-  // RECTANGLE:
-  /**
-   * 
-   * @param x anchor point; set on click
-   * @param y length: distance from x
-   * @param z angle: angle from x
-   * 
-   */
-
 
   return (
-    <>
+    <Aquedux.div onMouseMove={handleDraw}>
       <div 
         style={{ height: "100vh", width: "100vw" }} 
         // onClick={placeShape} 
-        onDrag={handleDraw}
-        onDragStart={handleDraw}
+        // onDrag={handleDraw}
         onMouseDown={placeShape}
         draggable={true}
       >
         <svg ref={svgRef} dangerouslySetInnerHTML={{ __html: html }} style={{ height: "100vh", width: "100vw" }} fill="none"></svg>
       </div>
-    </>
+    </Aquedux.div>
+    
   );
 }
