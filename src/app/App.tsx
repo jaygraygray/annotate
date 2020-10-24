@@ -67,39 +67,37 @@ export const App = (props) => {
   const [allShapes, setAllShapes] = useState<Shape[]>([STARTING_SHAPE]);
   const [activeShapeId, setActiveShapeId] = useState<number>(0);
   const { x, y } = trackMousePosition();
-
-  // render shape on screen
-  // useEffect(() => {
-  //   if (svgRef.current) {
-  //     const rc = rough.svg(svgRef.current);
-  //     let node = rc.rectangle(10, 150, 20, 20);
-  //     setNode(node.outerHTML)
-  //   }
-  // }, [svgRef])
+  const [currentPhase, setCurrentPhase] = useState<string>("place");
+  // 3 phases:
+  // place shape
+  // draw shape
+  // save shape
 
   const $coords = useMemo(() => new BehaviorSubject({ x: 0, y: 0 }), []);
 
   const handleDraw = useCallback((e) => {
-    const { clientX, clientY } = e;
-    $coords.next({ x: clientX, y: clientY })
-    if (drawState.current) {
-      if (drawState.current.isDrawing) {
-        let shape = allShapes[0]; // ... targetting the 0 index always gives you most recently created item 
-        const newHtml = generateNodeHtml(shape.originX, shape.originY, $coords.value.x);
-        shape.html = newHtml;
-        setAllShapes([shape, ...allShapes])
-      } else {
-        setAllShapes(allShapes)
+    if (currentPhase === "draw") {
+      const { clientX, clientY } = e;
+      $coords.next({ x: clientX, y: clientY })
+      if (drawState.current) {
+        if (drawState.current.isDrawing) {
+          let shape = allShapes[0]; // ... targetting the 0 index always gives you most recently created item 
+          const newHtml = generateNodeHtml(shape.originX, shape.originY, $coords.value.x);
+          shape.html = newHtml;
+          setAllShapes([shape, ...allShapes])
+        } else {
+          setAllShapes(allShapes)
+        }
       }
     }
-  }, [$coords, activeShapeId]);
+  }, [$coords, activeShapeId, currentPhase]);
 
   useEffect(() => {
     window.addEventListener("mousemove", handleDraw)
     return () => {
       window.removeEventListener("mousemove", handleDraw);
     }
-  }, [activeShapeId])
+  }, [activeShapeId, currentPhase])
 
   const generateNodeHtml = (x, y, length) => {
     if (svgRef.current) {
@@ -112,11 +110,8 @@ export const App = (props) => {
 
   const placeShape = useCallback((e) => {
     if (drawState.current) {
-      if (drawState.current.isDrawing) {
-        drawState.current.isDrawing = false;
-      }
-      const { clientX, clientY } = e;
-      if (shapeRef.current.len) {
+      if (currentPhase === "place") {
+        const { clientX, clientY } = e;
         const newEleHtml = generateNodeHtml(clientX, clientY, shapeRef.current.len);
         const id = activeShapeId + 1;
         const shape = {
@@ -128,8 +123,18 @@ export const App = (props) => {
         };
         setActiveShapeId(id);
         setAllShapes([shape, ...allShapes]);
+        setCurrentPhase("draw");
+      }
+  
+      if (currentPhase === "draw") {
+        drawState.current.isDrawing = false;
+        setCurrentPhase("save")
       }
 
+      if (currentPhase === "save") {
+        setActiveShapeId(null)
+        setCurrentPhase("place")
+      }
     }
   }, [drawState.current.isDrawing, activeShapeId, allShapes]);
 
@@ -142,17 +147,12 @@ export const App = (props) => {
     }
   }, [])
 
-  const setActiveShape = useCallback((id) => {
-    // console.log("shape clicked")
-    // setActiveShapeId(id)
-  });
 
-  const clearDrawing = () => {
 
-  }
-
+  const setActiveShape = () => {}
+  console.log(">>currentPhase", currentPhase);
   return (
-    <div style={{ height: "100vh", width: "100vw" }} ref={svgRef} onMouseDown={clearDrawing}>
+    <div style={{ height: "100vh", width: "100vw" }} ref={svgRef}>
     <Aquedux.div
       onMouseDown={placeShape}
       onMouseUp={handleOnMouseUp}
