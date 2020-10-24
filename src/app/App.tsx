@@ -5,6 +5,7 @@ import { trackMousePosition }  from './Mouse';
 import { AqueWrapper } from "./AqueWrapper";
 import { BehaviorSubject } from "rxjs";
 import { Aquedux } from "aquedux";
+import { clear } from "console";
 // import { map } from "rxjs/operators";
 
 const Block = ({
@@ -28,7 +29,17 @@ const Block = ({
 
 const renderSvg = ({ ref, html }) => {
   return (
-    <svg dangerouslySetInnerHTML={{ __html: html }} style={{ height: "100vh", width: "100vw" }} fill="none"></svg>
+    <svg 
+      dangerouslySetInnerHTML={{ __html: html }}
+      style={{
+        height: "100vh",
+        width: "100vw",
+        position: "fixed",
+        top: 0, 
+        left: 0,
+      }}
+      fill="none"
+    />
 )
 }
 const STARTING_SHAPE = {
@@ -46,9 +57,12 @@ type Shape = {
 export const App = (props) => {
   const svgRef = useRef()
   const shapeRef = useRef({});
+  const drawState = useRef({});
+  drawState.current.isDrawing = false;
   shapeRef.current.len = 40; // can set default size of shapes in preferences
   const [html, setNode] = useState("");
   const [allShapes, setAllShapes] = useState<Shape[]>([STARTING_SHAPE]);
+  const [activeShapeId, setActiveShapeId] = useState<number>(0);
   const { x, y } = trackMousePosition();
 
   // render shape on screen
@@ -66,11 +80,11 @@ export const App = (props) => {
     e.preventDefault();
     const { clientX, clientY } = e;
     $coords.next({ x: clientX, y: clientY })  
-    if (svgRef.current) {
-      
-      const rc = rough.svg(svgRef.current);
-      let node = rc.rectangle(10, 200, $coords.value.x, 35);
-      setNode(node.outerHTML)
+    if (svgRef.current && drawState.current && drawState.current.isDrawing) {
+      let shape = allShapes[activeShapeId];
+      shape.html = generateNodeHtml(clientX, clientY, $coords.value.x);
+
+      setAllShapes([shape, ...allShapes])
     }
   }, [$coords])
 
@@ -84,40 +98,45 @@ export const App = (props) => {
     return "";
   }
 
-
-  const placeShape = (e) => {
-    const { clientX, clientY } = e;
-    if (shapeRef.current.len) {
-      const html = generateNodeHtml(clientX, clientY, shapeRef.current.len);
-      setNode(html);
+  const placeShape = useCallback((e) => {
+    if (drawState.current) {
+      if (drawState.current.isDrawing === false) {
+        const { clientX, clientY } = e;
+        if (shapeRef.current.len) {
+          const newEleHtml = generateNodeHtml(clientX, clientY, shapeRef.current.len);
+          const { clientX, clientY } = e;
+          const id = activeShapeId + 1;
+          const shape = {
+            html: newEleHtml,
+            ref: null,
+            id,
+          };
+          setActiveShapeId(id);
+          setAllShapes([shape, ...allShapes])
+        }
+      }
     }
-  }
+  }, [html]);
 
-  const anchorShape = useCallback((e) =>{
-    const { clientX, clientY } = e;
-    let id = "1"
-    const shape = {
-      html,
-      ref: null,
-      id,
-    };
-    setAllShapes([shape, ...allShapes])
-  }, [html])
 
+  const handleOnMouseUp = useCallback((e) => {
+    if (drawState.current) {
+      drawState.current.isDrawing = true;
+    }
+  }, [])
+
+
+  // manage isDrawing ref?
   return (
-    <Aquedux.div onMouseMove={handleDraw}>
-      <div 
-        style={{ height: "100vh", width: "100vw" }} 
-        onMouseDown={placeShape}
-        onMouseUp={anchorShape}
-        draggable={true}
+    <div style={{ height: "100vh", width: "100vw" }} ref={svgRef}>
+    <Aquedux.div
+      onMouseMove={handleDraw}
+      onMouseDown={placeShape}
+      onMouseUp={handleOnMouseUp}
       >
-        <>
-        <svg ref={svgRef}></svg>
-        </>
-        {allShapes.map(svg => renderSvg(svg))}
-      </div>
+      {allShapes.map(svg => renderSvg(svg))}
     </Aquedux.div>
+    </div>
     
   );
 }
