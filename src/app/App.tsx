@@ -99,6 +99,13 @@ export const App = (props) => {
     }
   }, [activeShapeId, currentPhase])
 
+  useEffect(() => {
+    if (currentPhase === "save") {
+        setActiveShapeId(null)
+        setCurrentPhase("place")
+    }
+  }, [currentPhase])
+
   const generateNodeHtml = (x, y, length) => {
     if (svgRef.current) {
       const rc = rough.svg(svgRef.current);
@@ -131,12 +138,12 @@ export const App = (props) => {
         setCurrentPhase("save")
       }
 
-      if (currentPhase === "save") {
-        setActiveShapeId(null)
-        setCurrentPhase("place")
-      }
+      // if (currentPhase === "save") {
+      //   setActiveShapeId(null)
+      //   setCurrentPhase("place")
+      // }
     }
-  }, [drawState.current.isDrawing, activeShapeId, allShapes]);
+  }, [drawState.current.isDrawing, activeShapeId, allShapes, currentPhase]);
 
 
   const handleOnMouseUp = useCallback((e) => {
