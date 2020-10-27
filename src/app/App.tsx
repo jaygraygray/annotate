@@ -64,15 +64,12 @@ export const App = (props) => {
     if (rootAnchorNode.current) {
       const rc = rough.svg(rootAnchorNode.current);
       let node = rc.rectangle(x, y, length, 20);
-      console.log(">>>what info we got:", node);
       return node.outerHTML;
     }
     return "";
   }
 
   const placeShape = useCallback((e) => {
-    
-    console.log(">>>e.currentTarget.id", e.currentTarget);
     if (drawState.current) {
       if (currentPhase === "place") {
         const { clientX, clientY } = e;
@@ -111,9 +108,9 @@ export const App = (props) => {
   const setActiveShape = (e) => {
     // console.log(">>>e", e.currentTarget.id);
   }
-  
+
   return (
-    <div style={{ height: "100vh", width: "100vw" }} ref={rootAnchorNode}>
+    <div style={{ height: "100vh", width: "100vw", position: 'fixed', top: 0, left: 0 }} ref={rootAnchorNode}>
       <Aquedux.div
         onMouseDown={placeShape}
         onMouseUp={handleOnMouseUp}

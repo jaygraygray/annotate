@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
 export type Shape = {
   id: number;
@@ -19,7 +19,14 @@ export const ShapesRenderer = ({
   shapes,
   setActiveShape,
 }: Props) => {
-  //
+  const svgRef = useRef<any>({});
+
+  useEffect(() => {
+    if (svgRef.current) {
+      console.log("hello", svgRef.current);
+    }
+  })
+
   // this layering strategy prevents click handlers
   // from being utilized
   const renderSvg = (svg, index, setActiveShape) => {
@@ -27,21 +34,16 @@ export const ShapesRenderer = ({
     // need to draw only necessary size of shape
     const { html } = svg;
     return (
-      <svg
-        viewBox="" // need dimensions of node
-        onClick={setActiveShape} 
-        dangerouslySetInnerHTML={{ __html: html }}
-        style={{
-          height: "100vh",
-          width: `100vh`,
-          position: "fixed",
-          top: 0, 
-          left: 0,
-        }}
-        fill="none"
-        key={`${index}+0`}
-        id={index}
-      />
+      <div ref={svgRef}>
+        <svg
+          viewBox="" // need dimensions of node
+          onClick={setActiveShape} 
+          dangerouslySetInnerHTML={{ __html: html }}
+          fill="none"
+          key={`${index}+0`}
+          id={index}
+        />
+      </div>
     )
   }
 
