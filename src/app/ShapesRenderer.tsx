@@ -45,6 +45,7 @@ export const ShapesRenderer = ({
             width: "100vh",
             top: 0,
             left: 0,
+            position: "fixed",
           }}
         />
     )

@@ -110,7 +110,7 @@ export const App = (props) => {
   }
 
   return (
-    <div style={{ height: "100vh", width: "100vw", position: 'fixed', top: 0, left: 0 }} ref={rootAnchorNode}>
+    <div style={{ height: "100vh", width: "100vw" }} ref={rootAnchorNode}>
       <Aquedux.div
         onMouseDown={drawShape}
         onMouseUp={handleOnMouseUp}
