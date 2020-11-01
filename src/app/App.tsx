@@ -14,18 +14,27 @@ import { Shape, ShapesRenderer, STARTING_SHAPE } from './ShapesRenderer';
 export const App = (props) => {
   const rootAnchorNode = useRef()
   const shapeRef = useRef({});
-  const drawState = useRef({});
   shapeRef.current.len = 40; // can set default size of shapes in preferences
-  const activeShapeRef = useRef({});
-
-
-  const [html, setNode] = useState("");
+  const drawState = useRef({});
   const [allShapes, setAllShapes] = useState<Shape[]>([STARTING_SHAPE]);
   const [activeShapeId, setActiveShapeId] = useState<number>(0);
   const { x, y } = trackMousePosition();
   const [currentPhase, setCurrentPhase] = useState<string>("place");
-
   const $coords = useMemo(() => new BehaviorSubject({ x: 0, y: 0 }), []);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleDraw)
+    return () => {
+      window.removeEventListener("mousemove", handleDraw);
+    }
+  }, [activeShapeId, currentPhase])
+
+  useEffect(() => {
+    if (currentPhase === "save") {
+        setActiveShapeId(null)
+        setCurrentPhase("place")
+    }
+  }, [currentPhase])
 
   const handleDraw = useCallback((e) => {
     if (currentPhase === "draw") {
@@ -46,19 +55,7 @@ export const App = (props) => {
     }
   }, [$coords, activeShapeId, currentPhase]);
 
-  useEffect(() => {
-    window.addEventListener("mousemove", handleDraw)
-    return () => {
-      window.removeEventListener("mousemove", handleDraw);
-    }
-  }, [activeShapeId, currentPhase])
 
-  useEffect(() => {
-    if (currentPhase === "save") {
-        setActiveShapeId(null)
-        setCurrentPhase("place")
-    }
-  }, [currentPhase])
 
   const generateNodeHtml = (x, y, length) => {
     if (rootAnchorNode.current) {
@@ -69,7 +66,10 @@ export const App = (props) => {
     return "";
   }
 
-  const placeShape = useCallback((e) => {
+  // position is ONLY being set to draw the shape
+  const drawShape = useCallback((e) => {
+    
+    console.log(">>>e.currentTarget.id", e.currentTarget);
     if (drawState.current) {
       if (currentPhase === "place") {
         const { clientX, clientY } = e;
@@ -112,7 +112,7 @@ export const App = (props) => {
   return (
     <div style={{ height: "100vh", width: "100vw", position: 'fixed', top: 0, left: 0 }} ref={rootAnchorNode}>
       <Aquedux.div
-        onMouseDown={placeShape}
+        onMouseDown={drawShape}
         onMouseUp={handleOnMouseUp}
       >
         <ShapesRenderer
