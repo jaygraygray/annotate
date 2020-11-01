@@ -34,16 +34,19 @@ export const ShapesRenderer = ({
     // need to draw only necessary size of shape
     const { html } = svg;
     return (
-      <div ref={svgRef}>
         <svg
-          viewBox="" // need dimensions of node
           onClick={setActiveShape} 
           dangerouslySetInnerHTML={{ __html: html }}
           fill="none"
           key={`${index}+0`}
           id={index}
+          style={{
+            height: "100vh",
+            width: "100vh",
+            top: 0,
+            left: 0,
+          }}
         />
-      </div>
     )
   }
 
