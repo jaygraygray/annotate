@@ -2,7 +2,6 @@
 import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
 import rough from "../../node_modules/roughjs/bundled/rough.cjs";
 import { trackMousePosition }  from './Mouse';
-import { AqueWrapper } from "./AqueWrapper";
 import { BehaviorSubject } from "rxjs";
 import { Aquedux } from "aquedux";
 import { clear } from "console";
@@ -12,7 +11,8 @@ import { Shape, ShapesRenderer, STARTING_SHAPE } from './ShapesRenderer';
 
 
 export const App = (props) => {
-  const rootAnchorNode = useRef()
+  // const rootSvgNode = useRef()
+  const rootSvgNode = document.getElementById("svg-root");
   const shapeRef = useRef({});
   shapeRef.current.len = 40; // can set default size of shapes in preferences
   const drawState = useRef({});
@@ -43,8 +43,8 @@ export const App = (props) => {
       if (drawState.current) {
         if (drawState.current.isDrawing) {
           let shape = allShapes[0]; // ... targetting the 0 index always gives you most recently created item 
-          const newHtml = generateNodeHtml(shape.originX, shape.originY, $coords.value.x);
-          shape.html = newHtml;
+          const { html } = generateNodeHtml(shape.originX, shape.originY, $coords.value.x);
+          shape.html = html;
           let allShapesCopy = allShapes;
           allShapesCopy[activeShapeId] = shape;
           setAllShapes(allShapesCopy)
@@ -58,31 +58,40 @@ export const App = (props) => {
 
 
   const generateNodeHtml = (x, y, length) => {
-    if (rootAnchorNode.current) {
-      const rc = rough.svg(rootAnchorNode.current);
+    if (rootSvgNode.current) {
+      const rc = rough.svg(rootSvgNode.current);
       let node = rc.rectangle(x, y, length, 20);
-      return node.outerHTML;
+      const width = node.getBoundingClientRect().width;
+      const height = node.getBoundingClientRect().height;
+      console.log(">>>", height);
+      return {
+        html: node.outerHTML,
+        width,
+        height,
+        node
+      }
     }
     return "";
   }
 
   // position is ONLY being set to draw the shape
   const drawShape = useCallback((e) => {
-    
-    console.log(">>>e.currentTarget.id", e.currentTarget);
     if (drawState.current) {
       if (currentPhase === "place") {
         const { clientX, clientY } = e;
-        const newEleHtml = generateNodeHtml(clientX, clientY, shapeRef.current.len);
+        const { html, height, width, node } = generateNodeHtml(clientX, clientY, shapeRef.current.len);
         const id = activeShapeId + 1;
         const shape = {
-          html: newEleHtml,
+          html,
           ref: null,
           id,
           x: clientX,
           y: clientY,
           originX: clientX,
           originY: clientY,
+          height,
+          width,
+          node,
         };
         setActiveShapeId(id);
         setAllShapes([shape, ...allShapes]);
@@ -91,6 +100,9 @@ export const App = (props) => {
   
       if (currentPhase === "draw") {
         drawState.current.isDrawing = false;
+        console.log(">>> and we saved")
+        // here is where we need to redraw the shape, redraw from
+        // 100vh && 100vw to match only dimensions of <g> tag
         setCurrentPhase("save")
       }
     }
@@ -110,7 +122,7 @@ export const App = (props) => {
   }
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }} ref={rootAnchorNode}>
+    <div style={{ height: "100vh", width: "100vw" }} ref={rootSvgNode}>
       <Aquedux.div
         onMouseDown={drawShape}
         onMouseUp={handleOnMouseUp}
@@ -118,6 +130,7 @@ export const App = (props) => {
         <ShapesRenderer
           shapes={allShapes}
           setActiveShape={setActiveShape}
+          
         />
       </Aquedux.div>
     </div>
