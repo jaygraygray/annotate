@@ -18,7 +18,7 @@ type Props = {
   setActiveShape(): void;
 }
 
-export const ShapesRenderer = ({
+export const ShapesDrawer = ({
   shapes,
   setActiveShape,
 }: Props) => {

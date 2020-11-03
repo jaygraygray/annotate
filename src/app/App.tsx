@@ -5,7 +5,7 @@ import { trackMousePosition }  from './Mouse';
 import { BehaviorSubject } from "rxjs";
 import { Aquedux } from "aquedux";
 import { clear } from "console";
-import { Shape, ShapesRenderer, STARTING_SHAPE } from './ShapesRenderer';
+import { Shape, ShapesDrawer, STARTING_SHAPE } from './ShapesDrawer';
 
 
 
@@ -100,7 +100,6 @@ export const App = (props) => {
   
       if (currentPhase === "draw") {
         drawState.current.isDrawing = false;
-        console.log(">>> and we saved")
         // here is where we need to redraw the shape, redraw from
         // 100vh && 100vw to match only dimensions of <g> tag
         setCurrentPhase("save")
@@ -127,10 +126,9 @@ export const App = (props) => {
         onMouseDown={drawShape}
         onMouseUp={handleOnMouseUp}
       >
-        <ShapesRenderer
+        <ShapesDrawer
           shapes={allShapes}
           setActiveShape={setActiveShape}
-          
         />
       </Aquedux.div>
     </div>
