@@ -1,19 +1,13 @@
-// @ts-nocheck
-import React, { useEffect, useRef, useCallback, useState, useMemo } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import AllItems from "./components/AllItems";
-import { BehaviorSubject } from "rxjs";
 
-// click once, place FirstComponent
-// capture mouse move events, modifying FirstStage OR rendering SecondStage, 
-// second click, place SecondComponent OR place ThirdComponent
-
+type DrawState = "placing" | "drawing" | "saved";
 
 export const App = (props) => {
-  const [drawState, setDrawState] = useState("placing"); 
+  const [drawState, setDrawState] = useState<DrawState>("placing"); 
   const bodyRef = useRef()
   const [shapes, setShapes] = useState([0]);
-  const [activeItem, setActiveItem] = useState(0);
-  console.log("activeItem", activeItem);
+  const [activeItem, setActiveItem] = useState("0");
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
@@ -32,9 +26,6 @@ export const App = (props) => {
 
   const onClick = useCallback((e) => {
     if (drawState === "placing") {
-      // const newVal = shapes.length + 1
-      // const newItems = [newVal, ...shapes]
-      // setShapes(newItems)
       setDrawState("drawing")
     }
 
@@ -44,9 +35,6 @@ export const App = (props) => {
 
   }, [drawState]);
 
-  // right-click:
-  // // if right-clicking on an shape, remove it
-  // // else, do nothing
   const removeShape = useCallback((e) => {
     e.preventDefault();
     const { path } = e;
@@ -58,10 +46,9 @@ export const App = (props) => {
         if (shapes.includes(elementId)) {
           newShapes = shapes.filter(shape => shape === el.id)
           return true;
-        } else {
-          return false;
         }
       }
+      return false;
     })
     
     if (isOnShape) {

@@ -1,7 +1,17 @@
 import React, { useMemo, useRef, useCallback, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
 
-const SecondStage = ({ onEditComplete, drawState, id }) => {
+type Props = {
+  onEditComplete(itemPayload: any, itemId: string): void;
+  drawState: string;
+  id: string;
+}
+
+const SecondStage = ({
+  onEditComplete,
+  drawState,
+  id
+}: Props) => {
   const $coords = useMemo(() => new BehaviorSubject({ x: 0, y: 0 }), []);
   const drawingRef = useRef(null);
 

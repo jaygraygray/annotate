@@ -1,11 +1,19 @@
 import React, { useCallback } from "react";
 import ItemRenderer from "../ItemRenderer";
 
+type Props = {
+  drawState: string;
+  items: any;
+  setActiveItem(itemId: string): void;
+  activeItem: string;
+}
+
 const AllItems = ({
   drawState,
   items = [],
   setActiveItem,
-}) => {
+  activeItem,
+}: Props) => {
 
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     // this is actually saving the item
