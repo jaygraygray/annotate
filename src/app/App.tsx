@@ -50,7 +50,7 @@ const SecondStage = ({ onEditComplete, drawState, id }) => {
   )
 }
 
-const ThirdStage = ({ onSelectItem }) => <div onClick={onSelectItem} id="SHAPE_BITCH">shape is set</div>
+const ThirdStage = ({ onSelectItem, id }) => <div onClick={(e) => onSelectItem(e, id)} id={id}>shape is set</div>
 
 
 const ItemRenderer = ({ drawState, onSelectItem, onEditComplete, id }) => {
@@ -64,13 +64,20 @@ const ItemRenderer = ({ drawState, onSelectItem, onEditComplete, id }) => {
 }
 
 
-const AllItems = ({ drawState, items = [] }) => {
+const AllItems = ({
+  drawState,
+  items = [],
+  setActiveItem,
+}) => {
+
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     // this is actually saving the item
-    console.log("STOP EDITING", updatedItemStyle, itemId)
+    // console.log("STOP EDITING", updatedItemStyle, itemId)
   });
 
-  const onSelectItem = useCallback((e, id) => console.log(`selecting item ${id}`));
+  const onSelectItem = useCallback((e, id) => {
+    setActiveItem(id)
+  })
 
   const renderMap = () => (
     items.map(item => 
@@ -85,7 +92,7 @@ const AllItems = ({ drawState, items = [] }) => {
   )
   return (
     <>
-      {drawState !== "init" ? renderMap() : null}
+      {drawState !== "placing" ? renderMap() : <div>waiting to place shape</div>}
     </>
   )
 }
@@ -93,8 +100,9 @@ const AllItems = ({ drawState, items = [] }) => {
 export const App = (props) => {
   const [drawState, setDrawState] = useState("placing"); 
   const bodyRef = useRef()
-  const [numItems, setNumItems] = useState([1]);
-  const [activeItem, setActiveItem] = useState(1);
+  const [shapes, setShapes] = useState([0]);
+  const [activeItem, setActiveItem] = useState(0);
+  console.log("activeItem", activeItem);
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
@@ -104,11 +112,18 @@ export const App = (props) => {
     })
   }, [setDrawState])
 
+  useEffect(() => {
+    window.addEventListener("contextmenu", removeShape)
+    return (() => {
+      window.removeEventListener("contextmenu", removeShape);
+    })
+  })
+
   const onClick = useCallback((e) => {
     if (drawState === "placing") {
-      // const newVal = numItems.length + 1
-      // const newItems = [newVal, ...numItems]
-      // setNumItems(newItems)
+      // const newVal = shapes.length + 1
+      // const newItems = [newVal, ...shapes]
+      // setShapes(newItems)
       setDrawState("drawing")
     }
 
@@ -118,16 +133,40 @@ export const App = (props) => {
 
   }, [drawState]);
 
-  const captureMove = useCallback((e) => {
-    if (drawState === "drawing") {
-      console.log('start drawing')
-    }
-  }, [drawState]);
+  // right-click:
+  // // if right-clicking on an shape, remove it
+  // // else, do nothing
+  const removeShape = useCallback((e) => {
+    e.preventDefault();
+    const { path } = e;
 
+    let newShapes = [];
+    const [isOnShape] = path.filter(el => {
+      if (el && el.id) {
+        const elementId = parseInt(el.id)
+        if (shapes.includes(elementId)) {
+          newShapes = shapes.filter(shape => shape === el.id)
+          return true;
+        } else {
+          return false;
+        }
+      }
+    })
+    
+    if (isOnShape) {
+      setShapes(newShapes);
+    }
+
+  }, [shapes])
 
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick} ref={bodyRef}>
-      <AllItems drawState={drawState} items={numItems} activeItem={activeItem} />
+      <AllItems
+        drawState={drawState}
+        items={shapes}
+        activeItem={activeItem}
+        setActiveItem={setActiveItem}
+      />
     </div>    
   );
 }
