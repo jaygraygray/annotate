@@ -8,7 +8,7 @@ import { BehaviorSubject } from "rxjs";
 
 const FirstStage = () => <div>I'm a default state </div>
 
-const SecondStage = ({ onEditComplete, drawState }) => {
+const SecondStage = ({ onEditComplete, drawState, id }) => {
   const $coords = useMemo(() => new BehaviorSubject({ x: 0, y: 0 }), []);
   const drawingRef = useRef(null);
 
@@ -20,16 +20,22 @@ const SecondStage = ({ onEditComplete, drawState }) => {
     }
   }, [drawState])
 
+  const handleOnEditComplete = useCallback(() => {
+    if (drawingRef.current) {
+      onEditComplete(drawingRef.current.style, id)
+    }
+  }, [id])
+
   useEffect(() => {
     if (drawState === "drawing") {
       window.addEventListener("mousemove", transformShape)
-      window.addEventListener("mouseup", onEditComplete)
+      window.addEventListener("mouseup", handleOnEditComplete)
     }
     return (() => {
       window.removeEventListener("mousemove", transformShape);
-      window.removeEventListener("mouseup", onEditComplete)
+      window.removeEventListener("mouseup", handleOnEditComplete)
     })
-  }, [drawState, onEditComplete])
+  }, [drawState, handleOnEditComplete])
 
   return (
     <div
@@ -50,18 +56,18 @@ const ThirdStage = ({ onSelectItem }) => <div onClick={onSelectItem} id="SHAPE_B
 const ItemRenderer = ({ drawState, onSelectItem, onEditComplete, id }) => {
   return (
     <div style={{ border: '1px solid red', padding: '25px', margin: '15px' }}>
-      {drawState === "placing" && <FirstStage />}
-      {drawState === "drawing" && <SecondStage onEditComplete={onEditComplete} drawState={drawState} />}
-      {drawState === "saved" && <ThirdStage onSelectItem={onSelectItem} />}
+      {drawState === "placing" && <FirstStage id={id} />}
+      {drawState === "drawing" && <SecondStage id={id} onEditComplete={onEditComplete} drawState={drawState} />}
+      {drawState === "saved" && <ThirdStage id={id} onSelectItem={onSelectItem} />}
     </div>
   )
 }
 
 
 const AllItems = ({ drawState, items = [] }) => {
-  const onEditComplete = useCallback(() => {
+  const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     // this is actually saving the item
-    console.log("STOP EDITING")
+    console.log("STOP EDITING", updatedItemStyle, itemId)
   });
 
   const onSelectItem = useCallback((e, id) => console.log(`selecting item ${id}`));
@@ -90,6 +96,14 @@ export const App = (props) => {
   const [numItems, setNumItems] = useState([1]);
   const [activeItem, setActiveItem] = useState(1);
 
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "`") {
+        setDrawState("placing")
+      }
+    })
+  }, [setDrawState])
+
   const onClick = useCallback((e) => {
     if (drawState === "placing") {
       // const newVal = numItems.length + 1
@@ -102,12 +116,6 @@ export const App = (props) => {
       setDrawState("saved")
     }
 
-    if (drawState === "saved") {
-      // if an editable item is clicked, do nada here!
-      if (e.target.id !== "SHAPE_BITCH") {
-        setDrawState("placing")
-      }
-    }
   }, [drawState]);
 
   const captureMove = useCallback((e) => {
