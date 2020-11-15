@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React, { useEffect, useRef, useCallback, useState } from "react";
+import { v4 as uuid } from "uuid";
 import AllItems from "./components/AllItems";
 
 type DrawState = "placing" | "drawing" | "saved";
@@ -12,7 +13,7 @@ export const App = (props) => {
   const [drawState, setDrawState] = useState<DrawState>("placing"); 
   const bodyRef = useRef()
   const [shapes, setShapes] = useState(shapeInit);
-  const [activeItem, setActiveItem] = useState("0");
+  const [activeItem, setActiveItem] = useState({});
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
@@ -31,14 +32,25 @@ export const App = (props) => {
 
   const onClick = useCallback((e) => {
     if (drawState === "placing") {
+      const newItem = {
+        id: uuid(),
+        payload: "qq"
+      }
+      setActiveItem(newItem)
       setDrawState("drawing")
     }
 
     if (drawState === "drawing") {
+      const newShapes = [
+        activeItem,
+        ...shapes
+      ];
+      setShapes(newShapes)
+      setActiveItem({});
       setDrawState("saved")
     }
 
-  }, [drawState]);
+  }, [drawState, shapes]);
 
   const removeShape = useCallback((e) => {
     e.preventDefault();
