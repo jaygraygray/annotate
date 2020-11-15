@@ -25,10 +25,10 @@ const AllItems = ({
   }, [])
 
   const renderMap = () => (
-    items.map(item => 
+    items.map(({ payload, id }) => 
       <ItemRenderer
-        key={item}
-        id={item}
+        key={id}
+        id={id}
         drawState={drawState}
         onSelectItem={onSelectItem}
         onEditComplete={onEditComplete}

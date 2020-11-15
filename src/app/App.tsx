@@ -1,12 +1,17 @@
+// @ts-nocheck
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import AllItems from "./components/AllItems";
 
 type DrawState = "placing" | "drawing" | "saved";
 
+const shapeInit = [
+  { id: "0", payload: "" }
+]
+
 export const App = (props) => {
   const [drawState, setDrawState] = useState<DrawState>("placing"); 
   const bodyRef = useRef()
-  const [shapes, setShapes] = useState([0]);
+  const [shapes, setShapes] = useState(shapeInit);
   const [activeItem, setActiveItem] = useState("0");
 
   useEffect(() => {
@@ -42,9 +47,9 @@ export const App = (props) => {
     let newShapes = [];
     const [isOnShape] = path.filter(el => {
       if (el && el.id) {
-        const elementId = parseInt(el.id)
-        if (shapes.includes(elementId)) {
-          newShapes = shapes.filter(shape => shape === el.id)
+        const matches = shapes.filter(({ id }) => id === el.id)
+        if (matches.length) {
+          newShapes = shapes.filter(({ id }) => id !== el.id)
           return true;
         }
       }
@@ -68,3 +73,16 @@ export const App = (props) => {
     </div>    
   );
 }
+
+
+type Item = {
+  id: string;
+  payload: any;
+}
+
+const testItemPayload: Item[] = [
+  {
+    id: "",
+    payload: {},
+  }
+]
