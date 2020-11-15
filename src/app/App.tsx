@@ -5,6 +5,11 @@ import AllItems from "./components/AllItems";
 
 type DrawState = "placing" | "drawing" | "saved";
 
+export type Item = {
+  id: string;
+  payload: any;
+}
+
 const shapeInit = [
   { id: "0", payload: "" }
 ]
@@ -12,8 +17,8 @@ const shapeInit = [
 export const App = (props) => {
   const [drawState, setDrawState] = useState<DrawState>("placing"); 
   const bodyRef = useRef()
-  const [shapes, setShapes] = useState(shapeInit);
-  const [activeItem, setActiveItem] = useState({});
+  const [shapes, setShapes] = useState<Item[]>(shapeInit);
+  const [activeItem, setActiveItem] = useState<Item>({});
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {

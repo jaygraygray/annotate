@@ -1,11 +1,12 @@
 import React, { useCallback } from "react";
+import { Item } from '../../App';
 import ItemRenderer from "../ItemRenderer";
 
 type Props = {
   drawState: string;
   items: any;
   setActiveItem(itemId: string): void;
-  activeItem: string;
+  activeItem: Item;
 }
 
 const AllItems = ({
@@ -23,10 +24,11 @@ const AllItems = ({
   const onSelectItem = useCallback((e, id) => {
     setActiveItem(id)
   }, [])
-
+  console.log("activeItem: ", activeItem);
   const renderMap = () => (
     items.map(({ payload, id }) => 
       <ItemRenderer
+        activeItemId={activeItem.id}
         key={id}
         id={id}
         drawState={drawState}
@@ -35,11 +37,25 @@ const AllItems = ({
       />
     )
   )
-  return (
-    <>
-      {drawState !== "placing" ? renderMap() : <div>waiting to place shape</div>}
-    </>
-  )
+
+  if (drawState === "drawing") {
+    return (
+      <ItemRenderer
+        activeItemId={activeItem.id}
+        key={activeItem.id}
+        id={activeItem.id}
+        drawState={drawState}
+        onSelectItem={onSelectItem}
+        onEditComplete={onEditComplete}
+      />
+    )
+  }
+
+  if (drawState === "placing") {
+    return <>waiting to place shape</>
+  }
+
+  return renderMap()
 }
 
 export default AllItems;

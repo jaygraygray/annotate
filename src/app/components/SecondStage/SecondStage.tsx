@@ -48,7 +48,7 @@ const SecondStage = ({
           border: "1px solid black"
         }}
     >
-      Moving mouse to change shape
+      Moving mouse to change shape: {id}
     </div>
   )
 }
