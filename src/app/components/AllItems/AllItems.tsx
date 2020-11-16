@@ -7,6 +7,7 @@ type Props = {
   items: any;
   setActiveItem(itemId: string): void;
   activeItem: Item;
+  setDrawState: any;
 }
 
 const AllItems = ({
@@ -14,6 +15,7 @@ const AllItems = ({
   items = [],
   setActiveItem,
   activeItem,
+  setDrawState,
 }: Props) => {
 
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
@@ -22,23 +24,26 @@ const AllItems = ({
   }, []);
 
   const onSelectItem = useCallback((e, id) => {
-    setActiveItem(id)
-  }, [])
-  console.log("activeItem: ", activeItem);
+    const item = items.find(({ id: existingId }) => id === existingId)
+    setActiveItem(item)
+  }, [items])
+
+
   const renderMap = () => (
-    items.map(({ payload, id }) => 
+    items.length && items.map(({ payload, id }) => 
       <ItemRenderer
-        activeItemId={activeItem.id}
+        activeItemId={activeItem && activeItem.id}
         key={id}
         id={id}
         drawState={drawState}
         onSelectItem={onSelectItem}
         onEditComplete={onEditComplete}
+        setDrawState={setDrawState}
       />
     )
   )
 
-  if (drawState === "drawing") {
+  if (drawState === "drawing" && activeItem) {
     return (
       <ItemRenderer
         activeItemId={activeItem.id}
@@ -47,6 +52,7 @@ const AllItems = ({
         drawState={drawState}
         onSelectItem={onSelectItem}
         onEditComplete={onEditComplete}
+        setDrawState={setDrawState}
       />
     )
   }
@@ -55,7 +61,9 @@ const AllItems = ({
     return <>waiting to place shape</>
   }
 
-  return renderMap()
+  if (items.length) {
+    return renderMap()
+  }
 }
 
 export default AllItems;

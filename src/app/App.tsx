@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import { v4 as uuid } from "uuid";
 import AllItems from "./components/AllItems";
+import findIndex from "lodash.findindex";
 
 type DrawState = "placing" | "drawing" | "saved";
 
@@ -45,11 +46,24 @@ export const App = (props) => {
       setDrawState("drawing")
     }
 
+    // if it exists, updating at same index
+    // if not, create new
     if (drawState === "drawing") {
-      const newShapes = [
-        activeItem,
-        ...shapes
-      ];
+      let newShapes = [];
+
+      const existingShape = shapes.filter(({ id }) => activeItem.id === id);
+      if (existingShape.length) {
+        const index = findIndex(shapes, ({ id }) => id === activeItem.id)
+        newShapes = shapes;
+        newShapes.splice(index, 1);
+        newShapes.splice(index, 0, existingShape[0]);
+      } else {
+        newShapes = [
+          activeItem,
+          ...shapes
+        ];
+      }
+      
       setShapes(newShapes)
       setActiveItem({});
       setDrawState("saved")
@@ -79,6 +93,12 @@ export const App = (props) => {
 
   }, [shapes])
 
+  const handleSetActiveItem = useCallback((e, id) => {
+    const activatedItem = shapes.find(({ id: existingId }) => id === existingId);
+    setDrawState("drawing")
+    setActiveItem(activatedItem)
+  }, [activeItem, drawState])
+
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick} ref={bodyRef}>
       <AllItems
@@ -86,6 +106,7 @@ export const App = (props) => {
         items={shapes}
         activeItem={activeItem}
         setActiveItem={setActiveItem}
+        setDrawState={setDrawState}
       />
     </div>    
   );
