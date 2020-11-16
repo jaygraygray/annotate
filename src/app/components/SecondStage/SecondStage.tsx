@@ -25,7 +25,12 @@ const SecondStage = ({
 
   const handleOnEditComplete = useCallback(() => {
     if (drawingRef.current) {
-      onEditComplete(drawingRef.current.style, id)
+      const  { current: { style } } = drawingRef;
+      const updatedStyle = {
+        width: style.width,
+        height: style.height,
+      }
+      onEditComplete(updatedStyle, id)
     }
   }, [id])
 

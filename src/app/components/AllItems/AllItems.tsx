@@ -20,14 +20,18 @@ const AllItems = ({
 
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     // this is actually saving the item
-    // console.log("STOP EDITING", updatedItemStyle, itemId)
-  }, []);
+    let item = items.find(({ id: existingId }) => itemId === existingId);
+    console.log("onEditComplete:", item)
+    if (item) {
+      item.payload = updatedItemStyle;
+      setActiveItem(item);
+    }
+  }, [items]);
 
   const onSelectItem = useCallback((e, id) => {
     const item = items.find(({ id: existingId }) => id === existingId)
     setActiveItem(item)
   }, [items])
-
 
   const renderMap = () => (
     items.length && items.map(({ payload, id }) => 
@@ -39,6 +43,7 @@ const AllItems = ({
         onSelectItem={onSelectItem}
         onEditComplete={onEditComplete}
         setDrawState={setDrawState}
+        payload={payload}
       />
     )
   )
@@ -49,6 +54,7 @@ const AllItems = ({
         activeItemId={activeItem.id}
         key={activeItem.id}
         id={activeItem.id}
+        payload={activeItem.payload}
         drawState={drawState}
         onSelectItem={onSelectItem}
         onEditComplete={onEditComplete}

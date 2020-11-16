@@ -40,8 +40,9 @@ export const App = (props) => {
     if (drawState === "placing") {
       const newItem = {
         id: uuid(),
-        payload: "qq"
+        payload: null
       }
+      console.log("e", e)
       setActiveItem(newItem)
       setDrawState("drawing")
     }
