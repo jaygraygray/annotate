@@ -33,13 +33,17 @@
     "webpack": "4.42.1"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/react-fontawesome": "^0.1.12",
     "aquedux": "^1.0.10",
     "lodash.findindex": "^4.6.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-pie-menu": "^0.2.5",
     "react-rough": "^2.3.0",
     "rxjs": "^6.6.3",
     "source-map-support": "^0.5.19",
+    "styled-components": "^5.2.1",
     "uuid": "^8.3.1"
   },
   "electronWebpack": {

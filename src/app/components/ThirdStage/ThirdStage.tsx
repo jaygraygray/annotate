@@ -23,6 +23,10 @@ const ThirdStage = ({
       style={{
         width: payload && payload.width,
         height: payload && payload.height,
+        top: payload && `${payload.top}px`,
+        left: payload && `${payload.left}px`,
+        position: "absolute",
+        border: "1px solid blue"
       }}
     >
       shape is set: {id}

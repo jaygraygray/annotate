@@ -19,9 +19,7 @@ const AllItems = ({
 }: Props) => {
 
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
-    // this is actually saving the item
     let item = items.find(({ id: existingId }) => itemId === existingId);
-    console.log("onEditComplete:", item)
     if (item) {
       item.payload = updatedItemStyle;
       setActiveItem(item);
@@ -70,6 +68,7 @@ const AllItems = ({
   if (items.length) {
     return renderMap()
   }
+  return <div>uwu</div>
 }
 
 export default AllItems;

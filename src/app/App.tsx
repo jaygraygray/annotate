@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import { v4 as uuid } from "uuid";
 import AllItems from "./components/AllItems";
+import Menu from "./components/Menu";
 import findIndex from "lodash.findindex";
 
 type DrawState = "placing" | "drawing" | "saved";
@@ -38,11 +39,15 @@ export const App = (props) => {
 
   const onClick = useCallback((e) => {
     if (drawState === "placing") {
+      const { screenY, screenX } = e;
+      const payload = {
+        top: screenX,
+        left: screenY
+      }
       const newItem = {
         id: uuid(),
-        payload: null
+        payload,
       }
-      console.log("e", e)
       setActiveItem(newItem)
       setDrawState("drawing")
     }
@@ -72,9 +77,13 @@ export const App = (props) => {
 
   }, [drawState, shapes]);
 
+
+  // refactor this right-click to also
+  // encompass menu launching logic
+  const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
   const removeShape = useCallback((e) => {
     e.preventDefault();
-    const { path } = e;
+    const { path, clientX, clientY } = e;
 
     let newShapes = [];
     const [isOnShape] = path.filter(el => {
@@ -90,6 +99,8 @@ export const App = (props) => {
     
     if (isOnShape) {
       setShapes(newShapes);
+    } else {
+      setMenuOrigins({ x: clientX, y: clientY })
     }
 
   }, [shapes])
@@ -102,13 +113,14 @@ export const App = (props) => {
 
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick} ref={bodyRef}>
-      <AllItems
+      <Menu x={menuOrigins.x} y={menuOrigins.y} />
+      {/* <AllItems
         drawState={drawState}
         items={shapes}
         activeItem={activeItem}
         setActiveItem={setActiveItem}
         setDrawState={setDrawState}
-      />
+      /> */}
     </div>    
   );
 }
