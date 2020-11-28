@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PieMenu, { Slice } from 'react-pie-menu';
 import { ThemeProvider, css } from 'styled-components';
-import { StarIcon } from '../../icons';
+import { SettingsIcon } from '../../icons';
 import * as styles from './Menu.style';
 
 const theme = {
@@ -11,7 +11,6 @@ const theme = {
     list: css``,
     item: css`
       font-family: sans-serif;
-      border: 1px solid #cfe7fa
     `,
     center: styles.center,
   },
@@ -29,7 +28,7 @@ const PieMenuThemed = (props) => (
   </ThemeProvider>
 )
 
-const Menu =  ({ x, y, onClick }) => { 
+const Menu =  ({ x, y, onClick, onSettingsClick }) => { 
 
   const handleClick = () => {
     // pass handler from app to close menu
@@ -43,19 +42,21 @@ const Menu =  ({ x, y, onClick }) => {
         centerX={`${x + 4}px`}
         centerY={`${y}px`}
       >
-       
         <Slice onSelect={onClick}>
           Line
         </Slice>
-        <Slice onSelect={onClick}>
-        <StarIcon width={25} height={25} fill="pink" />
+        <Slice onSelect={onSettingsClick}>
+          <SettingsIcon width={25} height={25} />
         </Slice>
+        <Slice>&nbsp;</Slice>
         <Slice onSelect={onClick}>
           Highlighter
         </Slice>
         <Slice onSelect={onClick}>
           Star
         </Slice>
+        
+
       </PieMenuThemed>
     );
   }

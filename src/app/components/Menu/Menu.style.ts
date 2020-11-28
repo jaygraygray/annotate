@@ -20,14 +20,14 @@ export const center = css`
 export const slice = css`
   cursor: pointer;
   color: grey;
-  border: 2px solid red;
-  background: radial-gradient(transparent ${({ centerRadius }) => `${centerRadius}, white ${centerRadius}`});
+  background: radial-gradient(transparent ${({ centerRadius }) => `${centerRadius}, #fff ${centerRadius}`});
+  ;
   &[filled=true] {
     color: black;
   }
   &:hover,
   &[active=true] {
     color: black;
-    background: radial-gradient(transparent ${({ centerRadius }) => `${centerRadius}, #eee3ef ${centerRadius}`});
+    background: radial-gradient(transparent ${({ centerRadius }) => `${centerRadius}, #9198e5 ${centerRadius}`});
   }
   `

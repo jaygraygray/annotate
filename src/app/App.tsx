@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import Arrow from "./icons/src/Arrow";
 import Stage from "./components/Stage";
 import Menu from "./components/Menu";
+import Settings from "./components/Settings";
 import findIndex from "lodash.findindex";
 
 type DrawState = "placing" | "drawing" | "saved";
@@ -114,9 +115,24 @@ export const App = (props) => {
     setActiveItem(activatedItem)
   }, [activeItem, drawState])
 
+  const [areSettingsOpen, setAreSettingsOpen] = useState(false);
+  const onSettingsClick = useCallback(() => {
+    setMenuOrigins({ x: 0, y: 0 });
+    setAreSettingsOpen(!areSettingsOpen);
+  }, [areSettingsOpen])
+
+  if (areSettingsOpen) {
+    return <Settings toggleOpenState={onSettingsClick} />
+  }
+
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick} ref={bodyRef}>
-      <Menu x={menuOrigins.x} y={menuOrigins.y} onClick={onClick} />
+      <Menu
+        x={menuOrigins.x}
+        y={menuOrigins.y}
+        onClick={onClick}
+        onSettingsClick={onSettingsClick}
+      />
       <Stage
         drawState={drawState}
         items={shapes}
@@ -124,7 +140,7 @@ export const App = (props) => {
         setActiveItem={setActiveItem}
         setDrawState={setDrawState}
       />
-    </div>    
+    </div>  
   );
 }
 
