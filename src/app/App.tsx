@@ -1,7 +1,8 @@
 // @ts-nocheck
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import { v4 as uuid } from "uuid";
-import AllItems from "./components/AllItems";
+import Arrow from "./icons/src/Arrow";
+import Stage from "./components/Stage";
 import Menu from "./components/Menu";
 import findIndex from "lodash.findindex";
 
@@ -38,6 +39,7 @@ export const App = (props) => {
   })
 
   const onClick = useCallback((e) => {
+    setMenuOrigins({ x: 0, y: 0 })
     if (drawState === "placing") {
       const { screenY, screenX } = e;
       const payload = {
@@ -81,6 +83,7 @@ export const App = (props) => {
   // refactor this right-click to also
   // encompass menu launching logic
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
+
   const removeShape = useCallback((e) => {
     e.preventDefault();
     const { path, clientX, clientY } = e;
@@ -113,14 +116,14 @@ export const App = (props) => {
 
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick} ref={bodyRef}>
-      <Menu x={menuOrigins.x} y={menuOrigins.y} />
-      {/* <AllItems
+      <Menu x={menuOrigins.x} y={menuOrigins.y} onClick={onClick} />
+      <Stage
         drawState={drawState}
         items={shapes}
         activeItem={activeItem}
         setActiveItem={setActiveItem}
         setDrawState={setDrawState}
-      /> */}
+      />
     </div>    
   );
 }

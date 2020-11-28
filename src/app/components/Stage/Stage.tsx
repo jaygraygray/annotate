@@ -10,7 +10,7 @@ type Props = {
   setDrawState: any;
 }
 
-const AllItems = ({
+const Stage = ({
   drawState,
   items = [],
   setActiveItem,
@@ -71,4 +71,4 @@ const AllItems = ({
   return <div>uwu</div>
 }
 
-export default AllItems;
+export default Stage;
