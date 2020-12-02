@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useRef, useEffect } from "react";
 
 const ThirdStage = ({
@@ -6,7 +5,6 @@ const ThirdStage = ({
   id,
   payload,
 }) => {
-  console.log("payload", payload)
   const itemRef = useRef(null);
 
   useEffect(() => {
@@ -23,9 +21,8 @@ const ThirdStage = ({
       style={{
         width: payload && payload.width,
         height: payload && payload.height,
-        top: payload && `${payload.top}px`,
-        left: payload && `${payload.left}px`,
-        position: "absolute",
+        top: payload && `${payload.originX}px`,
+        left: payload && `${payload.originY}px`,
         border: "1px solid blue"
       }}
     >

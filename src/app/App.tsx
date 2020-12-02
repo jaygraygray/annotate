@@ -1,13 +1,11 @@
-// @ts-nocheck
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import { v4 as uuid } from "uuid";
-import Arrow from "./icons/src/Arrow";
 import Stage from "./components/Stage";
 import Menu from "./components/Menu";
 import Settings from "./components/Settings";
 import findIndex from "lodash.findindex";
 
-type DrawState = "placing" | "drawing" | "saved";
+type DrawState = "placing" | "drawing" | "saved" | "init";
 
 export type Item = {
   id: string;
@@ -19,10 +17,11 @@ const shapeInit = [
 ]
 
 export const App = (props) => {
-  const [drawState, setDrawState] = useState<DrawState>("placing"); 
+  const [drawState, setDrawState] = useState<DrawState>("init"); 
   const bodyRef = useRef()
   const [shapes, setShapes] = useState<Item[]>(shapeInit);
-  const [activeItem, setActiveItem] = useState<Item>({});
+  const [activeItem, setActiveItem] = useState<Item | null>(null);
+  const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
@@ -39,13 +38,19 @@ export const App = (props) => {
     })
   })
 
+  // create shape logic needs to be extracted and passed
+  // to Menu 
   const onClick = useCallback((e) => {
-    setMenuOrigins({ x: 0, y: 0 })
-    if (drawState === "placing") {
+    const isMenuOpen = menuOrigins.x !== 0 && menuOrigins.y !== 0;
+    setMenuOrigins({ x: 0, y: 0 });
+    if (drawState === "init") {
+      return;
+    }
+    if (drawState === "placing" && !isMenuOpen) {
       const { screenY, screenX } = e;
       const payload = {
-        top: screenX,
-        left: screenY
+        originX: screenX,
+        originY: screenY
       }
       const newItem = {
         id: uuid(),
@@ -55,8 +60,6 @@ export const App = (props) => {
       setDrawState("drawing")
     }
 
-    // if it exists, updating at same index
-    // if not, create new
     if (drawState === "drawing") {
       let newShapes = [];
 
@@ -74,16 +77,11 @@ export const App = (props) => {
       }
       
       setShapes(newShapes)
-      setActiveItem({});
+      setActiveItem(null);
       setDrawState("saved")
     }
 
-  }, [drawState, shapes]);
-
-
-  // refactor this right-click to also
-  // encompass menu launching logic
-  const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
+  }, [drawState, shapes, menuOrigins]);
 
   const removeShape = useCallback((e) => {
     e.preventDefault();
@@ -108,12 +106,6 @@ export const App = (props) => {
     }
 
   }, [shapes])
-
-  const handleSetActiveItem = useCallback((e, id) => {
-    const activatedItem = shapes.find(({ id: existingId }) => id === existingId);
-    setDrawState("drawing")
-    setActiveItem(activatedItem)
-  }, [activeItem, drawState])
 
   const [areSettingsOpen, setAreSettingsOpen] = useState(false);
   const onSettingsClick = useCallback(() => {
@@ -143,16 +135,3 @@ export const App = (props) => {
     </div>  
   );
 }
-
-
-type Item = {
-  id: string;
-  payload: any;
-}
-
-const testItemPayload: Item[] = [
-  {
-    id: "",
-    payload: {},
-  }
-]

@@ -5,7 +5,7 @@ import ItemRenderer from "../ItemRenderer";
 type Props = {
   drawState: string;
   items: any;
-  setActiveItem(itemId: string): void;
+  setActiveItem(o: Item): void;
   activeItem: Item;
   setDrawState: any;
 }
@@ -46,6 +46,10 @@ const Stage = ({
     )
   )
 
+  if (drawState === "init") {
+    return null;
+  }
+
   if (drawState === "drawing" && activeItem) {
     return (
       <ItemRenderer
@@ -68,7 +72,7 @@ const Stage = ({
   if (items.length) {
     return renderMap()
   }
-  return <div>uwu</div>
+
 }
 
 export default Stage;

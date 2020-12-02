@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import PieMenu, { Slice } from 'react-pie-menu';
 import { ThemeProvider, css } from 'styled-components';
 import { SettingsIcon } from '../../icons';
@@ -30,9 +29,9 @@ const PieMenuThemed = (props) => (
 
 const Menu =  ({ x, y, onClick, onSettingsClick }) => { 
 
-  const handleClick = () => {
-    // pass handler from app to close menu
-  }
+  // const handleClick = () => {
+  //   // pass handler from app to close menu
+  // }
 
   if (x !== 0 && y !== 0) {
     return (
