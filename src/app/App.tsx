@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import Stage from "./components/Stage";
 import Menu from "./components/Menu";
 import Settings from "./components/Settings";
+import { trackMousePosition } from "./utils/mouse";
 import findIndex from "lodash.findindex";
 
 type DrawState = "placing" | "drawing" | "saved" | "init";
@@ -22,14 +23,15 @@ export const App = (props) => {
   const [shapes, setShapes] = useState<Item[]>(shapeInit);
   const [activeItem, setActiveItem] = useState<Item | null>(null);
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
+  const res = trackMousePosition()
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
       if (e.key === "`") {
-        setDrawState("placing")
+        setMenuOrigins({ x: res.x, y: res.y });
       }
     })
-  }, [setDrawState])
+  }, [setDrawState, res])
 
   useEffect(() => {
     window.addEventListener("contextmenu", removeShape)
@@ -38,15 +40,12 @@ export const App = (props) => {
     })
   })
 
-  // create shape logic needs to be extracted and passed
-  // to Menu 
-  const onClick = useCallback((e) => {
+
+
+  const menuItemClick = useCallback((e) => {
+    setDrawState("placing")
     const isMenuOpen = menuOrigins.x !== 0 && menuOrigins.y !== 0;
-    setMenuOrigins({ x: 0, y: 0 });
-    if (drawState === "init") {
-      return;
-    }
-    if (drawState === "placing" && !isMenuOpen) {
+    if (!isMenuOpen) {
       const { screenY, screenX } = e;
       const payload = {
         originX: screenX,
@@ -56,7 +55,23 @@ export const App = (props) => {
         id: uuid(),
         payload,
       }
+      
       setActiveItem(newItem)
+    }
+
+  }, [menuOrigins, drawState]);
+
+  
+  // create shape logic needs to be extracted and passed
+  // to Menu 
+  const onClick = useCallback((e) => {
+    
+    setMenuOrigins({ x: 0, y: 0 });
+    if (drawState === "init") {
+      return;
+    }
+
+    if (drawState === "placing") {
       setDrawState("drawing")
     }
 
@@ -116,14 +131,16 @@ export const App = (props) => {
   if (areSettingsOpen) {
     return <Settings toggleOpenState={onSettingsClick} />
   }
-
+  console.log(">> drawState", drawState)
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick} ref={bodyRef}>
       <Menu
         x={menuOrigins.x}
         y={menuOrigins.y}
-        onClick={onClick}
+        onClick={() => console.log("wat")}
         onSettingsClick={onSettingsClick}
+        menuItemClick={menuItemClick}
+        setDrawState={setDrawState}
       />
       <Stage
         drawState={drawState}

@@ -1,4 +1,5 @@
-import React from 'react';
+// @ts-nocheck
+import React, { useCallback } from 'react';
 import PieMenu, { Slice } from 'react-pie-menu';
 import { ThemeProvider, css } from 'styled-components';
 import { SettingsIcon } from '../../icons';
@@ -27,31 +28,31 @@ const PieMenuThemed = (props) => (
   </ThemeProvider>
 )
 
-const Menu =  ({ x, y, onClick, onSettingsClick }) => { 
+const Menu =  ({ x, y, onClick, onSettingsClick, menuItemClick, setDrawState }) => { 
 
-  // const handleClick = () => {
-  //   // pass handler from app to close menu
-  // }
+  const handleClick = useCallback((e) => {
+    menuItemClick(e)
+  }, [])
 
   if (x !== 0 && y !== 0) {
     return (
       <PieMenuThemed
-        radius='125px' 
+        radius='125px'
         centerRadius='30px'
         centerX={`${x + 4}px`}
         centerY={`${y}px`}
       >
-        <Slice onSelect={onClick}>
+        <Slice onSelect={handleClick}>
           Line
         </Slice>
         <Slice onSelect={onSettingsClick}>
           <SettingsIcon width={25} height={25} />
         </Slice>
         <Slice>&nbsp;</Slice>
-        <Slice onSelect={onClick}>
+        <Slice onSelect={menuItemClick}>
           Highlighter
         </Slice>
-        <Slice onSelect={onClick}>
+        <Slice onClick={menuItemClick}>
           Star
         </Slice>
         
