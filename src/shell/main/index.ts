@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, screen } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 
@@ -17,13 +17,17 @@ const windowOptions = {
   webPreferences: {
     nodeIntegration: true
   },
-  width: 1000,
-  height: 1000,
   transparent: true,
+  frame: true,
 }
 
-function createMainWindow() {
-  const window = new BrowserWindow(windowOptions);
+function createMainWindow(width, height) {
+  const options = {
+    width,
+    height,
+    ...windowOptions
+  }
+  const window = new BrowserWindow(options);
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:8080/`);
@@ -54,14 +58,19 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   // on macOS it is common to re-create a window even after all windows have been closed
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
   if (mainWindow === null) {
-    mainWindow = createMainWindow()
+    mainWindow = createMainWindow(width, height)
   }
 })
 
+// how to support multiple windows?
+
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  mainWindow = createMainWindow()
+  console.log()
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+  mainWindow = createMainWindow(width, height)
   mainWindow.on('resize', (e, q, z) => {
     
   })

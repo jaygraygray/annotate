@@ -28,7 +28,13 @@ const PieMenuThemed = (props) => (
   </ThemeProvider>
 )
 
-const Menu =  ({ x, y, onClick, onSettingsClick, menuItemClick }) => { 
+const Menu =  ({
+  x,
+  y,
+  onClick,
+  onSettingsClick,
+  menuItemClick
+}) => { 
 
   const handleClick = useCallback((e) => {
     menuItemClick(e)

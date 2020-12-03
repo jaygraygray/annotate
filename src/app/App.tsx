@@ -13,13 +13,9 @@ export type Item = {
   payload: any;
 }
 
-const shapeInit = [
-  { id: "0", payload: "" }
-]
-
 export const App = (props) => {
   const [drawState, setDrawState] = useState<DrawState>("init"); 
-  const [shapes, setShapes] = useState<Item[]>(shapeInit);
+  const [shapes, setShapes] = useState<Item[]>([]);
   const [activeItem, setActiveItem] = useState<Item | null>(null);
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
   const MousePosition = trackMousePosition();
@@ -129,9 +125,9 @@ export const App = (props) => {
     setAreSettingsOpen(!areSettingsOpen);
   }, [areSettingsOpen])
 
-  if (areSettingsOpen) {
+if (areSettingsOpen) {
     return <Settings toggleOpenState={onSettingsClick} />
-  }
+ }
 
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick}>

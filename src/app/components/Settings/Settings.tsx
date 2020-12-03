@@ -23,8 +23,26 @@ const Settings = ({
       window.removeEventListener("keydown", onKeyDown);
     })
   }, [])
+
   return (
-    <Styles.Container>i am settings bich</Styles.Container>
+    <Styles.Container>
+      <Styles.Body>
+        <Styles.Left>
+          <Styles.Navigation>
+            <Styles.NavItem>***</Styles.NavItem>
+            <Styles.NavItem>Hotkeys</Styles.NavItem>
+            <Styles.NavItem>Arrow</Styles.NavItem>
+            <Styles.NavItem>Line</Styles.NavItem>
+            <Styles.NavItem>Account</Styles.NavItem>
+            <Styles.NavItem>Help</Styles.NavItem>
+          </Styles.Navigation>
+        </Styles.Left>
+
+        <Styles.Right>
+          &nbsp;
+        </Styles.Right>
+      </Styles.Body>
+    </Styles.Container>
   )
 }
 
