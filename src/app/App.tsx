@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { v4 as uuid } from "uuid";
 import Stage from "./components/Stage";
 import Menu from "./components/Menu";
@@ -19,19 +19,28 @@ const shapeInit = [
 
 export const App = (props) => {
   const [drawState, setDrawState] = useState<DrawState>("init"); 
-  const bodyRef = useRef()
   const [shapes, setShapes] = useState<Item[]>(shapeInit);
   const [activeItem, setActiveItem] = useState<Item | null>(null);
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
-  const res = trackMousePosition()
+  const MousePosition = trackMousePosition();
+  const [areSettingsOpen, setAreSettingsOpen] = useState(false);
 
   useEffect(() => {
+    let count = null;
     window.addEventListener("keydown", (e) => {
       if (e.key === "`") {
-        setMenuOrigins({ x: res.x, y: res.y });
+        if (count === null) {
+          count = 1;
+        } else {
+          count += 1;
+          if (count > 15) {
+            setMenuOrigins({ x: MousePosition.x, y: MousePosition.y });
+            count = null;
+          }
+        }
       }
     })
-  }, [setDrawState, res])
+  }, [setDrawState, MousePosition])
 
   useEffect(() => {
     window.addEventListener("contextmenu", removeShape)
@@ -39,8 +48,6 @@ export const App = (props) => {
       window.removeEventListener("contextmenu", removeShape);
     })
   })
-
-
 
   const menuItemClick = useCallback((e) => {
     setDrawState("placing")
@@ -61,11 +68,7 @@ export const App = (props) => {
 
   }, [menuOrigins, drawState]);
 
-  
-  // create shape logic needs to be extracted and passed
-  // to Menu 
   const onClick = useCallback((e) => {
-    
     setMenuOrigins({ x: 0, y: 0 });
     if (drawState === "init") {
       return;
@@ -77,7 +80,6 @@ export const App = (props) => {
 
     if (drawState === "drawing") {
       let newShapes = [];
-
       const existingShape = shapes.filter(({ id }) => activeItem.id === id);
       if (existingShape.length) {
         const index = findIndex(shapes, ({ id }) => id === activeItem.id)
@@ -122,7 +124,6 @@ export const App = (props) => {
 
   }, [shapes])
 
-  const [areSettingsOpen, setAreSettingsOpen] = useState(false);
   const onSettingsClick = useCallback(() => {
     setMenuOrigins({ x: 0, y: 0 });
     setAreSettingsOpen(!areSettingsOpen);
@@ -131,16 +132,15 @@ export const App = (props) => {
   if (areSettingsOpen) {
     return <Settings toggleOpenState={onSettingsClick} />
   }
-  console.log(">> drawState", drawState)
+
   return (
-    <div style={{ height: "100vh", width: "100vw" }} onClick={onClick} ref={bodyRef}>
+    <div style={{ height: "100vh", width: "100vw" }} onClick={onClick}>
       <Menu
         x={menuOrigins.x}
         y={menuOrigins.y}
         onClick={() => console.log("wat")}
         onSettingsClick={onSettingsClick}
         menuItemClick={menuItemClick}
-        setDrawState={setDrawState}
       />
       <Stage
         drawState={drawState}
