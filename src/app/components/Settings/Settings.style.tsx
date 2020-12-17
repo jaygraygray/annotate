@@ -67,10 +67,11 @@ export const Navigation = styled.ul`
 `; 
 
 export const NavItem = styled.li`
+  font-family: JetBrains;
   padding-bottom: 18px;
   padding-top: 18px;
   padding-left: 32px;
-  border: 2px solid rgb(0,0,0,0);
+  border: 1px solid rgb(0,0,0,0);
   margin: 0;
   width: 83%;
 
@@ -79,6 +80,7 @@ export const NavItem = styled.li`
     background: #151310;
     border-top: 1px solid #413E3A;
     border-bottom: 1px solid #413E3A;
+    border-right: 2px solid #151310;
 
   }
 

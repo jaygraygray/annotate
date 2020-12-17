@@ -15,6 +15,18 @@ module.exports = {
         use: 'ts-loader',
         exclude: ['/node_modules/', '/dist'],
       },
+      {
+        test: /\.(woff(2)?|otf|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: './assets/[hash].[ext]',
+            emitFile: true,
+            esModule: false,
+          },
+        }
+      }
+
     ],
   },
   resolve: {
