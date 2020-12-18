@@ -1,8 +1,6 @@
 'use strict'
 
 import { app, BrowserWindow, screen } from 'electron'
-import * as path from 'path'
-import { format as formatUrl } from 'url'
 
 if (module.hot) {
   module.hot.accept();
@@ -61,6 +59,7 @@ app.on('activate', () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
   if (mainWindow === null) {
     mainWindow = createMainWindow(width, height)
+    mainWindow.loadURL('')
   }
 })
 

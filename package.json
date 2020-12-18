@@ -3,16 +3,33 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/main/main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:shell": "electron-webpack dev",
-    "dev:app": "webpack-dev-server --open",
-    "build:shell": "electron-webpack",
-    "build:app": "webpack"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf dist",
+    "dev:shell": "electron-webpack dev",
+    "dev:app": "webpack-dev-server --open",
+    "compile:shell": "electron-webpack",
+    "build:shell": "npm run compile:shell && electron-builder",
+    "build:app": "webpack",
+    "pack:shell": "rm -rf dist && electron-builder --dir"
+  },
+  "electronWebpack": {
+    "main": {
+      "sourceDirectory": "src/shell/main"
+    },
+    "renderer": {
+      "sourceDirectory": "src/shell/renderer"
+    }
+  },
+  "build": {
+    "productName": "Annotate",
+    "mac": {
+      "target": "dmg"
+    }
+  },
   "devDependencies": {
     "@types/node": "^14.11.10",
     "@types/react": "^16.9.53",
@@ -49,13 +66,5 @@
     "source-map-support": "^0.5.19",
     "styled-components": "^5.2.1",
     "uuid": "^8.3.1"
-  },
-  "electronWebpack": {
-    "main": {
-      "sourceDirectory": "src/shell/main"
-    },
-    "renderer": {
-      "sourceDirectory": "src/shell/renderer"
-    }
   }
 }
