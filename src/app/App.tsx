@@ -125,9 +125,9 @@ export const App = (props) => {
     setAreSettingsOpen(!areSettingsOpen);
   }, [areSettingsOpen])
 
-if (areSettingsOpen) {
+// if (areSettingsOpen) {
     return <Settings toggleOpenState={onSettingsClick} />
- }
+ // }
 
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick}>

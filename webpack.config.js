@@ -1,6 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
+const packageJson = require('./package.json');
+
+const EnvironmentVariables = {
+  appVersion: `v${packageJson.version}`
+};
 
 module.exports = {
   entry: './src/app/index.tsx',
@@ -40,6 +46,7 @@ module.exports = {
       title: "woah dude",
       template: path.resolve(__dirname, "src", "app", "index.html")
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new webpack.EnvironmentPlugin(EnvironmentVariables),
   ],
 };

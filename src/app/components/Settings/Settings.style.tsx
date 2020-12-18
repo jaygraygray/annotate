@@ -11,6 +11,10 @@ export const Container = styled.div`
   top: 0;
   left: 0;
   justify-content: center; 
+
+  svg {
+    fill: #fff;
+  }
 `
 
 export const Body = styled.div`
@@ -52,17 +56,13 @@ export const Navigation = styled.ul`
 
   > * {
     &:first-child {
+      pointer-events: none;
       padding-top: 50px;
-    //   border-width: 1px;
-    //   border-style: solid;
-    //   border-image: 
-    //   linear-gradient(
-    //     to bottom, 
-    //     rgba(0, 0, 0, 0),
-    //     #413E3A
-    //   ) 0 100%;
-    // }
-  }
+    }
+
+    &:first-child:hover {
+      pointer-events: none;
+    }
 `; 
 
 export const NavItem = styled.li`
@@ -79,7 +79,7 @@ export const NavItem = styled.li`
     border-top: 1px solid #413E3A;
     border-bottom: 1px solid #413E3A;
     border-right: 2px solid #151310;
-
+    border-radius: inherit;
   }
 
 `;
