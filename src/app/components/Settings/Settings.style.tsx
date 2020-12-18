@@ -47,4 +47,8 @@ export const Left = styled.div`
 
 export const Right = styled.div`
   flex-grow: 1;
+  width: 500px;
+  position: absolute;
+  top: 0px;
+  left: 200px;
 `;

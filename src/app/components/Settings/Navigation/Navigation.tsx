@@ -39,29 +39,43 @@ const navItems: NavItem[] = [
   },
 ];
 
+type NavItemProps = {
+  index: number;
+  children: React.ReactNode[];
+  activeIndex: number;
+  setActiveIndex(index: number): void;
+}
 
-const NavItem = ({ index, children, setActiveIndex }) => {
+const NavItem = ({ index, children, setActiveIndex, activeIndex }: NavItemProps) => {
   const handleSetActiveContentIndex = useCallback(() => {
     setActiveIndex(index);
-  }, [index])
+  }, [index]);
   return (
-    <Styles.NavItem onClick={handleSetActiveContentIndex}>
+    <Styles.NavItem onClick={handleSetActiveContentIndex} active={activeIndex === index} >
       {children}
     </Styles.NavItem>
   )
 }
 
-const renderNavItems = (navItems, setActiveIndex) => (
-  navItems.map(item => <NavItem index={item.index} setActiveIndex={setActiveIndex}>{item.label}</NavItem>)
+const renderNavItems = (navItems, setActiveIndex, activeIndex) => (
+  navItems.map(({ label, index }) =>
+    <NavItem
+      key={index}
+      index={index}
+      activeIndex={activeIndex}
+      setActiveIndex={setActiveIndex}>
+        {label}
+    </NavItem>
+  )
 )
 
 export const Navigation = ({
-  activeIndex = 0,
+  activeIndex,
   setActiveIndex,
 }: NavigationProps) => {
   return (
     <Styles.Navigation>
-      {renderNavItems(navItems, setActiveIndex)}
+      {renderNavItems(navItems, setActiveIndex, activeIndex)}
     </Styles.Navigation>
   );
 }

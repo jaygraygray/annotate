@@ -28,7 +28,7 @@ const Settings = ({
     })
   }, [])
   
-  const [activeContentIndex, setActiveContentIndex] = useState<number>(0);
+  const [activeContentIndex, setActiveContentIndex] = useState<number>(1); // avoid 0; will cause UI defect
 
   const handleSetActiveContentIndex = useCallback((index) => {
     setActiveContentIndex(index)
