@@ -48,7 +48,6 @@ export const Right = styled.div`
 export const Navigation = styled.ul`
   margin-top: 0;
   list-style-type: none;
-  font-family: sans serif;
   padding: 0;
 
   > * {
@@ -67,7 +66,6 @@ export const Navigation = styled.ul`
 `; 
 
 export const NavItem = styled.li`
-  font-family: JetBrains;
   padding-bottom: 18px;
   padding-top: 18px;
   padding-left: 32px;

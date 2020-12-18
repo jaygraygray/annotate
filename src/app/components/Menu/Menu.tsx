@@ -10,7 +10,6 @@ const theme = {
     container: styles.container,
     list: css``,
     item: css`
-      font-family: sans-serif;
     `,
     center: styles.center,
   },

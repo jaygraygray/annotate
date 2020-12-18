@@ -16,13 +16,11 @@ module.exports = {
         exclude: ['/node_modules/', '/dist'],
       },
       {
-        test: /\.(woff(2)?|otf|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(woff(2)?|otf|ttf|eot|svg)$/,
         use: {
           loader: 'file-loader',
           options: {
-            name: './assets/[hash].[ext]',
-            emitFile: true,
-            esModule: false,
+            name: '[name].[ext]',
           },
         }
       }

@@ -1,8 +1,16 @@
 // @ts-nocheck
 import { createGlobalStyle } from "styled-components";
-
-// import JetBrain from "../assets/fonts/";
+import JetBrainsBold from "../assets/fonts/JetBrainsBold.ttf";
 
 export const GlobalStyle = createGlobalStyle`
-  font-family: JetBrain
+
+  @font-face {
+    font-family: 'JetBrains';
+    src: url(${JetBrainsBold});
+    font-style: normal;
+  }
+
+  html, body {
+    font-family: JetBrains;
+  }
 `

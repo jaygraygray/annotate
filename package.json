@@ -53,8 +53,6 @@
     "webpack": "4.42.1"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.32",
-    "@fortawesome/react-fontawesome": "^0.1.12",
     "@types/styled-components": "^5.1.4",
     "aquedux": "^1.0.10",
     "lodash.findindex": "^4.6.0",
