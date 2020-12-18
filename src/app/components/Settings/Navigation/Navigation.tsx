@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { SettingsIcon } from "../../../icons";
 import * as Styles from "./Navigation.style";
 
@@ -7,28 +7,61 @@ type NavigationProps = {
   setActiveIndex(index: number): void;
 }
 
-// type NavItem = {
-//   index: number;
-//   label: string | React.ReactNode;
-// }
+type NavItem = {
+  index: number;
+  label: string | React.ReactNode;
+}
 
-// const NavItems: NavItem[] = [
-//   {
-//     index: 0,
-//     label: <SettingsIcon width={25} height={25} />
-//   }
-// ]
+const navItems: NavItem[] = [
+  {
+    index: 0,
+    label: <SettingsIcon width={25} height={25} />,
+  },
+  {
+    index: 1,
+    label: "Hotkeys",
+  },
+  {
+    index: 2,
+    label: "Arrow",
+  },
+  {
+    index: 3,
+    label: "Line",
+  },
+  {
+    index: 4,
+    label: "Account",
+  },
+  {
+    index: 5,
+    label: "Help",
+  },
+];
 
-export const Navigation = (props: NavigationProps) => {
-  console.log(">>NavigationProps", props);
+
+const NavItem = ({ index, children, setActiveIndex }) => {
+  const handleSetActiveContentIndex = useCallback(() => {
+    setActiveIndex(index);
+  }, [index])
+  return (
+    <Styles.NavItem onClick={handleSetActiveContentIndex}>
+      {children}
+    </Styles.NavItem>
+  )
+}
+
+const renderNavItems = (navItems, setActiveIndex) => (
+  navItems.map(item => <NavItem index={item.index} setActiveIndex={setActiveIndex}>{item.label}</NavItem>)
+)
+
+export const Navigation = ({
+  activeIndex = 0,
+  setActiveIndex,
+}: NavigationProps) => {
   return (
     <Styles.Navigation>
-      <Styles.NavItem><SettingsIcon width={25} height={25} /></Styles.NavItem>
-      <Styles.NavItem>Hotkeys</Styles.NavItem>
-      <Styles.NavItem>Arrow</Styles.NavItem>
-      <Styles.NavItem>Line</Styles.NavItem>
-      <Styles.NavItem>Account</Styles.NavItem>
-      <Styles.NavItem>Help</Styles.NavItem>
+      {renderNavItems(navItems, setActiveIndex)}
     </Styles.Navigation>
   );
 }
