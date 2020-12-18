@@ -5,7 +5,8 @@ const webpack = require('webpack');
 const packageJson = require('./package.json');
 
 const EnvironmentVariables = {
-  appVersion: `v${packageJson.version}`
+  appVersion: `v${packageJson.version}`,
+  appName: 'Annotate',
 };
 
 module.exports = {

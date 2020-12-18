@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from "react";
-import { SettingsIcon } from "../../icons";
+import { Navigation } from "./Navigation";
+
 import * as Styles from "./Settings.style";
 
 const Settings = ({
@@ -29,18 +30,14 @@ const Settings = ({
     <Styles.Container>
       <Styles.Body>
         <Styles.Left>
-          <Styles.Navigation>
-            <Styles.NavItem><SettingsIcon width={25} height={25} /></Styles.NavItem>
-            <Styles.NavItem>Hotkeys</Styles.NavItem>
-            <Styles.NavItem>Arrow</Styles.NavItem>
-            <Styles.NavItem>Line</Styles.NavItem>
-            <Styles.NavItem>Account</Styles.NavItem>
-            <Styles.NavItem>Help</Styles.NavItem>
-          </Styles.Navigation>
+          <Navigation />
 
-          {/* <Styles.AppInfo>
-            Annotate v
-          </Styles.AppInfo> */}
+          <Styles.AppInfo>
+            <div>{process.env.appName} {process.env.appVersion}</div>
+            <div>
+              By using {process.env.appName}, you agree to the following <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>.
+            </div>
+          </Styles.AppInfo>
         </Styles.Left>
 
         <Styles.Right>

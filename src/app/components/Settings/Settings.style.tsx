@@ -20,7 +20,7 @@ export const Container = styled.div`
 export const Body = styled.div`
   border-radius: 30px;
   width: 700px;
-  height: 400px;
+  height: 450px;
   border-style: none;
   background: #151310;
   filter: drop-shadow(1px, 3px, 10px #000);
@@ -49,37 +49,24 @@ export const Right = styled.div`
   flex-grow: 1;
 `;
 
-export const Navigation = styled.ul`
-  margin-top: 0;
-  list-style-type: none;
-  padding: 0;
-
-  > * {
-    &:first-child {
-      pointer-events: none;
-      padding-top: 50px;
-    }
-
-    &:first-child:hover {
-      pointer-events: none;
-    }
-`; 
-
-export const NavItem = styled.li`
-  padding-bottom: 18px;
-  padding-top: 18px;
+export const AppInfo = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  color: #747474;
+  font-size: 10px;
+  font-family: Arial;
   padding-left: 32px;
-  border: 1px solid rgb(0,0,0,0);
-  margin: 0;
-  width: 83%;
+  width: 150px;
 
-  &:hover {
-    cursor: pointer;
-    background: #151310;
-    border-top: 1px solid #413E3A;
-    border-bottom: 1px solid #413E3A;
-    border-right: 2px solid #151310;
-    border-radius: inherit;
+  div {
+    margin-top: 6px;
   }
 
+  a {
+    color: #747474;
+  }
+
+  a:hover {
+    color: #fff;
+  }
 `;
