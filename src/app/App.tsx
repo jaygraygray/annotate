@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import Stage from "./components/Stage";
 import Menu from "./components/Menu";
 import Settings from "./components/Settings";
+import { hotKeyMap, useHotKeys } from "./hotkeys";
 import { trackMousePosition } from "./utils/mouse";
 import findIndex from "lodash.findindex";
 
@@ -20,6 +21,11 @@ export const App = (props) => {
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
   const MousePosition = trackMousePosition();
   const [areSettingsOpen, setAreSettingsOpen] = useState(false);
+  const { isKeyPressed } = useHotKeys(hotKeyMap)
+
+  useEffect(() => {
+    console.log("menuTriggerStatus", isKeyPressed)
+  }, [isKeyPressed])
 
   useEffect(() => {
     let count = null;
@@ -29,7 +35,7 @@ export const App = (props) => {
           count = 1;
         } else {
           count += 1;
-          if (count > 15) {
+          if (count > 25) {
             setMenuOrigins({ x: MousePosition.x, y: MousePosition.y });
             count = null;
           }
@@ -125,9 +131,9 @@ export const App = (props) => {
     setAreSettingsOpen(!areSettingsOpen);
   }, [areSettingsOpen])
 
-// if (areSettingsOpen) {
-    return <Settings toggleOpenState={onSettingsClick} />
- // }
+  if (areSettingsOpen) {
+      return <Settings toggleOpenState={onSettingsClick} />
+  }
 
   return (
     <div style={{ height: "100vh", width: "100vw" }} onClick={onClick}>

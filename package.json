@@ -58,6 +58,7 @@
     "lodash.findindex": "^4.6.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-hotkeys-hook": "^2.4.0",
     "react-pie-menu": "^0.2.5",
     "react-rough": "^2.3.0",
     "rxjs": "^6.6.3",
