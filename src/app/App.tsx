@@ -21,11 +21,11 @@ export const App = (props) => {
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
   const MousePosition = trackMousePosition();
   const [areSettingsOpen, setAreSettingsOpen] = useState(false);
-  const { isMenuTriggerOpen, launchMenuViaKeyboard } = useHotKeys(hotKeyMap)
+  const { isMenuTriggerOpen } = useHotKeys(hotKeyMap)
 
   // move this to useHotKeys
   useEffect(() => {
-    if (launchMenuViaKeyboard) {
+    if (isMenuTriggerOpen) {
       setMenuOrigins({ x: MousePosition.x, y: MousePosition.y });
     }
     
@@ -43,7 +43,7 @@ export const App = (props) => {
         }
       }
     })
-  }, [MousePosition, launchMenuViaKeyboard])
+  }, [MousePosition])
 
   useEffect(() => {
     window.addEventListener("contextmenu", removeShape)

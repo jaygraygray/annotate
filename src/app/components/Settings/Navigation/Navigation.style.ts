@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const Navigation = styled.ul`
+font-family: 'JetBrains';
 margin-top: 0;
 list-style-type: none;
 padding: 0;

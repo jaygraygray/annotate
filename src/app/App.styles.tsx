@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { createGlobalStyle } from "styled-components";
 import JetBrainsBold from "../assets/fonts/JetBrainsBold.ttf";
+import Liberation from "../assets/fonts/LiberationSans-Regular.ttf";
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -10,8 +11,10 @@ export const GlobalStyle = createGlobalStyle`
     font-style: normal;
   }
 
-  html, body {
-    font-family: JetBrains;
+  @font-face {
+    font-family: 'Liberation';
+    src: url(${Liberation});
+    font-style: normal;
   }
 
 `

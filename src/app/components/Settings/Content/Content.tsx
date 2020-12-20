@@ -1,4 +1,5 @@
 import React from "react";
+import { Hotkeys } from "./Hotkeys";
 import * as Styles from "./Content.style";
 
 type ContentProps = {
@@ -20,7 +21,7 @@ const contentItems: ContentItem[] = [
   {
     index: 1,
     label: "Hotkeys",
-    body: <div>qq1</div>
+    body: <Hotkeys />
   },
   {
     index: 2,
