@@ -1,15 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
 
 const useHotKeys = (keyMap) => {
-  const [isKeyPressed, setIsKeyPressed] = useState<boolean>(false);
-  const isMenuTriggerOpen = false;
+  const [isMenuTriggerOpen, setIsMenuTriggerOpen] = useState<boolean>(false);
 
-  const handleKeyDown = useCallback(() => {
-    setIsKeyPressed(true)
-  }, []);
+  const handleKeyDown = useCallback((e) => {
+    const { key } = e;
+    switch(key) {
+      case keyMap.menuTrigger:
+        setIsMenuTriggerOpen(true);
+    }
+  }, [keyMap]);
 
-  const handleKeyUp = useCallback(() => {
-    setIsKeyPressed(false);
+  const handleKeyUp = useCallback((e) => {
+    const { key } = e;
+    switch(key) {
+      case keyMap.menuTrigger:
+        setIsMenuTriggerOpen(false);
+    }
   }, [])
 
   useEffect(() => {
@@ -21,9 +28,10 @@ const useHotKeys = (keyMap) => {
     })
   }, []);
 
+  const launchMenuViaKeyboard = true; 
   return {
-    isKeyPressed,
     isMenuTriggerOpen,
+    launchMenuViaKeyboard,
   }
 }
 

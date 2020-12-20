@@ -21,13 +21,14 @@ export const App = (props) => {
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
   const MousePosition = trackMousePosition();
   const [areSettingsOpen, setAreSettingsOpen] = useState(false);
-  const { isKeyPressed } = useHotKeys(hotKeyMap)
+  const { isMenuTriggerOpen, launchMenuViaKeyboard } = useHotKeys(hotKeyMap)
 
+  // move this to useHotKeys
   useEffect(() => {
-    console.log("menuTriggerStatus", isKeyPressed)
-  }, [isKeyPressed])
-
-  useEffect(() => {
+    if (launchMenuViaKeyboard) {
+      setMenuOrigins({ x: MousePosition.x, y: MousePosition.y });
+    }
+    
     let count = null;
     window.addEventListener("keydown", (e) => {
       if (e.key === "`") {
@@ -36,13 +37,13 @@ export const App = (props) => {
         } else {
           count += 1;
           if (count > 25) {
-            setMenuOrigins({ x: MousePosition.x, y: MousePosition.y });
+            
             count = null;
           }
         }
       }
     })
-  }, [setDrawState, MousePosition])
+  }, [MousePosition, launchMenuViaKeyboard])
 
   useEffect(() => {
     window.addEventListener("contextmenu", removeShape)
@@ -121,10 +122,12 @@ export const App = (props) => {
     if (isOnShape) {
       setShapes(newShapes);
     } else {
-      setMenuOrigins({ x: clientX, y: clientY })
+      if (isMenuTriggerOpen) {
+        setMenuOrigins({ x: clientX, y: clientY })
+      }
     }
 
-  }, [shapes])
+  }, [shapes, isMenuTriggerOpen])
 
   const onSettingsClick = useCallback(() => {
     setMenuOrigins({ x: 0, y: 0 });
