@@ -31,9 +31,8 @@ const hide: Hotkey = {
   type: DEFAULT,
 };
 
-const hotkeys: Hotkey[] = [
+export const defaultHotkeys: Hotkey[] = [
   menuTrigger,
   hide
 ];
 
-console.log(">>hotkey defaults:", hotkeys);

@@ -54,12 +54,10 @@ const ContentItem = ({ index, children }) => {
 export const Content = ({
   activeIndex
 }: ContentProps) => {
-  // @ts-ignore
   const [item] = contentItems.filter(({ index }) => index === activeIndex);
-  console.log(">>body", item)
   return (
-    <div>
+    <Styles.ContenContainer>
       {item.body}
-    </div>
+    </Styles.ContenContainer>
   )
 }
