@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const KeyContainer = styled.div`
   display: flex;
+  margin: auto;
+  cursor: default;
   div { 
     background: #34322F;
     border-radius: 6px;
@@ -10,7 +12,7 @@ export const KeyContainer = styled.div`
     min-width: 30px;
     display: flex;
     justify-content: center;
-    font-size: 16px;
+    font-size: 14px;
     margin-left: 32px;
     position: relative;
   }

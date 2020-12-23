@@ -19,7 +19,7 @@ const menuTrigger: Hotkey = {
   name: "menuTrigger",
   label: "Menu Trigger",
   value: ["Shift", "Tab", "Control"],
-  description: "Opens menu",
+  description: "Open menu",
   type: CUSTOM,
 };
 
@@ -27,7 +27,7 @@ const hide: Hotkey = {
   name: "hide",
   label: "Hide",
   value: ["Escape"],
-  description: "Hides Settings. Hides shape or drawing",
+  description: "Hide Settings.",
   type: DEFAULT,
 };
 

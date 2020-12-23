@@ -8,7 +8,7 @@ type TransformKey = {
 
 const platform = navigator && navigator.platform;
 const platformTransform = platform === "MacIntel" ? "⌘" : "⊞";
-//@ts-ignore
+
 const keyLabelsToTransform: TransformKey[] = [
   { key: "Shift", transform: "SH" },
   { key: "CapsLock", transform: "CAPS" },
@@ -30,20 +30,18 @@ const keyLabelsToTransform: TransformKey[] = [
   { key: "Help", transform: "HLP" },
 ];
 
-export const Keys = ({ value }) => {
+export const Keys = ({ value, id }) => {
   return (
-    <Style.KeyContainer>
+    <Style.KeyContainer key={id}>
       {
         value.map(val => {
           const [transformMatch] = keyLabelsToTransform.filter(({ key }) => key === val);
           const label = transformMatch ? transformMatch.transform : val
-
-          console.log(">>transformMatch", transformMatch);
-
-          console.log("label", label);
-          return (<div key={val}>
-            {label.toUpperCase()}
-          </div>);
+          return (
+            <div key={val}>
+              {label.toUpperCase()}
+            </div>
+            );
           }
         )
       }
