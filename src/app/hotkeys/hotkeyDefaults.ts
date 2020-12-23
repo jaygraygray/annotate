@@ -18,7 +18,7 @@ type Hotkey = {
 const menuTrigger: Hotkey = {
   name: "menuTrigger",
   label: "Menu Trigger",
-  value: ["`"],
+  value: ["Shift", "Tab", "Control"],
   description: "Opens menu",
   type: CUSTOM,
 };
