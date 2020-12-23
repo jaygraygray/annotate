@@ -24,29 +24,36 @@ export const HotkeyRow = styled.div`
 export const EditTrigger = styled.div`
   display: none;
 `
-export const KeysStyleWrapper = styled.div`
+
+type KeyStyleProps = {
+  activeHover: boolean;
+}
+
+export const KeysStyleWrapper = styled.div<KeyStyleProps>`
   display: flex;
   width: 100%;
   justify-content: space-around;
-  &:hover {
-    ${Description} {
-      padding-right: 45px;
-      padding-left: 5px;
-    }
-    div:first-of-type {
-      display: none;
-    }
-    ${EditTrigger} {
-      display: flex;
-      width: 100%;
-      justify-content: space-around;
-      align-items: center;
-      height: 40px;
-      cursor: pointer;
-    }
 
-  }
-`
+  ${props => props.activeHover ?
+    `&:hover {
+      div:first-of-type {
+        display: none;
+      }
+      ${EditTrigger} {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        align-items: center;
+        height: 40px;
+        cursor: pointer;
+      }
+    }`
+    : `div:first-of-type {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }`
+  }`;
+
 
 
 export const Change = styled.div`

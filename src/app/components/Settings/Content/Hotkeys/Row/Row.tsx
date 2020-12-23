@@ -21,7 +21,7 @@ export const Row = ({ description, value, onEdit }: RowProps) => {
   return (
     <Style.HotkeyRow id="ROW">
       <Style.Description>{description}</Style.Description>
-      <Style.KeysStyleWrapper id="KEYS">
+      <Style.KeysStyleWrapper activeHover={!!onEdit} id="KEYS">
         <div>
           <Keys id={value} value={value} />
         </div>
