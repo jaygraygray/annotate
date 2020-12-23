@@ -2,6 +2,7 @@
 import { createGlobalStyle } from "styled-components";
 import JetBrainsBold from "../assets/fonts/JetBrainsBold.ttf";
 import Liberation from "../assets/fonts/LiberationSans-Regular.ttf";
+import LiberationBold from "../assets/fonts/LiberationSans-Bold.ttf";
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -15,6 +16,11 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Liberation';
     src: url(${Liberation});
     font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Liberation bold';
+    src: url(${LiberationBold});
   }
 
 `
