@@ -16,7 +16,9 @@ const windowOptions = {
     nodeIntegration: true
   },
   transparent: true,
-  frame: true,
+  frame: false,
+  x: 0,
+  y: 0,
 }
 
 function createMainWindow(width, height) {
@@ -64,13 +66,11 @@ app.on('activate', () => {
 })
 
 // how to support multiple windows?
+// https://gist.github.com/StickyCube/ed79421bc53cba38f5b74b060d3f15fa
 
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  console.log()
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
   mainWindow = createMainWindow(width, height)
-  mainWindow.on('resize', (e, q, z) => {
-    
-  })
+
 })

@@ -4,8 +4,8 @@ export const hotKeyMap = {
   openLag: 800,
 }
 
-const DEFAULT = "default";
-const CUSTOM = "custom";
+export const DEFAULT = "default";
+export const CUSTOM = "custom";
 
 type Hotkey = {
   name: string;         // internal reference
@@ -33,6 +33,6 @@ const hide: Hotkey = {
 
 export const defaultHotkeys: Hotkey[] = [
   menuTrigger,
-  hide
+  hide,
 ];
 
