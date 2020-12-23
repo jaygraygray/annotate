@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 export const KeyContainer = styled.div`
   display: flex;
-  margin: auto;
   cursor: default;
+  width: 100%;
+  height: 40px;
   div { 
     background: #34322F;
     border-radius: 6px;
