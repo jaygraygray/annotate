@@ -10,7 +10,7 @@ export const CUSTOM = "custom";
 type Hotkey = {
   name: string;         // internal reference
   label: string;        // UI display
-  value: string[];      // actual hotkey
+  hotkeyValue: string[];      // actual hotkey
   description?: string; 
   type: typeof DEFAULT | typeof CUSTOM;     // if true, app sets value and cannot be edited. if false, is custom
 }
@@ -18,7 +18,7 @@ type Hotkey = {
 const menuTrigger: Hotkey = {
   name: "menuTrigger",
   label: "Menu Trigger",
-  value: ["Shift", "Tab", "Control"],
+  hotkeyValue: ["Shift", "Tab", "Control"],
   description: "Open menu",
   type: CUSTOM,
 };
@@ -26,7 +26,7 @@ const menuTrigger: Hotkey = {
 const hide: Hotkey = {
   name: "hide",
   label: "Hide",
-  value: ["Escape"],
+  hotkeyValue: ["Escape"],
   description: "Hide Settings.",
   type: DEFAULT,
 };
@@ -35,4 +35,3 @@ export const defaultHotkeys: Hotkey[] = [
   menuTrigger,
   hide,
 ];
-

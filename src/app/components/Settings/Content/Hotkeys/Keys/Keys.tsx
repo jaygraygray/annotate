@@ -30,11 +30,11 @@ const keyLabelsToTransform: TransformKey[] = [
   { key: "Help", transform: "HLP" },
 ];
 
-export const Keys = ({ value, id }) => {
+export const Keys = ({ hotkeyValue, id }) => {
   return (
     <Style.KeyContainer key={id}>
       {
-        value.map(val => {
+        hotkeyValue.map(val => {
           const [transformMatch] = keyLabelsToTransform.filter(({ key }) => key === val);
           const label = transformMatch ? transformMatch.transform : val
           return (

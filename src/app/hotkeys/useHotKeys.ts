@@ -22,7 +22,7 @@ const useHotKeys = (keyMap) => {
       case keyMap.menuTrigger:
         setIsMenuTriggerOpen(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);

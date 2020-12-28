@@ -5,17 +5,19 @@ import * as Style from "./Row.style";
 
 type RowProps = {
   description: string;
-  value: string[];
+  hotkeyValue: string[];
   label?: string;
   onEdit?(): void;
 }
 
-export const Row = ({ description, value, onEdit }: RowProps) => {
+export const Row = ({ description, hotkeyValue, onEdit }: RowProps) => {
   // const handleEdit = useCallback(() => {
   //   if (onEdit) {
   //     onEdit();
   //   }
   // }, [onEdit]);
+
+  // need 
 
 
   return (
@@ -23,7 +25,7 @@ export const Row = ({ description, value, onEdit }: RowProps) => {
       <Style.Description>{description}</Style.Description>
       <Style.KeysStyleWrapper activeHover={!!onEdit} id="KEYS">
         <div>
-          <Keys id={value} value={value} />
+          <Keys id={hotkeyValue} hotkeyValue={hotkeyValue} />
         </div>
       <Style.EditTrigger>Click to change</Style.EditTrigger>
       </Style.KeysStyleWrapper>
