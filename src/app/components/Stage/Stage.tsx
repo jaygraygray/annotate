@@ -4,7 +4,7 @@ import ItemRenderer from "../ItemRenderer";
 
 type Props = {
   drawState: string;
-  items: any;
+  shapes: any;
   setActiveItem(o: Item): void;
   activeItem: Item;
   setDrawState: any;
@@ -12,27 +12,27 @@ type Props = {
 
 const Stage = ({
   drawState,
-  items = [],
+  shapes = [],
   setActiveItem,
   activeItem,
   setDrawState,
 }: Props) => {
 
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
-    let item = items.find(({ id: existingId }) => itemId === existingId);
+    let item = shapes.find(({ id: existingId }) => itemId === existingId);
     if (item) {
       item.payload = updatedItemStyle;
       setActiveItem(item);
     }
-  }, [items]);
+  }, [shapes]);
 
   const onSelectItem = useCallback((e, id) => {
-    const item = items.find(({ id: existingId }) => id === existingId)
+    const item = shapes.find(({ id: existingId }) => id === existingId)
     setActiveItem(item)
-  }, [items])
+  }, [shapes])
 
   const renderMap = () => (
-    items.length && items.map(({ payload, id }) => 
+    shapes.length && shapes.map(({ payload, id }) => 
       <ItemRenderer
         activeItemId={activeItem && activeItem.id}
         key={id}
@@ -69,7 +69,7 @@ const Stage = ({
     return <>waiting to place shape</>
   }
 
-  if (items.length) {
+  if (shapes.length) {
     return renderMap()
   }
 

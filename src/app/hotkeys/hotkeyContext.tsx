@@ -1,4 +1,9 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { defaultHotkeys } from "./hotkeyDefaults";
 
 export const HotkeyContext = createContext({});
@@ -16,8 +21,21 @@ const HotkeyProvider = ({ children }) => {
     }
   }, []);
 
+  const updateHotkey = useCallback((hotkeyName: string, hotkeyValue: string[]) => {
+    const keys = hotkeys.filter(({ name }) => name === hotkeyName);
+    // let [keytoUpdate] = hotkeys.find(({ name }) => name === hotkeyName);
+    const newKeys = [
+      ...keys,
+      [hotkeyName]
+    ];
+    console.log("newKeys: ", newKeys);
+  }, []);
+
   return (
-    <HotkeyContext.Provider value={{ hotkeys }}>
+    <HotkeyContext.Provider value={{
+      hotkeys,
+      updateHotkey,
+    }}>
       {children}
     </HotkeyContext.Provider>
   )

@@ -9,7 +9,6 @@ const useHotKeys = (keyMap) => {
   // each hotkey supported
   const handleKeyDown = useCallback((e) => {
     const { key } = e;
-    console.log("key: ", key);
     switch(key) {
       case keyMap.menuTrigger:
         setIsMenuTriggerOpen(true);
