@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { SyntheticEvent, useCallback } from "react";
 import { Item } from '../../App';
 import ItemRenderer from "../ItemRenderer";
 
@@ -8,6 +8,8 @@ type Props = {
   setActiveItem(o: Item): void;
   activeItem: Item;
   setDrawState: any;
+  drawLine(e: SyntheticEvent): void;
+  lineBeingDrawn: any;
 }
 
 const Stage = ({
@@ -16,8 +18,10 @@ const Stage = ({
   setActiveItem,
   activeItem,
   setDrawState,
+  drawLine,
+  lineBeingDrawn,
 }: Props) => {
-
+  
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     let item = shapes.find(({ id: existingId }) => itemId === existingId);
     if (item) {
@@ -31,17 +35,25 @@ const Stage = ({
     setActiveItem(item)
   }, [shapes])
 
+  const handleDrawLine = useCallback((e) => {
+    if (drawLine) {
+      drawLine(e);
+    }
+  }, [drawLine]);
+
+  // needs to be generic: render all types of shapes
+  // important because all shapes will have different behaviors
   const renderMap = () => (
     shapes.length && shapes.map(({ payload, id }) => 
       <ItemRenderer
         activeItemId={activeItem && activeItem.id}
-        key={id}
-        id={id}
         drawState={drawState}
-        onSelectItem={onSelectItem}
+        id={id}
+        key={id}
         onEditComplete={onEditComplete}
-        setDrawState={setDrawState}
+        onSelectItem={onSelectItem}
         payload={payload}
+        setDrawState={setDrawState}
       />
     )
   )
@@ -54,13 +66,14 @@ const Stage = ({
     return (
       <ItemRenderer
         activeItemId={activeItem.id}
-        key={activeItem.id}
-        id={activeItem.id}
-        payload={activeItem.payload}
         drawState={drawState}
-        onSelectItem={onSelectItem}
+        id={activeItem.id}
+        key={activeItem.id}
         onEditComplete={onEditComplete}
+        onSelectItem={onSelectItem}
+        payload={activeItem.payload}
         setDrawState={setDrawState}
+        handleDrawLine={handleDrawLine}
       />
     )
   }

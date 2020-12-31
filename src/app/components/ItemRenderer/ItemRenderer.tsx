@@ -11,6 +11,7 @@ type Props = {
   activeItemId: string;
   setDrawState: any;
   payload: any;
+  handleDrawLine?: any;
 }
 
 const ItemRenderer = ({
@@ -21,6 +22,7 @@ const ItemRenderer = ({
   id,
   setDrawState,
   payload,
+  handleDrawLine,
 }: Props) => {
 
   const renderSecondStage = (drawState === "drawing") && activeItemId === id;
@@ -39,9 +41,28 @@ const ItemRenderer = ({
         display: "inline-block",
       }}
     >
-      {drawState === "placing" && <FirstStage id={id} />}
-      {renderSecondStage && <SecondStage id={id} onEditComplete={onEditComplete} drawState={drawState} />}
-      {drawState === "saved" && <ThirdStage id={id} onSelectItem={handleSelectItem} payload={payload} />}
+      {drawState === "placing" &&
+        <FirstStage
+          id={id}
+        />
+      }
+
+      {renderSecondStage &&
+        <SecondStage
+          drawState={drawState}
+          id={id}
+          onEditComplete={onEditComplete}
+          handleDrawLine={handleDrawLine}
+        />
+      }
+
+      {drawState === "saved" &&
+        <ThirdStage
+          id={id}
+          onSelectItem={handleSelectItem}
+          payload={payload}
+        />
+      }
     </div>
   )
 }

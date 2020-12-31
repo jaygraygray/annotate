@@ -1,30 +1,29 @@
 import React, {
-  // useMemo,
   useRef,
   useCallback,
   useEffect,
   useState
 } from "react";
-// import { BehaviorSubject } from "rxjs";
 
 type Props = {
   onEditComplete(itemPayload: any, itemId: string): void;
   drawState: string;
   id: string;
+  handleDrawLine: any;
 }
 
 const SecondStage = ({
   onEditComplete,
   drawState,
   id,
+  handleDrawLine,
 }: Props) => {
-  // const $coords = useMemo(() => new BehaviorSubject({ x: 0, y: 0 }), []);
   const drawingRef = useRef(null);
   const [origins, setOrigins] = useState({ originX: 0, originY: 0})
 
   // this fires after drawing has completed
   const captureDestination = useCallback((e) => {
-    console.log("CAPTURE", e)
+    // console.log("CAPTURE", e)
     const { screenX, screenY } = e
     setOrigins({
       originX: screenX,
@@ -33,28 +32,12 @@ const SecondStage = ({
   }, [id])
 
   const transformShape = useCallback((e) => {
-    console.log("DRAW", e)
-    // const { clientX, clientY } = e;
-    // if (drawingRef.current) {
-    //   drawingRef.current.style.width = `${clientX}px`;
-    //   drawingRef.current.style.height = `${clientY}px`;
-    //   drawingRef.current.style.top = `${origins.top}`;
-    //   drawingRef.current.style.left= `${origins.left};`
-    // }
+    // console.log("DRAW", e)
+    handleDrawLine(e)
   }, [drawState])
 
   const handleOnEditComplete = useCallback(() => {
-    console.log("SAVE")
-    // if (drawingRef.current) {
-    //   const  { current: { style } } = drawingRef;
-    //   const updatedStyle = {
-    //     width: style.width,
-    //     height: style.height,
-    //     top: origins.top,
-    //     left: origins.left,
-    //   }
-    //   onEditComplete(updatedStyle, id)
-    // }
+    // console.log("SAVE")
   }, [id, origins])
 
   useEffect(() => {

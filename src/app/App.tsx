@@ -149,7 +149,7 @@ export const App = (props) => {
       />
       <Stage
         drawState={drawState}
-        items={shapes}
+        shapes={shapes}
         activeItem={activeItem}
         setActiveItem={setActiveItem}
         setDrawState={setDrawState}

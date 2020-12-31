@@ -3,6 +3,7 @@ import { css } from 'styled-components';
 
 export const container = css`
 border: 3px solid #BDD4E7;
+font-family: Liberation;
 `;
 
 export const center = css`
