@@ -12,6 +12,7 @@ type Props = {
   setDrawState: any;
   payload: any;
   handleDrawLine?: any;
+  lineBeingDrawn?: any;
 }
 
 const ItemRenderer = ({
@@ -23,6 +24,7 @@ const ItemRenderer = ({
   setDrawState,
   payload,
   handleDrawLine,
+  lineBeingDrawn
 }: Props) => {
 
   const renderSecondStage = (drawState === "drawing") && activeItemId === id;
@@ -31,7 +33,7 @@ const ItemRenderer = ({
     setDrawState("drawing")
     onSelectItem(e, id);
   }, [activeItemId])
-
+  
   return (
     <div
       style={{
@@ -53,6 +55,7 @@ const ItemRenderer = ({
           id={id}
           onEditComplete={onEditComplete}
           handleDrawLine={handleDrawLine}
+          lineBeingDrawn={lineBeingDrawn}
         />
       }
 

@@ -9,7 +9,8 @@ type Props = {
   onEditComplete(itemPayload: any, itemId: string): void;
   drawState: string;
   id: string;
-  handleDrawLine: any;
+  handleDrawLine?: any;
+  lineBeingDrawn?: any;
 }
 
 const SecondStage = ({
@@ -17,11 +18,11 @@ const SecondStage = ({
   drawState,
   id,
   handleDrawLine,
+  lineBeingDrawn
 }: Props) => {
   const drawingRef = useRef(null);
   const [origins, setOrigins] = useState({ originX: 0, originY: 0})
 
-  // this fires after drawing has completed
   const captureDestination = useCallback((e) => {
     // console.log("CAPTURE", e)
     const { screenX, screenY } = e
@@ -31,28 +32,26 @@ const SecondStage = ({
     })
   }, [id])
 
-  const transformShape = useCallback((e) => {
-    // console.log("DRAW", e)
-    handleDrawLine(e)
-  }, [drawState])
+  const transformSizeAndOrientationOfShape = useCallback((e) => {
+    // this controls size and orientation of placed shapes
+  }, [drawState]);
 
   const handleOnEditComplete = useCallback(() => {
     // console.log("SAVE")
-  }, [id, origins])
+  }, [id, origins]);
 
   useEffect(() => {
     if (drawState === "drawing") {
-      window.addEventListener("mousemove", transformShape);
+      window.addEventListener("mousemove", transformSizeAndOrientationOfShape);
       window.addEventListener("mouseup", handleOnEditComplete);
       window.addEventListener("mousedown", captureDestination);
     }
     return (() => {
-      window.removeEventListener("mousemove", transformShape);
+      window.removeEventListener("mousemove", transformSizeAndOrientationOfShape);
       window.removeEventListener("mouseup", handleOnEditComplete);
-      window.removeEventListener("mousedown", captureDestination)
+      window.removeEventListener("mousedown", captureDestination);
     })
   }, [drawState, handleOnEditComplete])
-
   return (
     <div
       ref={drawingRef}

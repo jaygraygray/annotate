@@ -43,7 +43,7 @@ const Stage = ({
 
   // needs to be generic: render all types of shapes
   // important because all shapes will have different behaviors
-  const renderMap = () => (
+  const renderAllFinishedShapes = () => (
     shapes.length && shapes.map(({ payload, id }) => 
       <ItemRenderer
         activeItemId={activeItem && activeItem.id}
@@ -74,6 +74,7 @@ const Stage = ({
         payload={activeItem.payload}
         setDrawState={setDrawState}
         handleDrawLine={handleDrawLine}
+        lineBeingDrawn={lineBeingDrawn}
       />
     )
   }
@@ -83,7 +84,7 @@ const Stage = ({
   }
 
   if (shapes.length) {
-    return renderMap()
+    return renderAllFinishedShapes()
   }
 
 }
