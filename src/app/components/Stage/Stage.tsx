@@ -12,15 +12,16 @@ type Props = {
   lineBeingDrawn: any;
 }
 
-const Stage = ({
-  drawState,
-  shapes = [],
-  setActiveItem,
-  activeItem,
-  setDrawState,
-  drawLine,
-  lineBeingDrawn,
-}: Props) => {
+const Stage = (
+  {
+    drawState,
+    shapes = [],
+    setActiveItem,
+    activeItem,
+    setDrawState,
+    drawLine,
+    lineBeingDrawn,
+  }: Props) => {
   
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     let item = shapes.find(({ id: existingId }) => itemId === existingId);
