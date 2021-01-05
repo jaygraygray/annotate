@@ -15,62 +15,74 @@ export default (props) => {
     drawState
   } = props;
   const drawingLine = useRef([]);
-  const [ultimateRef, setRef] = useState();
+  const [ultimateRef, setRef] = useState(React.createRef());
   const [completeLine, setCompleteLine] = useState([]);
+  const [payload, setPayload] = useState();
+
+  // will need to fork this lib to
+  // accept callbacks
   const [
     renderRef,
     {
       getSvgXML,
+      // onCompleteCallback
     }
   ] = useSvgDrawing();
 
-
-  
-  
   const newRef = useRef();
   useEffect(() => {
     console.log('drawstate', drawState);
     const thang = drawState === "drawing" ? renderRef : newRef;
     setRef(thang);
-    console.log()
   }, [drawState]);
+  
+  useEffect(() => {
+    setPayload(getSvgXML())
+  }, [getSvgXML, ultimateRef])
 
   useEffect(() => {
-    window.addEventListener("dragstart", handleDragStart);
-    window.addEventListener("dragend", handleDragEnd);
-    return () => {
-      window.removeEventListener("dragstart", handleDragStart);
-      window.removeEventListener("dragend", handleDragEnd);
-    }
-  }, []);
-
+    console.log("payload updated!", payload);
+  }, [payload])
 
   const handleDragStart = useCallback(() => {
     // initialize drawing here
   }, []);
 
   const handleDragEnd = useCallback(() => {
-    // make some calculation to get a managable payload
-    // and track as state here
+    console.log("click", payload)
+    setRef(newRef);
     const STUB__transformPayload = (payload) => {
       return payload;
     }
 
-    if (drawLine.current) {
-      const payload = STUB__transformPayload(drawLine.current);
-      setCompleteLine(payload);
+    const payload = STUB__transformPayload(null);
+    setCompleteLine(payload);
+  }, [payload]);
+
+  useEffect(() => {
+    if (ultimateRef.current) {
+      console.log('listener set', payload)
+      ultimateRef.current.addEventListener("dragstart", handleDragStart);
+      ultimateRef.current.addEventListener("mouseup", handleDragEnd);
     }
-  }, [drawState]);
+    return () => {
+      if (ultimateRef.current) {
+        ultimateRef.current.removeEventListener("dragstart", handleDragStart);
+        ultimateRef.current.removeEventListener("mouseup", handleDragEnd);
+      }
+    }
+  }, [payload]);
 
 
   // height needs to be set b/c
   // of bug in react-hooks-svgdrawing
   return (
-    <div ref={ultimateRef} style={{ height: '100vh' }}>
+    <>
       <Stage
         lineBeingDrawn={drawingLine?.current}
         {...props}
       />
-    </div>
+      <div ref={ultimateRef} style={{ height: '100vh' }} />
+    </>
   )
 }
