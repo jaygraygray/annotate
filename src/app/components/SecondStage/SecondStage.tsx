@@ -41,7 +41,7 @@ const SecondStage = ({
   }, [id, origins]);
 
   useEffect(() => {
-    if (drawState === "drawing") {
+    if (drawState === "capture_coord") {
       window.addEventListener("mousemove", transformSizeAndOrientationOfShape);
       window.addEventListener("mouseup", handleOnEditComplete);
       window.addEventListener("mousedown", captureDestination);

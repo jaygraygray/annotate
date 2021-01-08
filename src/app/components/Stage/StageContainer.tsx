@@ -15,75 +15,40 @@ export default (props) => {
     drawState
   } = props;
   const drawingLine = useRef([]);
-  const [ultimateRef, setRef] = useState(React.createRef());
+  const [activeRef, setRef] = useState(React.createRef());
   const [completeLine, setCompleteLine] = useState([]);
   const [payload, setPayload] = useState();
 
-  // will need to fork this lib to
-  // accept callbacks
+  const options = {};
   const [
     renderRef,
     {
       getSvgXML,
-      // onCompleteCallback
     }
-  ] = useSvgDrawing();
+  ] = useSvgDrawing(options);
 
   const newRef = useRef();
   useEffect(() => {
-    console.log('drawstate', drawState);
     const thang = drawState === "drawing" ? renderRef : newRef;
     setRef(thang);
   }, [drawState]);
   
   useEffect(() => {
     setPayload(getSvgXML())
-    console.log('>>>>>?>?', ultimateRef);
-  }, [getSvgXML, ultimateRef])
+  }, [getSvgXML])
 
   useEffect(() => {
     console.log("payload updated!", payload);
   }, [payload])
 
-  const handleDragStart = useCallback(() => {
-    // initialize drawing here
-  }, []);
 
-  const handleDragEnd = useCallback(() => {
-    console.log("click", payload)
-    setRef(newRef);
-    const STUB__transformPayload = (payload) => {
-      return payload;
-    }
-
-    const payload = STUB__transformPayload(null);
-    setCompleteLine(payload);
-  }, [payload]);
-
-  useEffect(() => {
-    if (ultimateRef.current) {
-      console.log('listener set', payload)
-      ultimateRef.current.addEventListener("dragstart", handleDragStart);
-      ultimateRef.current.addEventListener("mouseup", handleDragEnd);
-    }
-    return () => {
-      if (ultimateRef.current) {
-        ultimateRef.current.removeEventListener("dragstart", handleDragStart);
-        ultimateRef.current.removeEventListener("mouseup", handleDragEnd);
-      }
-    }
-  }, [payload]);
-
-
-  // height needs to be set b/c
-  // of bug in react-hooks-svgdrawing
   return (
     <>
       <Stage
         lineBeingDrawn={drawingLine?.current}
         {...props}
       />
-      <div ref={ultimateRef} style={{ height: '100vh' }} />
+      <div ref={activeRef} style={{ height: '100vh' }} />
     </>
   )
 }

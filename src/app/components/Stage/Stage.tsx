@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useCallback } from "react";
+import React, { SyntheticEvent, useCallback, useEffect } from "react";
 import { Item } from '../../App';
 import ItemRenderer from "../ItemRenderer";
 
@@ -9,7 +9,8 @@ type Props = {
   activeItem: Item;
   setDrawState: any;
   drawLine(e: SyntheticEvent): void;
-  lineBeingDrawn: any;
+  linePayload: any;
+  addItem: any;
 }
 
 const Stage = (
@@ -20,7 +21,8 @@ const Stage = (
     activeItem,
     setDrawState,
     drawLine,
-    lineBeingDrawn,
+    linePayload,
+    addItem,
   }: Props) => {
   
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
@@ -36,11 +38,9 @@ const Stage = (
     setActiveItem(item)
   }, [shapes])
 
-  const handleDrawLine = useCallback((e) => {
-    if (drawLine) {
-      drawLine(e);
-    }
-  }, [drawLine]);
+  useEffect(() => {
+    console.log("we have new payload:", !!linePayload)
+  }, [linePayload])
 
   // needs to be generic: render all types of shapes
   // important because all shapes will have different behaviors
@@ -74,8 +74,6 @@ const Stage = (
         onSelectItem={onSelectItem}
         payload={activeItem.payload}
         setDrawState={setDrawState}
-        handleDrawLine={handleDrawLine}
-        lineBeingDrawn={lineBeingDrawn}
       />
     )
   }
