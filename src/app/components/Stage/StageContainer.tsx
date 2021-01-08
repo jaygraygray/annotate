@@ -38,6 +38,7 @@ export default (props) => {
   
   useEffect(() => {
     setPayload(getSvgXML())
+    console.log('>>>>>?>?', ultimateRef);
   }, [getSvgXML, ultimateRef])
 
   useEffect(() => {
