@@ -1,23 +1,21 @@
-// @ts-nocheck
 import React, {
   useCallback,
   useRef,
   useEffect,
   useState
 } from "react";
-import { render } from "react-dom";
 import { useSvgDrawing } from "react-hooks-svgdrawing";
 import Stage from "./Stage";
 
 export default (props) => {
   const {
     // activeItem,
-    drawState
+    drawState,
+    setDrawState,
   } = props;
-  const drawingLine = useRef([]);
-  const [activeRef, setRef] = useState(React.createRef());
-  const [completeLine, setCompleteLine] = useState([]);
-  const [payload, setPayload] = useState();
+  const [activeRef, setRef] = useState<any>(React.createRef());
+  const [completeLine, setCompleteLine] = useState<string>("");
+  const [payload, setPayload] = useState<string>("");
 
   const options = {};
   const [
@@ -34,39 +32,32 @@ export default (props) => {
   }, [drawState]);
   
   useEffect(() => {
-    setPayload(getSvgXML())
-<<<<<<< Updated upstream
-  }, [getSvgXML])
-=======
-  }, [getSvgXML, activeRef])
->>>>>>> Stashed changes
-
-  useEffect(() => {
-    console.log("payload length!", payload?.length);
+    setCompleteLine(payload);
   }, [payload])
 
 
-  const handleMouseUp = useCallback(() => {
-    setRef(newRef);
-    const STUB__transformPayload = (payload) => {
-      return payload;
+  // the svg needs to be rendered in the electron layer
+  // of the application due to 
+  const handleMouseDown = useCallback(() => {
+    const payload = getSvgXML();
+    console.log(">>>payload", payload?.length)
+    setPayload(payload);
+    setRef(null);
+    if (drawState === "drawing") {
+      setDrawState("saved");
     }
-
-    const payload = STUB__transformPayload(null);
-    setCompleteLine(payload);
-  }, [payload]);
+  }, [drawState, getSvgXML]);
 
   useEffect(() => {
-    if (activeRef.current) {
-      console.log('listener set', payload)
-      activeRef.current.addEventListener("mouseup", handleMouseUp);
+    if (activeRef?.current) {
+      activeRef.current.addEventListener("mousedown", handleMouseDown);
     }
     return () => {
-      if (activeRef.current) {
-        activeRef.current.removeEventListener("mouseup", handleMouseUp);
+      if (activeRef?.current) {
+        activeRef.current.removeEventListener("mousedown", handleMouseDown);
       }
     }
-  }, [payload]);
+  }, [payload, drawState, getSvgXML]);
 
 
   // height needs to be set b/c
