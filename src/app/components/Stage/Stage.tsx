@@ -9,8 +9,7 @@ type Props = {
   activeItem: Item;
   setDrawState: any;
   drawLine(e: SyntheticEvent): void;
-  linePayload: any;
-  addItem: any;
+  completeLine: string;
 }
 
 const Stage = (
@@ -20,9 +19,7 @@ const Stage = (
     setActiveItem,
     activeItem,
     setDrawState,
-    drawLine,
-    linePayload,
-    addItem,
+    completeLine,
   }: Props) => {
   
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
@@ -39,8 +36,9 @@ const Stage = (
   }, [shapes])
 
   useEffect(() => {
-    console.log("we have new payload:", !!linePayload)
-  }, [linePayload])
+    console.log(">>completeLine", completeLine);
+  }, [completeLine])
+
 
   // needs to be generic: render all types of shapes
   // important because all shapes will have different behaviors
