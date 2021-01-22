@@ -16,14 +16,27 @@ export default (props) => {
   const [activeRef, setRef] = useState<any>(React.createRef());
   const [completeLine, setCompleteLine] = useState<string>("");
   const [payload, setPayload] = useState<string>("");
-
-  const options = {};
+  
+  const options = {}
   const [
     renderRef,
     {
       getSvgXML,
+      setCallback
     }
+    // @ts-ignore
+    // HACK SVG DRAWING
+    // TAKE WHAT'S NECESSARY
+    // NOTHING MORE, port all to app
   ] = useSvgDrawing(options);
+
+  const onComplete = () => console.log('yeeehawwww')
+
+  useEffect(() => {
+    if (setCallback) {
+      setCallback(onComplete)
+    }
+  }, [setCallback])
 
   const newRef = useRef();
   useEffect(() => {
@@ -40,7 +53,7 @@ export default (props) => {
   // of the application due to 
   const handleMouseDown = useCallback(() => {
     const payload = getSvgXML();
-    console.log(">>>payload", payload?.length)
+    //console.log(">>>payload", payload?.length)
     setPayload(payload);
     setRef(null);
     if (drawState === "drawing") {

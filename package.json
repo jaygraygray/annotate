@@ -54,11 +54,12 @@
   },
   "dependencies": {
     "@types/styled-components": "^5.1.4",
+    "svg-drawing": "file:../svg-drawing/packages/core",
     "aquedux": "^1.0.10",
     "lodash.findindex": "^4.6.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-hooks-svgdrawing": "^2.1.2",
+    "react-hooks-svgdrawing": "file:../svg-drawing/packages/react",
     "react-hotkeys-hook": "^2.4.0",
     "react-pie-menu": "^0.2.5",
     "react-rough": "^2.3.0",

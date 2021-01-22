@@ -36,7 +36,7 @@ const Stage = (
   }, [shapes])
 
   useEffect(() => {
-    console.log(">>completeLine", completeLine);
+    //console.log(">>completeLine", completeLine);
   }, [completeLine])
 
 
