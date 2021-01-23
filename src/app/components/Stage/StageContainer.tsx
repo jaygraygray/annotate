@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState
 } from "react";
-import { useSvgDrawing } from "react-hooks-svgdrawing";
+import { useSvgDrawing } from "../../utils/useSvgDraw";
 import Stage from "./Stage";
 
 export default (props) => {
