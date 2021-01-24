@@ -1,48 +1,11 @@
 import React, { useEffect, useCallback, useState, SyntheticEvent } from "react";
 import { v4 as uuid } from "uuid";
+import findIndex from "lodash.findindex";
+import { DrawState, Item } from "../app/types"
 import AppComponent from "./App";
 import Settings from "./components/Settings";
 import { hotKeyMap, useHotKeys } from "./hotkeys";
 import { trackMousePosition } from "./utils/mouse";
-import findIndex from "lodash.findindex";
-
-type DrawState = "placing" | "drawing" | "saved" | "init";
-type ItemType = "drawn" | "placed" | "typed";
-
-type DrawnPayload = any;
-type PlacedPayload = any;
-type TypedPayload = any;
-
-export type Item = {
-  id: string;
-  type?: ItemType;
-  payload: DrawnPayload | PlacedPayload | TypedPayload;
-}
-
-export type ItemActions = {
-  setActiveItem: () => void;
-  setDrawState: (state: DrawState) => void;
-}
-export interface StageState {
-  // determines behavior of stage
-  drawState: DrawState;
-
-  // list of items displayed
-  items: Item[];
-
-  // shape being currently transformed
-  activeShape: Item;
-}
-
-
-
-
-
-
-
-
-
-
 
 
 export const App = (props) => {

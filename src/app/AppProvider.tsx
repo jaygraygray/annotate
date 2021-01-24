@@ -1,4 +1,9 @@
-import React, { createContext } from 'react'
+// @ts-nocheck
+import React, { createContext } from 'react';
+import {
+  state,
+} from './lib/store';
+
 
 type ValueProps = {
   isTrue: boolean;
@@ -11,7 +16,8 @@ export const AppContext = createContext<Partial<ValueProps>>(null);
 export const AppProvider: React.FC = (props) => {
   return (
     <AppContext.Provider value={{
-      isTrue: true
+      state,
+      //handlers
     }}>
       {props.children}
     </AppContext.Provider>
