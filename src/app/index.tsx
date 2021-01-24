@@ -3,12 +3,17 @@ import * as ReactDOM from "react-dom";
 import HotkeyProvider from "./hotkeys/hotkeyContext";
 import { GlobalStyle } from "./App.styles";
 import { App } from "./AppContainer";
+import { AppProvider } from "./AppProvider";
+
+
 
 const AppWithStyles = () => (
   <>
     <GlobalStyle />
     <HotkeyProvider>
-      <App />
+      <AppProvider>
+        <App />
+      </AppProvider>
     </HotkeyProvider>
   </>
 )
