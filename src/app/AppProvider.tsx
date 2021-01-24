@@ -6,6 +6,8 @@ type ValueProps = {
 
 export const AppContext = createContext<Partial<ValueProps>>(null);
 
+// build handlers for shapes
+
 export const AppProvider: React.FC = (props) => {
   return (
     <AppContext.Provider value={{
