@@ -11,7 +11,7 @@ export interface DrawingOption extends RendererOption {
   curve?: boolean
   delay?: number
   fill?: string
-  onCompleteDrawCallback?: undefined | (() => void)
+  setCallback?: undefined | (() => void)
 }
 
 export class SvgDrawing extends Renderer {
@@ -38,7 +38,7 @@ export class SvgDrawing extends Renderer {
       close,
       delay,
       fill,
-      onCompleteDrawCallback,
+      setCallback,
       ...rendOpt
     }: DrawingOption = {}
   ) {
@@ -46,7 +46,7 @@ export class SvgDrawing extends Renderer {
     /**
      * Setup parameter
      */
-    this.onCompleteDrawCallback = onCompleteDrawCallback ?? undefined
+    this.onCompleteDrawCallback = setCallback ?? undefined
     this.penColor = penColor ?? '#000'
     this.penWidth = penWidth ?? 1
     this.curve = curve ?? true
@@ -88,7 +88,6 @@ export class SvgDrawing extends Renderer {
 
   public on(): void {
     this.off()
-
     if (window.PointerEvent) {
       this._setupPointEventListener()
     } else {
@@ -100,7 +99,6 @@ export class SvgDrawing extends Renderer {
   }
 
   public off(): void {
-    console.log('>>>OFFFFFFFF')
     ;[
       this._clearPointListener,
       this._clearMouseListener,
@@ -136,9 +134,9 @@ export class SvgDrawing extends Renderer {
 
   public drawEnd(): void {
     if (this.close && this._drawPath) {
-      console.log(':(:(:( draw ended')
       this._drawPath.commands.push(new Command(COMMAND_TYPE.CLOSE))
     }
+    this.onCompleteDrawCallback()
     this._drawPath = null
     this.update()
   }
@@ -193,13 +191,8 @@ export class SvgDrawing extends Renderer {
   }
 
   private _handleEnd(ev: TouchEvent | MouseEvent | PointerEvent) {
-    console.log('handleNed, so close...')
     ev.preventDefault()
     this.drawEnd()
-    if (this.onCompleteDrawCallback) {
-      console.log('>>>>>>DING DONG MOTHER FUCKER ')
-      this.onCompleteDrawCallback()
-    }
   }
 
   private _handleDrawForTouch(ev: TouchEvent) {

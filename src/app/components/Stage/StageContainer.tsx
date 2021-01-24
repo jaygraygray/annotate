@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {
   useCallback,
   useRef,
@@ -6,6 +7,9 @@ import React, {
 } from "react";
 import { useSvgDrawing } from "../../utils/useSvgDraw";
 import Stage from "./Stage";
+
+// need to avoid creating tightly coupled components
+// basically at all costs. that's how to build an app that scales
 
 export default (props) => {
   const {
@@ -17,61 +21,36 @@ export default (props) => {
   const [completeLine, setCompleteLine] = useState<string>("");
   const [payload, setPayload] = useState<string>("");
   
-  const options = {}
+  // onMouseUp has to set drawState
+  // save new shape
+  const setCallback = useCallback(() => {
+    const payload = getSvgXML();
+    console.log(">>>payload", payload?.length)
+    setPayload(payload);
+    // if (drawState === "drawing") {
+    //   setDrawState("saved")
+    // }
+  }, [drawState]);
+
+  const options = { setCallback }
   const [
     renderRef,
     {
       getSvgXML,
-      setCallback
     }
-    // @ts-ignore
-    // HACK SVG DRAWING
-    // TAKE WHAT'S NECESSARY
-    // NOTHING MORE, port all to app
   ] = useSvgDrawing(options);
 
-  const onComplete = () => console.log('yeeehawwww')
-
-  useEffect(() => {
-    if (setCallback) {
-      setCallback(onComplete)
-    }
-  }, [setCallback])
 
   const newRef = useRef();
   useEffect(() => {
-    const thang = drawState === "drawing" ? renderRef : newRef;
-    setRef(thang);
+    console.log(">>drawState", drawState);
+    const refToSet = drawState === "drawing" ? renderRef : newRef;
+    setRef(refToSet);
   }, [drawState]);
   
   useEffect(() => {
     setCompleteLine(payload);
   }, [payload])
-
-
-  // the svg needs to be rendered in the electron layer
-  // of the application due to 
-  const handleMouseDown = useCallback(() => {
-    const payload = getSvgXML();
-    //console.log(">>>payload", payload?.length)
-    setPayload(payload);
-    setRef(null);
-    if (drawState === "drawing") {
-      setDrawState("saved");
-    }
-  }, [drawState, getSvgXML]);
-
-  useEffect(() => {
-    if (activeRef?.current) {
-      activeRef.current.addEventListener("mousedown", handleMouseDown);
-    }
-    return () => {
-      if (activeRef?.current) {
-        activeRef.current.removeEventListener("mousedown", handleMouseDown);
-      }
-    }
-  }, [payload, drawState, getSvgXML]);
-
 
   // height needs to be set b/c
   // of bug in react-hooks-svgdrawing

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import HotkeyProvider from "./hotkeys/hotkeyContext";
 import { GlobalStyle } from "./App.styles";
-import { App } from "./App";
+import { App } from "./AppContainer";
 
 const AppWithStyles = () => (
   <>
