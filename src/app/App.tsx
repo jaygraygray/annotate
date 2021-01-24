@@ -10,7 +10,7 @@ const App = ({
   onSettingsClick,
   menuItemClick,
   drawState,
-  shapes,
+  items,
   activeItem,
   setActiveItem,
   setDrawState
@@ -28,13 +28,14 @@ const App = ({
         />
         <Stage
           drawState={drawState}
-          shapes={shapes}
+          items={items}
           activeItem={activeItem}
           setActiveItem={setActiveItem}
           setDrawState={setDrawState}
         />
-    </div>  
+    </div> 
   )
 }
+
 
 export default App;

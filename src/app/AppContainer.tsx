@@ -7,16 +7,48 @@ import { trackMousePosition } from "./utils/mouse";
 import findIndex from "lodash.findindex";
 
 type DrawState = "placing" | "drawing" | "saved" | "init";
+type ItemType = "drawn" | "placed" | "typed";
+
+type DrawnPayload = any;
+type PlacedPayload = any;
+type TypedPayload = any;
 
 export type Item = {
   id: string;
-  payload: any;
+  type?: ItemType;
+  payload: DrawnPayload | PlacedPayload | TypedPayload;
 }
+
+export type ItemActions = {
+  setActiveItem: () => void;
+  setDrawState: (state: DrawState) => void;
+}
+export interface StageState {
+  // determines behavior of stage
+  drawState: DrawState;
+
+  // list of items displayed
+  items: Item[];
+
+  // shape being currently transformed
+  activeShape: Item;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 export const App = (props) => {
   const [drawState, setDrawState] = useState<DrawState>("init"); 
-  const [shapes, setShapes] = useState<Item[]>([]);
-  const [activeItem, setActiveItem] = useState<Item | null>(null);
+  const [items, setItems] = useState<Item[]>([]);
+  const [activeItem, setActiveItem] = useState<Item>(null);
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
   const MousePosition = trackMousePosition();
   const [areSettingsOpen, setAreSettingsOpen] = useState(false);
@@ -81,52 +113,52 @@ export const App = (props) => {
     }
 
     if (drawState === "drawing") {
-      let newShapes = [];
-      const existingShape = shapes.filter(({ id }) => activeItem.id === id);
+      let newItems = [];
+      const existingShape = items.filter(({ id }) => activeItem.id === id);
       if (existingShape.length) {
-        const index = findIndex(shapes, ({ id }) => id === activeItem.id)
-        newShapes = shapes;
-        newShapes.splice(index, 1);
-        newShapes.splice(index, 0, existingShape[0]);
+        const index = findIndex(items, ({ id }) => id === activeItem.id)
+        newItems = items;
+        newItems.splice(index, 1);
+        newItems.splice(index, 0, existingShape[0]);
       } else {
-        newShapes = [
+        newItems = [
           activeItem,
-          ...shapes
+          ...items
         ];
       }
       
-      setShapes(newShapes)
+      setItems(newItems)
       setActiveItem(null);
       setDrawState("saved")
     }
 
-  }, [drawState, shapes, menuOrigins]);
+  }, [drawState, items, menuOrigins]);
 
   const removeShape = useCallback((e) => {
     e.preventDefault();
     const { path, clientX, clientY } = e;
 
-    let newShapes = [];
-    const [isOnShape] = path.filter(el => {
+    let newItems = [];
+    const [isOnItem] = path.filter(el => {
       if (el && el.id) {
-        const matches = shapes.filter(({ id }) => id === el.id)
+        const matches = items.filter(({ id }) => id === el.id)
         if (matches.length) {
-          newShapes = shapes.filter(({ id }) => id !== el.id)
+          newItems = items.filter(({ id }) => id !== el.id)
           return true;
         }
       }
       return false;
     })
     
-    if (isOnShape) {
-      setShapes(newShapes);
+    if (isOnItem) {
+      setItems(newItems);
     } else {
       if (isMenuTriggerOpen) {
         setMenuOrigins({ x: clientX, y: clientY })
       }
     }
 
-  }, [shapes, isMenuTriggerOpen])
+  }, [items, isMenuTriggerOpen])
 
   const onSettingsClick = useCallback(() => {
     setMenuOrigins({ x: 0, y: 0 });
@@ -144,7 +176,7 @@ export const App = (props) => {
       onSettingsClick={onSettingsClick}
       menuItemClick={menuItemClick}
       drawState={drawState}
-      shapes={shapes}
+      items={items}
       activeItem={activeItem}
       setActiveItem={setActiveItem}
       setDrawState={setDrawState}
@@ -158,7 +190,7 @@ export type AppContainerProps = {
   onSettingsClick: () => void,
   menuItemClick: (e: SyntheticEvent) => void,
   drawState: any,
-  shapes: any,
+  items: any,
   activeItem: any;
   setActiveItem: (item: Item) => void,
   setDrawState: (state: DrawState) => void,

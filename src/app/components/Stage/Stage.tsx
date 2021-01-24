@@ -4,7 +4,7 @@ import ItemRenderer from "../ItemRenderer";
 
 type Props = {
   drawState: string;
-  shapes: any;
+  items: any;
   setActiveItem(o: Item): void;
   activeItem: Item;
   setDrawState: any;
@@ -15,7 +15,7 @@ type Props = {
 const Stage = (
   {
     drawState,
-    shapes = [],
+    items = [],
     setActiveItem,
     activeItem,
     setDrawState,
@@ -23,27 +23,27 @@ const Stage = (
   }: Props) => {
   
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
-    let item = shapes.find(({ id: existingId }) => itemId === existingId);
+    let item = items.find(({ id: existingId }) => itemId === existingId);
     if (item) {
       item.payload = updatedItemStyle;
       setActiveItem(item);
     }
-  }, [shapes]);
+  }, [items]);
 
   const onSelectItem = useCallback((e, id) => {
-    const item = shapes.find(({ id: existingId }) => id === existingId)
+    const item = items.find(({ id: existingId }) => id === existingId)
     setActiveItem(item)
-  }, [shapes])
+  }, [items])
 
   useEffect(() => {
     //console.log(">>completeLine", completeLine);
   }, [completeLine])
 
 
-  // needs to be generic: render all types of shapes
-  // important because all shapes will have different behaviors
+  // needs to be generic: render all types of items
+  // important because all items will have different behaviors
   const renderAllFinishedShapes = () => (
-    shapes.length && shapes.map(({ payload, id }) => 
+    items.length && items.map(({ payload, id }) => 
       <ItemRenderer
         activeItemId={activeItem && activeItem.id}
         drawState={drawState}
@@ -80,7 +80,7 @@ const Stage = (
     return <>waiting to place shape</>
   }
 
-  if (shapes.length) {
+  if (items.length) {
     return renderAllFinishedShapes()
   }
 
