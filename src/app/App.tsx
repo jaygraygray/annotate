@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import Stage from "./components/Stage";
 import Menu from "./components/Menu";
 import { AppContainerProps } from './AppContainer'
-import { AppContext } from './AppProvider'
 
 const App = ({
   onClick,
@@ -15,8 +14,6 @@ const App = ({
   setActiveItem,
   setDrawState
 }: AppContainerProps) => {
-  const state = useContext(AppContext);
-  console.log(">>passing state", state);
   return (
       <div style={{ height: "100vh", width: "100vw" }} onClick={onClick}>
         <Menu

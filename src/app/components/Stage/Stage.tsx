@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useCallback, useEffect } from "react";
-import { Item } from '../../AppContainer';
+import { Item } from '../../types';
 import ItemRenderer from "../ItemRenderer";
 
 type Props = {

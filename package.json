@@ -54,6 +54,7 @@
   "dependencies": {
     "@types/styled-components": "^5.1.4",
     "aquedux": "^1.0.10",
+    "immer": "^8.0.1",
     "lodash.findindex": "^4.6.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

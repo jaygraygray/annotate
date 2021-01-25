@@ -19,7 +19,9 @@
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
     "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */                   /* List of folders to include type definitions from. */
     "typeRoots": [
-      "src/app/types"
+      "node_modules/@types",
+      "src/app/types",
+      "src/shell/types"
     ],
     // "types": ["src/types/StageTypes.d.ts"]                          /* Type declaration files to be included in compilation. */
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
