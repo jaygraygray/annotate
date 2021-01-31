@@ -1,9 +1,9 @@
+import { StageState } from "../../types";
 
-
-const state = {
+const state: StageState = {
   items: [],
   drawState: 'init',
-  activeItem: ''
+  activeItem: null
 }
 
 export default state;

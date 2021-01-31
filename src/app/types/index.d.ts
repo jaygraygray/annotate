@@ -18,7 +18,7 @@ export type ItemActions = {
   setDrawState: (state: DrawState) => void;
 }
 
-export type StageState = {
+export interface StageState {
   // determines behavior of stage
   drawState: DrawState;
 
@@ -26,5 +26,5 @@ export type StageState = {
   items: Item[];
 
   // shape being currently transformed
-  activeItem: Item;
+  activeItem: Item | null;
 }
