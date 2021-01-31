@@ -3,8 +3,8 @@ export const getPassiveOptions = (
 ): boolean | { passive: boolean } => {
   try {
     const check = () => null
-    window.addEventListener('testPassive', check, { passive })
-    window.removeEventListener('testPassive', check)
+    window.addEventListener("testPassive", check, { passive })
+    window.removeEventListener("testPassive", check)
     return { passive }
   } catch (e) {
     return false

@@ -1,9 +1,9 @@
-import { BezierCurve } from './bezier'
-import { Point } from './svg'
+import { BezierCurve } from "./bezier"
+import { Point } from "./svg"
 
-describe('bezier.ts', () => {
-  describe('BezierCurve', () => {
-    it('createCommand', () => {
+describe("bezier.ts", () => {
+  describe("BezierCurve", () => {
+    it("createCommand", () => {
       const bezier = new BezierCurve()
       expect(
         bezier
@@ -14,7 +14,7 @@ describe('bezier.ts', () => {
             new Point(3, 0)
           )
           .toString()
-      ).toBe('C 1.4 1.2 1.6 1.2 2 1')
+      ).toBe("C 1.4 1.2 1.6 1.2 2 1")
     })
   })
 })

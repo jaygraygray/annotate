@@ -14,7 +14,7 @@ const Settings = ({
   }, []);
 
   const onKeyDown = useCallback((e) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       toggleOpenState();
     }
   }, [toggleOpenState])

@@ -1,7 +1,7 @@
 import React from "react";
 import Stage from "./components/Stage";
 import Menu from "./components/Menu";
-import { AppContainerProps } from './AppContainer'
+import { AppContainerProps } from "./AppContainer"
 
 const App = ({
   onClick,

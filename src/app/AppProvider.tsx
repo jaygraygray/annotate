@@ -1,11 +1,11 @@
-import React, { createContext, useReducer, useContext } from 'react';
-import produce from 'immer';
-import state from './lib/store';
-import { StageState } from './types';
+import React, { createContext, useReducer, useContext } from "react";
+import produce from "immer";
+import state from "./lib/store";
+import { StageState } from "./types";
 
 // function debugFn() {
-//   if (process.env.NODE_ENV === 'development') {
-//     throw new Error('Updater was called without a wrapping provider.');
+//   if (process.env.NODE_ENV === "development") {
+//     throw new Error("Updater was called without a wrapping provider.");
 //   }
 // }
 
@@ -15,7 +15,7 @@ const StateContext = createContext<Partial<StageState>>(state);
 const UpdateContext = createContext<any>(null);
 
 export const AppProvider: React.FC = (props) => {
-  const [drawState, setDrawState] = useReducer(produce, 'init');
+  const [drawState, setDrawState] = useReducer(produce, "init");
   return (
     <UpdateContext.Provider value={setDrawState}>
       <StateContext.Provider value={ drawState }>

@@ -1,9 +1,9 @@
 // @ts-nocheck
-import React, { useCallback } from 'react';
-import PieMenu, { Slice } from 'react-pie-menu';
-import { ThemeProvider, css } from 'styled-components';
-import { SettingsIcon } from '../../icons';
-import * as styles from './Menu.style';
+import React, { useCallback } from "react";
+import PieMenu, { Slice } from "react-pie-menu";
+import { ThemeProvider, css } from "styled-components";
+import { SettingsIcon } from "../../icons";
+import * as styles from "./Menu.style";
 
 const theme = {
   pieMenu: {
@@ -42,8 +42,8 @@ const Menu =  ({
   if (x !== 0 && y !== 0) {
     return (
       <PieMenuThemed
-        radius='125px'
-        centerRadius='30px'
+        radius="125px"
+        centerRadius="30px"
         centerX={`${x + 4}px`}
         centerY={`${y}px`}
       >

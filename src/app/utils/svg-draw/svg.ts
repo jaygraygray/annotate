@@ -1,12 +1,12 @@
-import { roundUp } from './shared/roundUp'
-import { camel2kebab } from './shared/camel2kebab'
-import { kebab2camel } from './shared/kebab2camel'
-import { svg2base64 } from './shared/svg2base64'
+import { roundUp } from "./shared/roundUp"
+import { camel2kebab } from "./shared/camel2kebab"
+import { kebab2camel } from "./shared/kebab2camel"
+import { svg2base64 } from "./shared/svg2base64"
 import {
   createSvgElement,
   createSvgChildElement,
-} from './shared/createSvgElement'
-import { download } from './shared/download'
+} from "./shared/createSvgElement"
+import { download } from "./shared/download"
 
 const isNaN = (num: number) => num !== num
 
@@ -46,21 +46,21 @@ export class Point {
 }
 
 export const COMMAND_TYPE = {
-  MOVE: 'M', // M 0 0
-  MOVE_RELATIVE: 'm', // m 0 0
-  LINE: 'L', // L 1 1
-  LINE_RELATIVE: 'l', // l 1 1
-  CURVE: 'C', // C 1 1 2 2 3 3
-  CURVE_RELATIVE: 'c', // c 1 1 2 2 3 3
-  CLOSE: 'Z', // Z, z
-  HORIZONTAL: 'H', // H 10
-  HORIZONTAL_RELATIVE: 'h', // h 10
-  VERTICAL: 'V', // V 20
-  VERTICAL_RELATIVE: 'v', // v 20
-  ARC_CURVE: 'A', // A 6 4 10 0 1 14 10
-  ARC_CURVE_RELATIVE: 'a', // A 6 4 10 0 1 14 10
-  QUADRATIC_CURVE: 'Q', // Q 10 60 10 30
-  QUADRATIC_CURVE_RELATIVE: 'q', // q 10 60 10 30
+  MOVE: "M", // M 0 0
+  MOVE_RELATIVE: "m", // m 0 0
+  LINE: "L", // L 1 1
+  LINE_RELATIVE: "l", // l 1 1
+  CURVE: "C", // C 1 1 2 2 3 3
+  CURVE_RELATIVE: "c", // c 1 1 2 2 3 3
+  CLOSE: "Z", // Z, z
+  HORIZONTAL: "H", // H 10
+  HORIZONTAL_RELATIVE: "h", // h 10
+  VERTICAL: "V", // V 20
+  VERTICAL_RELATIVE: "v", // v 20
+  ARC_CURVE: "A", // A 6 4 10 0 1 14 10
+  ARC_CURVE_RELATIVE: "a", // A 6 4 10 0 1 14 10
+  QUADRATIC_CURVE: "Q", // Q 10 60 10 30
+  QUADRATIC_CURVE_RELATIVE: "q", // q 10 60 10 30
 } as const
 
 type COMMAND = typeof COMMAND_TYPE[keyof typeof COMMAND_TYPE]
@@ -76,14 +76,14 @@ export class Command {
 
   public set cr(po: Point | undefined) {
     if (!po) return
-    if ((this.type !== 'C' && this.type !== 'c') || this.value.length !== 6) {
+    if ((this.type !== "C" && this.type !== "c") || this.value.length !== 6) {
       return
     }
     this.value.splice(2, 1, po.x)
     this.value.splice(3, 1, po.y)
   }
   public get cr(): Point | undefined {
-    if ((this.type !== 'C' && this.type !== 'c') || this.value.length !== 6) {
+    if ((this.type !== "C" && this.type !== "c") || this.value.length !== 6) {
       return undefined
     }
     const [x, y] = this.value.slice(2, 4)
@@ -91,14 +91,14 @@ export class Command {
   }
   public set cl(po: Point | undefined) {
     if (!po) return
-    if ((this.type !== 'C' && this.type !== 'c') || this.value.length !== 6) {
+    if ((this.type !== "C" && this.type !== "c") || this.value.length !== 6) {
       return
     }
     this.value.splice(0, 1, po.x)
     this.value.splice(1, 1, po.y)
   }
   public get cl(): Point | undefined {
-    if ((this.type !== 'C' && this.type !== 'c') || this.value.length !== 6) {
+    if ((this.type !== "C" && this.type !== "c") || this.value.length !== 6) {
       return undefined
     }
     const [x, y] = this.value.slice(0, 2)
@@ -117,7 +117,7 @@ export class Command {
 
   public toString(): string {
     if (this.type === COMMAND_TYPE.CLOSE) return COMMAND_TYPE.CLOSE
-    return `${this.type} ${this.value.map((v) => roundUp(v)).join(' ')}`
+    return `${this.type} ${this.value.map((v) => roundUp(v)).join(" ")}`
   }
 
   public scale(r: number): Command {
@@ -187,10 +187,10 @@ export class Path {
     return this
   }
   public getCommandString(): string {
-    if (this.commands.length === 0) return ''
+    if (this.commands.length === 0) return ""
     return this.commands
       .map((com: Command, _i: number) => com.toString())
-      .join(' ')
+      .join(" ")
       .trim()
   }
 
@@ -199,7 +199,7 @@ export class Path {
     this.commands = []
     let type: COMMAND | null = null
     let value: number[] = []
-    const c = d.split(' ')
+    const c = d.split(" ")
     const checkType = (c: any): COMMAND | null =>
       Object.values(COMMAND_TYPE).includes(c) ? c : null
     for (let i = 0; i < c.length; i += 1) {
@@ -230,7 +230,7 @@ export class Path {
     for (let i = 0; i < pEl.attributes.length; i += 1) {
       const attr: Attr | null = pEl.attributes.item(i)
       if (!attr || !attr.value) continue
-      if (attr.name === 'd') {
+      if (attr.name === "d") {
         this.parseCommandString(attr.value)
         continue
       }
@@ -259,7 +259,7 @@ export class Path {
           : acc,
       {}
     )
-    return createSvgChildElement('path', {
+    return createSvgChildElement("path", {
       ...attrs,
       d: this.getCommandString(),
     })
@@ -347,7 +347,7 @@ export class Svg {
   public toElement(): SVGSVGElement {
     const size = { width: String(this.width), height: String(this.height) }
     const bgEl = this.background
-      ? [createSvgChildElement('rect', { ...size, fill: this.background })]
+      ? [createSvgChildElement("rect", { ...size, fill: this.background })]
       : []
 
     return createSvgElement(
@@ -361,8 +361,8 @@ export class Svg {
 
   public parseSVGString(svgStr: string): this {
     const svgEl: SVGSVGElement | null = new DOMParser()
-      .parseFromString(svgStr, 'image/svg+xml')
-      .querySelector('svg')
+      .parseFromString(svgStr, "image/svg+xml")
+      .querySelector("svg")
     if (!svgEl) {
       this.paths = []
       return this
@@ -372,14 +372,14 @@ export class Svg {
 
   public parseSVGElement(svgEl: SVGSVGElement): this {
     const update: Path[] = []
-    svgEl.querySelectorAll('path').forEach((pEl) => {
+    svgEl.querySelectorAll("path").forEach((pEl) => {
       const pa = new Path().parsePathElement(pEl)
       if (pa.commands.length !== 0) {
         update.push(pa)
       }
     })
     this.paths = update
-    const width = Number(svgEl.getAttribute('width'))
+    const width = Number(svgEl.getAttribute("width"))
     if (width && this.width) {
       this.scalePath(this.width / width)
     }
@@ -388,36 +388,36 @@ export class Svg {
 
   // TODO: Add filename config
   public download(
-    ext: 'svg' | 'png' | 'jpg' = 'svg',
+    ext: "svg" | "png" | "jpg" = "svg",
     cb: typeof download = download
   ): void {
-    if (ext === 'svg') {
+    if (ext === "svg") {
       cb({
         data: this.toBase64(),
-        extension: 'svg',
+        extension: "svg",
       })
       return
     }
 
     const img: any = new Image()
     const renderCanvas = () => {
-      const canvas = document.createElement('canvas')
-      canvas.setAttribute('width', String(this.width))
-      canvas.setAttribute('height', String(this.height))
-      const ctx = canvas.getContext('2d')
+      const canvas = document.createElement("canvas")
+      canvas.setAttribute("width", String(this.width))
+      canvas.setAttribute("height", String(this.height))
+      const ctx = canvas.getContext("2d")
       if (!ctx) return
-      if (this.background || ext === 'jpg') {
-        ctx.fillStyle = this.background || '#fff'
+      if (this.background || ext === "jpg") {
+        ctx.fillStyle = this.background || "#fff"
         ctx.fillRect(0, 0, this.width, this.height)
       }
       ctx.drawImage(img, 0, 0)
-      if (ext === 'png') {
-        cb({ data: canvas.toDataURL('image/png'), extension: 'png' })
+      if (ext === "png") {
+        cb({ data: canvas.toDataURL("image/png"), extension: "png" })
       } else {
-        cb({ data: canvas.toDataURL('image/jpeg'), extension: 'jpg' })
+        cb({ data: canvas.toDataURL("image/jpeg"), extension: "jpg" })
       }
     }
-    img.addEventListener('load', renderCanvas, false)
+    img.addEventListener("load", renderCanvas, false)
     img.src = this.toBase64()
   }
 }

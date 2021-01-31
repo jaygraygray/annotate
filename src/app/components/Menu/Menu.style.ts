@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { css } from 'styled-components';
+import { css } from "styled-components";
 
 export const container = css`
 border: 3px solid #BDD4E7;

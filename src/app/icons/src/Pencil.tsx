@@ -1,5 +1,5 @@
-import React, { FC, SVGProps } from 'react';
-import { Icon, IconProps } from '../Icon';
+import React, { FC, SVGProps } from "react";
+import { Icon, IconProps } from "../Icon";
 
 const Pencil: FC<SVGProps<SVGElement>> = ({
   width = 100,

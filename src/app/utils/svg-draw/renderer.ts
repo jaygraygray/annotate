@@ -1,6 +1,6 @@
-import { Svg, SvgOption } from './svg'
+import { Svg, SvgOption } from "./svg"
 
-export type RendererOption = Omit<SvgOption, 'width' | 'height'>
+export type RendererOption = Omit<SvgOption, "width" | "height">
 export class Renderer extends Svg {
   public el: HTMLElement
   public top: number
@@ -47,7 +47,7 @@ export class Renderer extends Svg {
       resizeObserver.observe(this.el)
     } else {
       // TODO: improve
-      window.addEventListener('resize', (_ev) => {
+      window.addEventListener("resize", (_ev) => {
         this.resizeElement(this.el.getBoundingClientRect())
         this.update()
       })

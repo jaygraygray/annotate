@@ -1,4 +1,4 @@
-import { Point, Command, COMMAND_TYPE } from './svg'
+import { Point, Command, COMMAND_TYPE } from "./svg"
 
 interface BezierCurveOption {
   ratio?: number

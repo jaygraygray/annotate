@@ -37,9 +37,9 @@ const ItemRenderer = ({
   return (
     <div
       style={{
-        border: '1px solid red',
-        padding: '10px',
-        margin: '10px',
+        border: "1px solid red",
+        padding: "10px",
+        margin: "10px",
         display: "inline-block",
       }}
     >

@@ -2,7 +2,7 @@ import { StageState } from "../../types";
 
 const state: StageState = {
   items: [],
-  drawState: 'init',
+  drawState: "init",
   activeItem: null
 }
 

@@ -9,7 +9,7 @@ import { useSvgDrawing } from "../../utils/useSvgDraw";
 import Stage from "./Stage";
 
 // need to avoid creating tightly coupled components
-// basically at all costs. that's how to build an app that scales
+// basically at all costs. that"s how to build an app that scales
 
 export default (props) => {
   const {
@@ -60,7 +60,7 @@ export default (props) => {
         completeLine={completeLine}
         {...props}
       />
-      <div ref={activeRef} style={{ height: '100vh' }} />
+      <div ref={activeRef} style={{ height: "100vh" }} />
     </>
   )
 }
