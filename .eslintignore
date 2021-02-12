@@ -1,0 +1,5 @@
+/dist
+/node_modules
+/src/app/utils/svg-draw/*
+/src/app/utils/useSvgDraw/*
+/src/app/utils/*

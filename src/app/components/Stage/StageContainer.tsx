@@ -21,15 +21,13 @@ export default (props) => {
   const [completeLine, setCompleteLine] = useState<string>("");
   const [payload, setPayload] = useState<string>("");
   
-  // onMouseUp has to set drawState
-  // save new shape
+
   const setCallback = useCallback(() => {
     const payload = getSvgXML();
     console.log(">>>payload", payload?.length)
+    
     setPayload(payload);
-    // if (drawState === "drawing") {
-    //   setDrawState("saved")
-    // }
+
   }, [drawState]);
 
   const options = { setCallback }

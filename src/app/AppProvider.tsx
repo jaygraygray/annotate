@@ -14,10 +14,17 @@ export const AppContext = createContext<Partial<StageState>>(null);
 const StateContext = createContext<Partial<StageState>>(state);
 const UpdateContext = createContext<any>(null);
 
+export function useAppState() {
+  return [useContext(StateContext), useContext(UpdateContext)]
+}
+
+
+
 export const AppProvider: React.FC = (props) => {
   const [drawState, setDrawState] = useReducer(produce, "init");
+
   return (
-    <UpdateContext.Provider value={setDrawState}>
+    <UpdateContext.Provider value={ setDrawState }>
       <StateContext.Provider value={ drawState }>
         {props.children}
       </StateContext.Provider>
@@ -25,6 +32,3 @@ export const AppProvider: React.FC = (props) => {
   )
 }
 
-export function useDrawState() {
-  return [useContext(StateContext), useContext(UpdateContext)]
-}
