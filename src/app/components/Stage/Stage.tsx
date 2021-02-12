@@ -1,4 +1,5 @@
-import React, { SyntheticEvent, useCallback, useEffect } from "react";
+import React, { SyntheticEvent, useCallback, useEffect, useState } from "react";
+import { useAppState } from "../../AppProvider";
 import { Item } from "../../types";
 import ItemRenderer from "../ItemRenderer";
 
@@ -12,15 +13,21 @@ type Props = {
   completeLine: string;
 }
 
+
+
 const Stage = (
   {
     drawState,
-    items = [],
+    // items = [],
     setActiveItem,
     activeItem,
     setDrawState,
     completeLine,
   }: Props) => {
+
+    const [state, setState] = useAppState();
+    const { newItems: items } = state;
+    // const [items ,setItems] = useState<Item[]>(newItems);
   
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     let item = items.find(({ id: existingId }) => itemId === existingId);
@@ -43,7 +50,7 @@ const Stage = (
   // needs to be generic: render all types of items
   // important because all items will have different behaviors
   const renderAllFinishedShapes = () => (
-    items.length && items.map(({ payload, id }) => 
+    items.length && items.map(({ payload, id, type }) => 
       <ItemRenderer
         activeItemId={activeItem && activeItem.id}
         drawState={drawState}
@@ -53,13 +60,14 @@ const Stage = (
         onSelectItem={onSelectItem}
         payload={payload}
         setDrawState={setDrawState}
+        type={type}
       />
     )
   )
 
-  if (drawState === "init") {
-    return null;
-  }
+  // if (drawState === "init") {
+  //   return null;
+  // }
 
   if (drawState === "drawing" && activeItem) {
     return (
@@ -72,6 +80,7 @@ const Stage = (
         onSelectItem={onSelectItem}
         payload={activeItem.payload}
         setDrawState={setDrawState}
+        type={activeItem.type}
       />
     )
   }

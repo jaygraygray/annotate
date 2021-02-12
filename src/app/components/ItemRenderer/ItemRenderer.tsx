@@ -13,6 +13,7 @@ type Props = {
   payload: any;
   handleDrawLine?: any;
   lineBeingDrawn?: any;
+  type: string;
 }
 
 const ItemRenderer = ({
@@ -24,7 +25,8 @@ const ItemRenderer = ({
   setDrawState,
   payload,
   handleDrawLine,
-  lineBeingDrawn
+  lineBeingDrawn,
+  type,
 }: Props) => {
 
   const renderSecondStage = (drawState === "drawing") && activeItemId === id;
@@ -34,40 +36,47 @@ const ItemRenderer = ({
     onSelectItem(e, id);
   }, [activeItemId])
   
-  return (
-    <div
-      style={{
-        border: "1px solid red",
-        padding: "10px",
-        margin: "10px",
-        display: "inline-block",
-      }}
-    >
-      {drawState === "placing" &&
-        <FirstStage
-          id={id}
-        />
-      }
+  if (type === "drawn") {
+    return payload();
+  }
 
-      {renderSecondStage &&
-        <SecondStage
-          drawState={drawState}
-          id={id}
-          onEditComplete={onEditComplete}
-          handleDrawLine={handleDrawLine}
-          lineBeingDrawn={lineBeingDrawn}
-        />
-      }
-
-      {drawState === "saved" &&
-        <ThirdStage
-          id={id}
-          onSelectItem={handleSelectItem}
-          payload={payload}
-        />
-      }
-    </div>
-  )
+  if (type === "placed") {
+    return (
+      <div
+        style={{
+          border: "1px solid red",
+          padding: "10px",
+          margin: "10px",
+          display: "inline-block",
+        }}
+      >
+        {drawState === "placing" &&
+          <FirstStage
+            id={id}
+          />
+        }
+  
+        {renderSecondStage &&
+          <SecondStage
+            drawState={drawState}
+            id={id}
+            onEditComplete={onEditComplete}
+            handleDrawLine={handleDrawLine}
+            lineBeingDrawn={lineBeingDrawn}
+          />
+        }
+  
+        {drawState === "saved" &&
+          <ThirdStage
+            id={id}
+            onSelectItem={handleSelectItem}
+            payload={payload}
+          />
+        }
+      </div>
+    )
+  }
+  return null;
 }
 
 export default ItemRenderer;

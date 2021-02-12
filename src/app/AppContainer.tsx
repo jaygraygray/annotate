@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import React, { useEffect, useCallback, useState, SyntheticEvent } from "react";
 import { v4 as uuid } from "uuid";
 import findIndex from "lodash.findindex";
@@ -7,11 +7,14 @@ import AppComponent from "./App";
 import Settings from "./components/Settings";
 import { hotKeyMap, useHotKeys } from "./hotkeys";
 import { trackMousePosition } from "./utils/mouse";
-
+import { useAppState } from "./AppProvider";
 
 export const App = (props) => {
+  // const [state, setState] = useAppState();
+  // const { newItems } = state;
+  const [items ,setItems] = useState<Item[]>([]);
+  
   const [drawState, setDrawState] = useState<DrawState>("init"); 
-  const [items, setItems] = useState<Item[]>([]);
   const [activeItem, setActiveItem] = useState<Item>(null);
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
   const MousePosition = trackMousePosition();
