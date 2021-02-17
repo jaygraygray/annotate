@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React, { createContext, useReducer, useContext, useCallback } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import produce from "immer";
 import state from "./lib/store";
 import { StageState } from "./types";
@@ -32,9 +33,9 @@ export const AppProvider: React.FC = (props) => {
   const addItem = useCallback((e, type, payload) => {
     console.log(">>e", e);
     const itemAdded = {
-      type: 'drawn',
-      payload: PayloadRender,
-      id: newItems.length + 1
+      type,
+      payload: payload,
+      id: uuidv4()
     }
     setNewItems(newItems => [itemAdded, ...newItems])
   }, [newItems]);

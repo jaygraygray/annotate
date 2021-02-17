@@ -65,6 +65,6 @@
     "source-map-support": "^0.5.19",
     "styled-components": "^5.2.1",
     "svg-drawing": "file:../svg-drawing/packages/core",
-    "uuid": "^8.3.1"
+    "uuid": "^8.3.2"
   }
 }

@@ -7,12 +7,12 @@ import AppComponent from "./App";
 import Settings from "./components/Settings";
 import { hotKeyMap, useHotKeys } from "./hotkeys";
 import { trackMousePosition } from "./utils/mouse";
-import { useAppState } from "./AppProvider";
+import { useAppState } from './AppProvider';
 
 export const App = (props) => {
-  // const [state, setState] = useAppState();
-  // const { newItems } = state;
-  const [items ,setItems] = useState<Item[]>([]);
+  const [state, setState] = useAppState();
+  const { newItems: items } = state;
+  const { addItem: setItems } = setState;
   
   const [drawState, setDrawState] = useState<DrawState>("init"); 
   const [activeItem, setActiveItem] = useState<Item>(null);
@@ -50,7 +50,7 @@ export const App = (props) => {
     })
   })
 
-  const menuItemClick = useCallback((e) => {
+  const startDrawClick = useCallback((e, type) => {
     setDrawState("placing")
     const isMenuOpen = menuOrigins.x !== 0 && menuOrigins.y !== 0;
     if (!isMenuOpen) {
@@ -69,19 +69,23 @@ export const App = (props) => {
 
   }, [menuOrigins, drawState]);
 
-  const onClick = useCallback((e) => {
+  const onClick = useCallback((e, type) => {
     setMenuOrigins({ x: 0, y: 0 });
     if (drawState === "init") {
       return;
     }
+    
+    if (type === "drawn") {
+      console.log("ding")
+    }
 
-    if (drawState === "placing") {
+    if (drawState === "placing" && type !== "drawn") {
       setDrawState("drawing")
     }
 
     if (drawState === "drawing") {
       let newItems = [];
-      const existingShape = items.filter(({ id }) => activeItem.id === id);
+      const existingShape = items.filter(({ id }) => activeItem?.id === id) || [];
       if (existingShape.length) {
         const index = findIndex(items, ({ id }) => id === activeItem.id)
         newItems = items;
@@ -141,7 +145,7 @@ export const App = (props) => {
       onClick={onClick}
       menuOrigins={menuOrigins}
       onSettingsClick={onSettingsClick}
-      menuItemClick={menuItemClick}
+      startDrawClick={startDrawClick}
       drawState={drawState}
       items={items}
       activeItem={activeItem}
@@ -155,7 +159,7 @@ export type AppContainerProps = {
   onClick: (e: SyntheticEvent) => void,
   menuOrigins: any,
   onSettingsClick: () => void,
-  menuItemClick: (e: SyntheticEvent) => void,
+  startDrawClick: (e: SyntheticEvent) => void,
   drawState: any,
   items: any,
   activeItem: any;

@@ -18,17 +18,13 @@ type Props = {
 const Stage = (
   {
     drawState,
-    // items = [],
+    items = [],
     setActiveItem,
     activeItem,
     setDrawState,
     completeLine,
   }: Props) => {
 
-    const [state, setState] = useAppState();
-    const { newItems: items } = state;
-    // const [items ,setItems] = useState<Item[]>(newItems);
-  
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     let item = items.find(({ id: existingId }) => itemId === existingId);
     if (item) {

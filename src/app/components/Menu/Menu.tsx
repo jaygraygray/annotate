@@ -32,12 +32,12 @@ const Menu =  ({
   y,
   onClick,
   onSettingsClick,
-  menuItemClick
+  startDrawClick
 }) => { 
 
-  const handleClick = useCallback((e) => {
-    menuItemClick(e)
-  }, [])
+  const handleClick = useCallback((e, type) => {
+    startDrawClick(e, type)
+  }, [startDrawClick])
 
   if (x !== 0 && y !== 0) {
     return (
@@ -47,17 +47,17 @@ const Menu =  ({
         centerX={`${x + 4}px`}
         centerY={`${y}px`}
       >
-        <Slice onSelect={handleClick}>
+        <Slice onSelect={(e) => handleClick(e, "line")}>
           Line
         </Slice>
         <Slice onSelect={onSettingsClick}>
           <SettingsIcon width={25} height={25} />
         </Slice>
         <Slice>&nbsp;</Slice>
-        <Slice onSelect={menuItemClick}>
+        <Slice onSelect={startDrawClick}>
           Highlighter
         </Slice>
-        <Slice onClick={menuItemClick}>
+        <Slice onClick={onClick}>
           Star
         </Slice>
         
