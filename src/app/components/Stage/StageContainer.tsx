@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState
 } from "react";
+import { transformSvgToJsx } from "../../utils/transformSvg";
 import { useSvgDrawing } from "../../utils/useSvgDraw";
 import { useAppState } from '../../AppProvider';
 import Stage from "./Stage";
@@ -12,7 +13,7 @@ import Stage from "./Stage";
 const extractPath = svg => {
   if (typeof svg !== "string") return false;
   const startIndex = svg.indexOf("path") + 8;
-  const endIndex = svg.lastIndexOf("</path") - 1;
+  const endIndex = svg.lastIndexOf("fill") - 2;
   return svg.substring(startIndex, endIndex);
 }
 
@@ -24,6 +25,10 @@ const RenderSvg = ({ payload }) => {
       <path d={path}></path>
     </svg>
   )
+}
+
+const generateSvg = async (rawSvgInput) => {
+  return await transformSvgToJsx(rawSvgInput);
 }
 
 export default (props) => {
@@ -40,10 +45,12 @@ export default (props) => {
   // need to reset drawState on mouse up
   // store SVG shape in store
   // 'reset' component to accept new drawings
-  const setCallback = useCallback(() => {
-    const stringPayload = getSvgXML();    
-    const RenderTest = () => <RenderSvg payload={stringPayload} />
-    addItem(null, 'drawn', RenderTest);
+  const setCallback = useCallback(async () => {
+    const stringPayload = getSvgXML();
+    console.log("oogabooga")
+    const Comp = await generateSvg(stringPayload);
+    console.log(">>newComp", Comp);
+    addItem(null, 'drawn', Comp);
     setDrawState("init")
 
   }, [drawState]);

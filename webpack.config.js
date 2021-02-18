@@ -50,4 +50,11 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.EnvironmentPlugin(EnvironmentVariables),
   ],
+  node: {
+    fs: 'empty'
+  },
+  externals: [{
+    "fs": "fs",
+    "path": "path",
+  }]
 };

@@ -25,6 +25,8 @@ const Stage = (
     completeLine,
   }: Props) => {
 
+    
+
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     let item = items.find(({ id: existingId }) => itemId === existingId);
     if (item) {

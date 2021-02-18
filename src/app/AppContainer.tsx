@@ -11,10 +11,17 @@ import { useAppState } from './AppProvider';
 
 export const App = (props) => {
   const [state, setState] = useAppState();
-  const { newItems: items } = state;
-  const { addItem: setItems } = setState;
+  const {
+    newItems: items,
+    drawState,
+  } = state;
+
+  const {
+    addItem: setItems,
+    setDrawState,
+  } = setState;
   
-  const [drawState, setDrawState] = useState<DrawState>("init"); 
+  // const [drawState, setDrawState] = useState<DrawState>("init"); 
   const [activeItem, setActiveItem] = useState<Item>(null);
   const [menuOrigins, setMenuOrigins] = useState({ x: 0, y: 0});
   const MousePosition = trackMousePosition();
