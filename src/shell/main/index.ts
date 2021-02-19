@@ -13,6 +13,9 @@ class Main {
   private mainWindow: BrowserWindow
   // global reference to mainWindow (necessary to prevent window from being garbage collected)
 
+  //
+  // TODO: extract callbacks to class methods
+  //
   public init(ipcChannels: any) {
       // quit application when all windows are closed
     app.on("window-all-closed", () => {

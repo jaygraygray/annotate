@@ -4,13 +4,22 @@ import HotkeyProvider from "./hotkeys/hotkeyContext";
 import { GlobalStyle } from "./App.styles";
 import { App } from "./AppContainer";
 import { AppProvider } from "./AppProvider";
+import useFirstChannel from "../app/lib/channelHooks/useFirstChannel";
+
+type FirstChannel = {
+  kernal: string
+}
 
 import { IpcService } from "../shell/lib/IpcService";
 const ipc = new IpcService();
 
 document.getElementById('test-click').addEventListener('click', async () => {
-  const t = await ipc.send<{ kernel: string }>('firstChannel');
-  document.getElementById('versionInfo').innerHTML = t.toString();
+  const request = {
+    params: ["qq"]
+  }
+  const { response } = await useFirstChannel(request);
+  // const t = await ipc.send<FirstChannel>('firstChannel', request);
+  document.getElementById('versionInfo').innerHTML = response.toString();
 });
 
 
