@@ -23,7 +23,7 @@
       "src/app/types",
       "src/shell/types"
     ],
-    // "types": ["src/types/StageTypes.d.ts"]                          /* Type declaration files to be included in compilation. */
+    "types": ["react"],                          /* Type declaration files to be included in compilation. */
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
