@@ -51,6 +51,8 @@ export default (props) => {
 
   }, [drawState]);
 
+
+  // ... or reinstantiate useSvgDrawing onMouseUp here
   const options = { setCallback }
   const [
     renderRef,

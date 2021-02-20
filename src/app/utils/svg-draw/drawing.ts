@@ -139,7 +139,9 @@ export class SvgDrawing extends Renderer {
     this.onCompleteDrawCallback()
     this._drawPath = null
     this.update()
-    this.off()
+    /**
+     * Need to modify mouse up behavior here
+     */
   }
 
   private _addDrawPoint(po: [number, number]) {
