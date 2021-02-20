@@ -1,6 +1,6 @@
-const cheerio = require('cheerio');
-const reactifyAttribute = require('react-attr-converter');
-const toInlineSvg = require('./inlineSvgTransform');
+import cheerio from 'cheerio';
+import reactifyAttribute from 'react-attr-converter';
+import toInlineSvg from './inlineSvgTransform';
 
 
 const cheerioOptions = {
@@ -18,8 +18,8 @@ function toJsx(svg, options) {
       if (options._skipOptimization) return svg;
       return toInlineSvg(svg, options);
     })
-    .then(inlineSvg => {
-      const $ = cheerio.load(inlineSvg, cheerioOptions);
+    .then(({ data }) => {
+      const $ = cheerio.load(data, cheerioOptions);
       $('*').each((i, el) => {
         el.attribs = Object.keys(el.attribs).reduce((result, name) => {
           result[reactifyAttribute(name)] = el.attribs[name];
@@ -32,7 +32,11 @@ function toJsx(svg, options) {
         .replace(/&apos;/g, "'")
         .replace(/&quot;/g, '"')
       return jsx;
+    }).catch(e => {
+      if (e) {
+        console.log(">>>>>>>>error", e);
+      }
     });
 }
 
-module.exports = toJsx;
+export default toJsx;

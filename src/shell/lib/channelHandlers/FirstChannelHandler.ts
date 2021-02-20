@@ -1,6 +1,6 @@
 import { IpcMainEvent } from "electron";
-import { execSync } from "child_process";
-import { transformSvgToJsx } from "../../../app/utils/transformSvg";
+import svgr from "@svgr/core";
+import { transformSvgToJsx } from "../../utils/transformSvg"
 import { IpcChannel, IpcRequest } from "../../types/IpcChannel";
 
 export class FirstChannelHandler implements IpcChannel {
@@ -10,7 +10,9 @@ export class FirstChannelHandler implements IpcChannel {
     return "firstChannel"
   }
 
-  handle(event: IpcMainEvent, request: IpcRequest): void {
+  //  IpcRequest is generic, need to extend interface
+  //  for each handler
+  async handle(event: IpcMainEvent, request: IpcRequest): Promise<void> {
     if (!request.responseChannel) {
       request.responseChannel = `${this.getName()}_response`;
     }
@@ -18,10 +20,16 @@ export class FirstChannelHandler implements IpcChannel {
     /**
      * ALL FUN LOGIC GOES HERE :D
      */
+    const rawSvg = request.params[0];
+    const rawComponentText = await svgr(rawSvg);
+    const draft1 = rawComponentText.replace('import * as React from "react";', "");
+    const draft2 = draft1.replace('export default SvgComponent;', "");
+    const finalDraft = draft2.replaceAll("\n", "");
+    
 
-     console.log(">>>FirstChannelHandler", request);
+    // need to interpret the string of JSX
 
-    // secnd param here is the result 
-    event.sender.send(request.responseChannel, "some thing man idk")
+    // second param here is the result 
+    event.sender.send(request.responseChannel, finalDraft)
   }
 }

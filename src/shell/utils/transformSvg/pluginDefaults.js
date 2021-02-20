@@ -50,4 +50,4 @@ function applySvgoPluginDefaults(plugins, svgId, extraDefaults) {
   return defaultedPlugins;
 }
 
-module.exports = applySvgoPluginDefaults;
+export default applySvgoPluginDefaults

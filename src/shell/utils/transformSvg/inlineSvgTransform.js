@@ -1,6 +1,6 @@
-const SVGO = require('svgo');
-const cuid = require('cuid');
-const applySvgoPluginDefaults = require('./pluginDefaults');
+import { optimize } from 'svgo';
+import cuid from 'cuid';
+import applySvgoPluginDefaults from './pluginDefaults';
 
 // THIS MUST BE RUN IN A NODE ENV
 // can leverage ipc channels to execute
@@ -13,11 +13,11 @@ function toInlineSvg(svg, options) {
     options.svgoPlugins,
     options.id
   );
-
-  const svgo = new SVGO({
-    plugins: options.svgoPlugins
-  });
-  return svgo.optimize(svg).then(result => result.data);
+  // const svgo = new SVGO({
+  //   plugins: options.svgoPlugins
+  // });
+  // return optimize(svg).then(result => result.data);
+  return optimize(svg, { options });
 }
 
-module.exports = toInlineSvg;
+export default toInlineSvg;

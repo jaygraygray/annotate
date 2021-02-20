@@ -5,7 +5,8 @@ import React, {
   useEffect,
   useState
 } from "react";
-// import { transformSvgToJsx } from "../../utils/transformSvg";
+
+import useFirstChannel from "../../lib/channelHooks/useFirstChannel";
 import { useSvgDrawing } from "../../utils/useSvgDraw";
 import { useAppState } from '../../AppProvider';
 import Stage from "./Stage";
@@ -17,19 +18,7 @@ const extractPath = svg => {
   return svg.substring(startIndex, endIndex);
 }
 
-const RenderSvg = ({ payload }) => {
-  const path = extractPath(payload);
-  console.log(">>path", path);
-  return (
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="764" width="920">
-      <path d={path}></path>
-    </svg>
-  )
-}
 
-// const generateSvg = async (rawSvgInput) => {
-//   return await transformSvgToJsx(rawSvgInput);
-// }
 
 export default (props) => {
   const {
@@ -42,16 +31,22 @@ export default (props) => {
   const [payload, setPayload] = useState<string>("");
   const [_, { addItem }] = useAppState();
 
+  // rawCode is JSX! Not javascript!
+  const ReactComponent = (rawCode) => {
+    return Function('"use strict; return (' + rawCode + ')')();
+  }
+
   // need to reset drawState on mouse up
   // store SVG shape in store
   // 'reset' component to accept new drawings
   const setCallback = useCallback(async () => {
-    // const stringPayload = getSvgXML();
-    // console.log("oogabooga")
-    // const Comp = await generateSvg(stringPayload);
-    // console.log(">>newComp", Comp);
-    // addItem(null, 'drawn', Comp);
-    // setDrawState("init")
+    const stringPayload = getSvgXML();
+    const request = { params: [stringPayload] }
+    
+    const rawComponent = await useFirstChannel(request);    
+
+    addItem(null, 'drawn', rawComponent);
+    setDrawState("init")
 
   }, [drawState]);
 

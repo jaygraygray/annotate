@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import JsxParser from "react-jsx-parser";
 import FirstStage from "../FirstStage";
 import SecondStage from "../SecondStage";
 import ThirdStage from "../ThirdStage";
@@ -23,7 +24,7 @@ const ItemRenderer = ({
   activeItemId,
   id,
   setDrawState,
-  payload,
+  payload = "<></>",
   handleDrawLine,
   lineBeingDrawn,
   type,
@@ -37,7 +38,8 @@ const ItemRenderer = ({
   }, [activeItemId])
   
   if (type === "drawn") {
-    return payload();
+    console.log(">>payload", payload);
+    return <JsxParser jsx={payload} />;
   }
 
   if (type === "placed") {

@@ -20,10 +20,8 @@ export function useAppState() {
   return [useContext(StateContext), useContext(UpdateContext)]
 }
 
-const PayloadRender = () => <div>uhmm</div>
-
 const initItems = [
-  { id: 0, type: "drawn", payload: PayloadRender }
+  { id: 0, type: "drawn", payload: "<></>" }
 ]
 
 export const AppProvider: React.FC = (props) => {

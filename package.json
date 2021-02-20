@@ -52,6 +52,7 @@
     "webpack": "4.42.1"
   },
   "dependencies": {
+    "@svgr/core": "^5.5.0",
     "@types/styled-components": "^5.1.4",
     "aquedux": "^1.0.10",
     "cheerio": "^1.0.0-rc.5",
@@ -62,6 +63,7 @@
     "react-attr-converter": "^0.3.1",
     "react-dom": "^16.14.0",
     "react-hotkeys-hook": "^2.4.0",
+    "react-jsx-parser": "^1.28.3",
     "react-pie-menu": "^0.2.5",
     "react-rough": "^2.3.0",
     "rxjs": "^6.6.3",
