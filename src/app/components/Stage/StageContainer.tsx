@@ -46,7 +46,8 @@ export default (props) => {
     const rawComponent = await useFirstChannel(request);    
 
     addItem(null, 'drawn', rawComponent);
-    setDrawState("init")
+    setDrawState("init");
+    setRef(null);
 
   }, [drawState]);
 
@@ -71,6 +72,8 @@ export default (props) => {
 
   // height needs to be set b/c
   // of bug in react-hooks-svgdrawing
+  console.log(">>drawState", drawState);
+  console.log(">>activeRef", activeRef);
   return (
     <>
       <Stage

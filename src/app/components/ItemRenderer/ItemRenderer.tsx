@@ -38,7 +38,6 @@ const ItemRenderer = ({
   }, [activeItemId])
   
   if (type === "drawn") {
-    console.log(">>payload", payload);
     return <JsxParser jsx={payload} />;
   }
 

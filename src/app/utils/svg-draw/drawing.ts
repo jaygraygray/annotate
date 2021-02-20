@@ -139,6 +139,7 @@ export class SvgDrawing extends Renderer {
     this.onCompleteDrawCallback()
     this._drawPath = null
     this.update()
+    this.off()
   }
 
   private _addDrawPoint(po: [number, number]) {
