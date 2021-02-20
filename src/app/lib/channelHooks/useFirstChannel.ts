@@ -6,13 +6,11 @@ import { useChannel } from "./useChannel";
 // also allows computations on params if necessary. send starting params on initializatoin
 // of the hook, then calculate whatever else you need here, inside the hook itself
 
-const useFirstChannel = async ({ channelName = "firstChannel", params = [] }) => {
-
+const useFirstChannel = async ({ params = [] }) => {
+  const channelName = "firstChannel";
   const request = { channelName, params }
 
-  const response = await useChannel(request)
-  
-  return { response }
+  return await useChannel(request)
 }
 
 export default useFirstChannel;

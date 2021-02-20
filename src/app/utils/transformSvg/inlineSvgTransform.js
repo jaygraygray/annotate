@@ -1,4 +1,4 @@
-// const SVGO = require('svgo');
+const SVGO = require('svgo');
 const cuid = require('cuid');
 const applySvgoPluginDefaults = require('./pluginDefaults');
 
@@ -17,8 +17,7 @@ function toInlineSvg(svg, options) {
   const svgo = new SVGO({
     plugins: options.svgoPlugins
   });
-  return null;
-  // return svgo.optimize(svg).then(result => result.data);
+  return svgo.optimize(svg).then(result => result.data);
 }
 
 module.exports = toInlineSvg;

@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState
 } from "react";
-import { transformSvgToJsx } from "../../utils/transformSvg";
+// import { transformSvgToJsx } from "../../utils/transformSvg";
 import { useSvgDrawing } from "../../utils/useSvgDraw";
 import { useAppState } from '../../AppProvider';
 import Stage from "./Stage";
@@ -27,9 +27,9 @@ const RenderSvg = ({ payload }) => {
   )
 }
 
-const generateSvg = async (rawSvgInput) => {
-  return await transformSvgToJsx(rawSvgInput);
-}
+// const generateSvg = async (rawSvgInput) => {
+//   return await transformSvgToJsx(rawSvgInput);
+// }
 
 export default (props) => {
   const {
@@ -46,12 +46,12 @@ export default (props) => {
   // store SVG shape in store
   // 'reset' component to accept new drawings
   const setCallback = useCallback(async () => {
-    const stringPayload = getSvgXML();
-    console.log("oogabooga")
-    const Comp = await generateSvg(stringPayload);
-    console.log(">>newComp", Comp);
-    addItem(null, 'drawn', Comp);
-    setDrawState("init")
+    // const stringPayload = getSvgXML();
+    // console.log("oogabooga")
+    // const Comp = await generateSvg(stringPayload);
+    // console.log(">>newComp", Comp);
+    // addItem(null, 'drawn', Comp);
+    // setDrawState("init")
 
   }, [drawState]);
 

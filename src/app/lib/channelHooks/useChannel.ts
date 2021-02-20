@@ -7,10 +7,7 @@ const useChannel = async ({ channelName = "", params = [] }) => {
   
   const ipc = new IpcService();
   const request = { params }
-  const response = await ipc.send<any>(channelName, request)
-  return {
-    response
-  }
+  return await ipc.send<any>(channelName, request)
 }
 
 export { useChannel }

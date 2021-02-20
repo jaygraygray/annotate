@@ -17,8 +17,8 @@ document.getElementById('test-click').addEventListener('click', async () => {
   const request = {
     params: ["qq"]
   }
-  const { response } = await useFirstChannel(request);
-  // const t = await ipc.send<FirstChannel>('firstChannel', request);
+  const response = await useFirstChannel(request);
+  console.log("response", response);
   document.getElementById('versionInfo').innerHTML = response.toString();
 });
 
