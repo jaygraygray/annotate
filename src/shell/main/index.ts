@@ -9,6 +9,8 @@ if (module.hot) {
 
 const isDevelopment = process.env.NODE_ENV !== "production"
 
+app.commandLine.appendSwitch('disable-gpu-compositing')
+
 class Main {
   private mainWindow: BrowserWindow
   // global reference to mainWindow (necessary to prevent window from being garbage collected)
@@ -49,10 +51,12 @@ class Main {
   
   private windowOptions = {
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true,
     },
     transparent: true,
     frame: false,
+    alwaysOnTop: true,
     x: 0,
     y: 0,
   }
@@ -64,10 +68,11 @@ class Main {
       ...this.windowOptions
     }
     const window = new BrowserWindow(options);
+
   
     if (isDevelopment) {
       window.loadURL(`http://localhost:8080/`);
-      window.webContents.openDevTools();
+      //window.webContents.openDevTools();
     }
   
     window.on("closed", () => {

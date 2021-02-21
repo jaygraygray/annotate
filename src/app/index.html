@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>React-Webpack Setup</title>
+  <script>
+const setIgnoreMouseEvents = window.require('electron').remote.getCurrentWindow().setIgnoreMouseEvents
+window.addEventListener('pointerover', function mousePolicy (event) {
+  mousePolicy._canClick = event.target === document.documentElement ?
+    mousePolicy._canClick && setIgnoreMouseEvents(true, {forward: true}) :
+    mousePolicy._canClick || setIgnoreMouseEvents(false) || 1
+})
+setIgnoreMouseEvents(true, {forward: true}) 
+  </script>
   <style>
     body {
       width: 100vh;
@@ -11,17 +20,28 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      pointer-events: none;
     }
+
+    body {pointer-events: none}
+    .clickable {pointer-events: auto}
 
     #portal-root {
       width: 100vw;
       height: 100vh;
     }
+
+    .testBox {
+      width: 300px;
+      height: 300px;
+      background: red;
+    }
   </style>
 </head>
 <body>
-  <div id="app"></div>
-  <button id="test-click">yo wtf mate</button>
+  <!-- <div id="app"></div> -->
+  <div class="testBox clickable">??</div>
+  <button id="test-click" class="clickable">yo wtf mate</button>
   <div id="versionInfo"></div>
   <div id="portal-root">
     <svg id="svg-root"></svg>
