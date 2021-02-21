@@ -48,7 +48,6 @@ const Stage = (
   // needs to be generic: render all types of items
   // important because all items will have different behaviors
   const renderAllFinishedShapes = () => {
-    console.log("ding ding ", items);
     return (
     items.length && items.map(({ payload, id, type }) => 
       <ItemRenderer

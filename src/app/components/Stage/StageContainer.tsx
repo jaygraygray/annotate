@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, {
   useCallback,
   useRef,
@@ -17,6 +16,10 @@ const extractPath = svg => {
   const endIndex = svg.lastIndexOf("fill") - 2;
   return svg.substring(startIndex, endIndex);
 }
+  // rawCode is JSX! Not javascript!
+  const ReactComponent = (rawCode) => {
+    return Function('"use strict; return (' + rawCode + ')')();
+  }
 
 
 
@@ -31,25 +34,71 @@ export default (props) => {
   const [payload, setPayload] = useState<string>("");
   const [_, { addItem }] = useAppState();
 
-  // rawCode is JSX! Not javascript!
-  const ReactComponent = (rawCode) => {
-    return Function('"use strict; return (' + rawCode + ')')();
-  }
 
-  // need to reset drawState on mouse up
-  // store SVG shape in store
-  // 'reset' component to accept new drawings
-  const setCallback = useCallback(async () => {
+  /**
+   * <div id="DRAWING_REF" ref={activeRef} style={{ height: "100vh" }} /> 
+   * needs to be extracted to own React component so even listeners can be removed
+   * when component is reinstantiated, new even listneers will be added
+   */
+
+
+  // height needs to be set b/c
+  // of bug in react-hooks-svgdrawing
+  return (
+    <>
+      <Stage
+        completeLine={completeLine}
+        {...props}
+      />
+      {drawState === "drawing"
+        ? <DrawingStage
+            activeRef={activeRef}
+            addItem={addItem}
+            setDrawState={setDrawState}
+            setRef={setRef}
+            drawState={drawState}
+          />
+          : 
+          <></>
+      }
+    </>
+  )
+}
+
+
+const DrawingStage = ({
+  activeRef,
+  addItem,
+  setDrawState,
+  setRef,
+  drawState,
+}) => {
+
+  const setCallback = async () => {
     const stringPayload = getSvgXML();
     const request = { params: [stringPayload] }
     
     const rawComponent = await useFirstChannel(request);    
 
+    console.log(">>rawComponent", rawComponent)
     addItem(null, 'drawn', rawComponent);
     setDrawState("init");
     setRef(null);
 
+  };
+
+    // these refs don't 100% matter since the drawing function is set
+  // by global event listeners. those listeners need to be unset
+  // on mouse up, but then still be available
+  const newRef = useRef();
+  useEffect(() => {
+    const refToSet = drawState === "drawing" ? renderRef : newRef;
+    setRef(refToSet);
   }, [drawState]);
+  
+  // useEffect(() => {
+  //   setCompleteLine(payload);
+  // }, [payload])
 
 
   const options = { setCallback }
@@ -60,30 +109,7 @@ export default (props) => {
     }
   ] = useSvgDrawing(options);
 
-
-  // these refs don't 100% matter since the drawing function is set
-  // by global event listeners. those listeners need to be unset
-  // on mouse up, but then still be available
-  const newRef = useRef();
-  useEffect(() => {
-    const refToSet = drawState === "drawing" ? renderRef : newRef;
-    setRef(refToSet);
-  }, [drawState]);
-  
-  useEffect(() => {
-    setCompleteLine(payload);
-  }, [payload])
-
-  // height needs to be set b/c
-  // of bug in react-hooks-svgdrawing
-
   return (
-    <>
-      <Stage
-        completeLine={completeLine}
-        {...props}
-      />
-      {drawState === "drawing" ? <div id="DRAWING_REF" ref={activeRef} style={{ height: "100vh" }} /> : <></>}
-    </>
+    <div id="DRAWING_REF" ref={activeRef} style={{ height: "100vh" }} />
   )
 }

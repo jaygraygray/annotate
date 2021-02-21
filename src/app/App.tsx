@@ -36,13 +36,16 @@ const App = ({
           onSettingsClick={onSettingsClick}
           startDrawClick={startDrawClick}
         />
-        <Stage
-          drawState={drawState}
-          activeItem={activeItem}
-          setActiveItem={setActiveItem}
-          setDrawState={setDrawState}
-          items={items}
-        />
+        <div style={{ background: 'pink' }}>
+
+          <Stage
+            drawState={drawState}
+            activeItem={activeItem}
+            setActiveItem={setActiveItem}
+            setDrawState={setDrawState}
+            items={items}
+          />
+        </div>
     </div> 
   )
 }
