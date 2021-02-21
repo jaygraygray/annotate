@@ -20,27 +20,22 @@ setIgnoreMouseEvents(true, {forward: true})
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      pointer-events: none;
+      /* pointer-events: none; */
     }
 
-    body {pointer-events: none}
-    .clickable {pointer-events: auto}
+    .clickable {
+      pointer-events: auto
+    }
 
     #portal-root {
       width: 100vw;
       height: 100vh;
     }
 
-    .testBox {
-      width: 300px;
-      height: 300px;
-      background: red;
-    }
   </style>
 </head>
 <body>
-  <!-- <div id="app"></div> -->
-  <div class="testBox clickable">??</div>
+  <div class="clickable" id="app"></div>
   <button id="test-click" class="clickable">yo wtf mate</button>
   <div id="versionInfo"></div>
   <div id="portal-root">

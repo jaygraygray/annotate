@@ -52,7 +52,6 @@ export default (props) => {
   }, [drawState]);
 
 
-  // ... or reinstantiate useSvgDrawing onMouseUp here
   const options = { setCallback }
   const [
     renderRef,
@@ -62,6 +61,9 @@ export default (props) => {
   ] = useSvgDrawing(options);
 
 
+  // these refs don't 100% matter since the drawing function is set
+  // by global event listeners. those listeners need to be unset
+  // on mouse up, but then still be available
   const newRef = useRef();
   useEffect(() => {
     const refToSet = drawState === "drawing" ? renderRef : newRef;
@@ -74,15 +76,14 @@ export default (props) => {
 
   // height needs to be set b/c
   // of bug in react-hooks-svgdrawing
-  console.log(">>drawState", drawState);
-  console.log(">>activeRef", activeRef);
+
   return (
     <>
       <Stage
         completeLine={completeLine}
         {...props}
       />
-      <div ref={activeRef} style={{ height: "100vh" }} />
+      {drawState === "drawing" ? <div id="DRAWING_REF" ref={activeRef} style={{ height: "100vh" }} /> : <></>}
     </>
   )
 }

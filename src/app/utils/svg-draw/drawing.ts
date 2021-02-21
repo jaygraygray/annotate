@@ -29,6 +29,7 @@ export class SvgDrawing extends Renderer {
   private _clearPointListener: (() => void) | null
   private _clearMouseListener: (() => void) | null
   private _clearTouchListener: (() => void) | null
+  private DRAWING_REF: any
   constructor(
     el: HTMLElement,
     {
@@ -47,8 +48,8 @@ export class SvgDrawing extends Renderer {
      * Setup parameter
      */
     this.onCompleteDrawCallback = setCallback ?? undefined
-    this.penColor = penColor ?? "#000"
-    this.penWidth = penWidth ?? 1
+    this.penColor = penColor ?? "#fff"
+    this.penWidth = penWidth ?? 3
     this.curve = curve ?? true
     this.close = close ?? false
     this.delay = delay ?? 20
@@ -59,6 +60,7 @@ export class SvgDrawing extends Renderer {
     this._clearPointListener = null
     this._clearMouseListener = null
     this._clearTouchListener = null
+    this.DRAWING_REF = document.getElementById("DRAWING_REF");
 
     /**
      * Setup listener
@@ -139,9 +141,7 @@ export class SvgDrawing extends Renderer {
     this.onCompleteDrawCallback()
     this._drawPath = null
     this.update()
-    /**
-     * Need to modify mouse up behavior here
-     */
+
   }
 
   private _addDrawPoint(po: [number, number]) {
@@ -233,14 +233,14 @@ export class SvgDrawing extends Renderer {
       this._handleEnd,
       this._listenerOption
     )
-    window.addEventListener("pointerup", this._handleEnd, this._listenerOption)
+    this.DRAWING_REF.addEventListener("pointerup", this._handleEnd, this._listenerOption)
 
     this._clearPointListener = () => {
       this.el.removeEventListener("pointerdown", this._handleStart)
       this.el.removeEventListener("pointermove", this._handleDraw)
       this.el.removeEventListener("pointerleave", this._handleEnd)
       this.el.addEventListener("pointercancel", this._handleEnd)
-      window.removeEventListener("pointerup", this._handleEnd)
+      this.DRAWING_REF.removeEventListener("pointerup", this._handleEnd)
     }
   }
   /**
@@ -263,14 +263,14 @@ export class SvgDrawing extends Renderer {
       this._listenerOption
     )
     this.el.addEventListener("mouseout", this._handleEnd, this._listenerOption)
-    window.addEventListener("mouseup", this._handleEnd, this._listenerOption)
+    this.DRAWING_REF.addEventListener("mouseup", this._handleEnd, this._listenerOption)
 
     this._clearMouseListener = () => {
       this.el.removeEventListener("mousedown", this._handleStart)
       this.el.removeEventListener("mousemove", this._handleDraw)
       this.el.removeEventListener("mouseleave", this._handleEnd)
       this.el.removeEventListener("mouseout", this._handleEnd)
-      window.removeEventListener("mouseup", this._handleEnd)
+      this.DRAWING_REF.removeEventListener("mouseup", this._handleEnd)
     }
   }
 
@@ -289,7 +289,7 @@ export class SvgDrawing extends Renderer {
       this._listenerOption
     )
     this.el.addEventListener("touchend", this._handleEnd, this._listenerOption)
-    window.addEventListener(
+    this.DRAWING_REF.addEventListener(
       "touchcancel",
       this._handleEnd,
       this._listenerOption
@@ -298,7 +298,7 @@ export class SvgDrawing extends Renderer {
       this.el.removeEventListener("touchstart", this._handleStart)
       this.el.removeEventListener("touchmove", this._handleDrawForTouch)
       this.el.removeEventListener("touchend", this._handleEnd)
-      window.removeEventListener("touchcancel", this._handleEnd)
+      this.DRAWING_REF.removeEventListener("touchcancel", this._handleEnd)
     }
   }
 }

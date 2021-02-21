@@ -17,19 +17,21 @@ export class FirstChannelHandler implements IpcChannel {
       request.responseChannel = `${this.getName()}_response`;
     }
 
-    /**
-     * ALL FUN LOGIC GOES HERE :D
-     */
+
+    // svgr creates an entire react component
+    // we only need JSX body
     const rawSvg = request.params[0];
     const rawComponentText = await svgr(rawSvg);
-    const draft1 = rawComponentText.replace('import * as React from "react";', "");
-    const draft2 = draft1.replace('export default SvgComponent;', "");
-    const finalDraft = draft2.replaceAll("\n", "");
-    
-
-    // need to interpret the string of JSX
+    const payload = rawComponentText.trim()
+      .replace('import * as React from "react";', "")
+      .replace('export default SvgComponent;', "")
+      .replace("function SvgComponent(props) {", "")
+      .replace("return ", "")
+      .replace("</svg>;\n}", "</svg>")
+      .replaceAll(/\r?\n|\r/g, "")
+      .trim()
 
     // second param here is the result 
-    event.sender.send(request.responseChannel, finalDraft)
+    event.sender.send(request.responseChannel, payload)
   }
 }
