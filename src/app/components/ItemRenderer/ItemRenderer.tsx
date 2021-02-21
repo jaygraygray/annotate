@@ -1,3 +1,4 @@
+import { url } from "inspector";
 import React, { useCallback } from "react";
 import JsxParser from "react-jsx-parser";
 import FirstStage from "../FirstStage";
@@ -38,7 +39,14 @@ const ItemRenderer = ({
   }, [activeItemId])
   
   if (type === "drawn") {
-    return <JsxParser jsx={payload} />;
+    console.log(">>payload", payload);
+    return (
+    
+      <div style={{ position: 'absolute', top: 0, left: 0, clipPath: `url(#${id})` }}>
+        <JsxParser jsx={payload} />
+      </div>
+    )
+    
   }
 
   if (type === "placed") {

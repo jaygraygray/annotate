@@ -4,6 +4,7 @@ import { css } from "styled-components";
 export const container = css`
 border: 3px solid #BDD4E7;
 font-family: Liberation;
+z-index: 9999;
 `;
 
 export const center = css`

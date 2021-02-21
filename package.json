@@ -56,6 +56,7 @@
   },
   "dependencies": {
     "@svgr/core": "^5.5.0",
+    "@svgr/plugin-svgo": "^5.5.0",
     "@types/styled-components": "^5.1.4",
     "aquedux": "^1.0.10",
     "cheerio": "^1.0.0-rc.5",

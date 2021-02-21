@@ -30,11 +30,11 @@ export const AppProvider: React.FC = (props) => {
   const [drawState, updateDrawState] = useReducer(produce, "init");
   const [newItems, setNewItems] = useReducer<any>(produce, initItems);
 
-  const addItem = useCallback((e, type, payload) => {
+  const addItem = useCallback((e, type, payload, id) => {
     const itemAdded = {
       type,
       payload: payload,
-      id: uuidv4()
+      id: id ? id : uuidv4()
     }
     setNewItems(newItems => [itemAdded, ...newItems])
   }, [newItems])

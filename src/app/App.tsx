@@ -29,15 +29,16 @@ const App = ({
       <div style={{ height: "100vh", width: "100vw" }} onClick={onClick}>
         <button onClick={handleOnClick}>Add Shape</button>
         <button>Remove Shape</button>
-        <Menu
-          x={menuOrigins.x}
-          y={menuOrigins.y}
-          onClick={() => console.log("wat")}
-          onSettingsClick={onSettingsClick}
-          startDrawClick={startDrawClick}
-        />
-        <div style={{ background: 'pink' }}>
-
+        <div className="clickable">
+          <Menu
+            x={menuOrigins.x}
+            y={menuOrigins.y}
+            onClick={() => console.log("wat")}
+            onSettingsClick={onSettingsClick}
+            startDrawClick={startDrawClick}
+          />
+        </div>
+        <div style={{ background: 'pink', position: 'relative' }}>
           <Stage
             drawState={drawState}
             activeItem={activeItem}

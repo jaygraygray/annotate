@@ -78,10 +78,10 @@ const DrawingStage = ({
     const stringPayload = getSvgXML();
     const request = { params: [stringPayload] }
     
-    const rawComponent = await useFirstChannel(request);    
+    const { component, id } = await useFirstChannel(request);    
 
-    console.log(">>rawComponent", rawComponent)
-    addItem(null, 'drawn', rawComponent);
+    console.log(">>id!!!", id)
+    addItem(null, 'drawn', component, id);
     setDrawState("init");
     setRef(null);
 
