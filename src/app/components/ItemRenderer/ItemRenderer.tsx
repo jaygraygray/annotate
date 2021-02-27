@@ -39,9 +39,7 @@ const ItemRenderer = ({
   }, [activeItemId])
   
   if (type === "drawn") {
-    console.log(">>payload", payload);
     return (
-    
       <div style={{ position: 'absolute', top: 0, left: 0, clipPath: `url(#${id})` }}>
         <JsxParser jsx={payload} />
       </div>

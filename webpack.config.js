@@ -44,8 +44,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "woah dude",
+      title: "name it something",
       template: path.resolve(__dirname, "src", "app", "index.html")
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'stage.html',
+      template: path.resolve(__dirname, "src", "app", "stage.html")
     }),
     new CleanWebpackPlugin(),
     new webpack.EnvironmentPlugin(EnvironmentVariables),

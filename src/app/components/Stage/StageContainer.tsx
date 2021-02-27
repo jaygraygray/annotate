@@ -73,7 +73,12 @@ const DrawingStage = ({
   setRef,
   drawState,
 }) => {
-
+  useEffect(() => {
+    console.log("DrawingStage render")
+    return (() => {
+      console.log("DrawingStage cleanup")
+    })
+  })
   const setCallback = async () => {
     const stringPayload = getSvgXML();
     const request = { params: [stringPayload] }

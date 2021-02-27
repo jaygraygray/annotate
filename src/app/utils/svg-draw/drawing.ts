@@ -138,10 +138,10 @@ export class SvgDrawing extends Renderer {
     if (this.close && this._drawPath) {
       this._drawPath.commands.push(new Command(COMMAND_TYPE.CLOSE))
     }
-    this.onCompleteDrawCallback()
     this._drawPath = null
     this.update()
     this.off();
+    this.onCompleteDrawCallback()
   }
 
   private _addDrawPoint(po: [number, number]) {
