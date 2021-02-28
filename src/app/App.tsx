@@ -1,5 +1,6 @@
 
 import React from "react";
+import { HashRouter, Switch, Route } from "react-router-dom";
 import Stage from "./components/Stage";
 import Menu from "./components/Menu";
 import { AppContainerProps } from "./AppContainer"
@@ -38,15 +39,15 @@ const App = ({
             startDrawClick={startDrawClick}
           />
         </div>
-        <div style={{ background: 'pink', position: 'relative' }}>
-          <Stage
-            drawState={drawState}
-            activeItem={activeItem}
-            setActiveItem={setActiveItem}
-            setDrawState={setDrawState}
-            items={items}
-          />
-        </div>
+            <div style={{ background: 'pink', position: 'relative' }} className="clickable">
+              <Stage
+                drawState={drawState}
+                activeItem={activeItem}
+                setActiveItem={setActiveItem}
+                setDrawState={setDrawState}
+                items={items}
+              />
+            </div>
     </div> 
   )
 }

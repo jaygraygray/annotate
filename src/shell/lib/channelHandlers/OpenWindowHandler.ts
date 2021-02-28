@@ -28,8 +28,8 @@ export class OpenWindowHandler implements IpcChannel {
     if (!request.responseChannel) {
       request.responseChannel = `${this.getName()}_response`;
     }
-    this.stage = openDrawStage();
-    this.stage.loadURL('http://localhost:8080/stage.html');
+    // this.stage = openDrawStage();
+    // this.stage.loadURL('http://localhost:8080/stage.html');
     // event.sender.send(request.responseChannel, payload);
   }
 

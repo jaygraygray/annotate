@@ -96,11 +96,3 @@ const Stage = (
 }
 
 export default Stage;
-
-const TestComp = () => (<div>testtest</div>)
-
-import * as ReactDOM from "react-dom";
-ReactDOM.render(
-  <TestComp />,
-  document.getElementById("stage")
-);

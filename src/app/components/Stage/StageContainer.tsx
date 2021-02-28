@@ -9,6 +9,7 @@ import useFirstChannel from "../../lib/channelHooks/useFirstChannel";
 import { useSvgDrawing } from "../../utils/useSvgDraw";
 import { useAppState } from '../../AppProvider';
 import Stage from "./Stage";
+import useOpenPlatformWindow from "../../lib/channelHooks/useOpenPlatformWindow";
 
 const extractPath = svg => {
   if (typeof svg !== "string") return false;
@@ -23,39 +24,22 @@ const extractPath = svg => {
 
 
 
-export default (props) => {
+const StageContainer = (props) => {
   const {
     // activeItem,
-    drawState,
-    setDrawState,
   } = props;
-  const [activeRef, setRef] = useState<any>(React.createRef());
   const [completeLine, setCompleteLine] = useState<string>("");
-  const [payload, setPayload] = useState<string>("");
-  const [_, { addItem }] = useAppState();
+  const [{ drawState }, _] = useAppState();
 
-
-  /**
-   * <div id="DRAWING_REF" ref={activeRef} style={{ height: "100vh" }} /> 
-   * needs to be extracted to own React component so even listeners can be removed
-   * when component is reinstantiated, new even listneers will be added
-   */
-
-
-  // height needs to be set b/c
-  // of bug in react-hooks-svgdrawing
   return (
     <>
       <Stage
         completeLine={completeLine}
         {...props}
       />
-      {drawState === "drawing"
+    {drawState === "drawing" // this component needs to be rendered in the electron window.
+      // all data being passed in must be available via hook
         ? <DrawingStage
-            activeRef={activeRef}
-            addItem={addItem}
-            setDrawState={setDrawState}
-            setRef={setRef}
             drawState={drawState}
           />
           : 
@@ -65,20 +49,17 @@ export default (props) => {
   )
 }
 
+export default StageContainer;
+
 
 const DrawingStage = ({
-  activeRef,
-  addItem,
-  setDrawState,
-  setRef,
-  drawState,
+  drawState
 }) => {
-  useEffect(() => {
-    console.log("DrawingStage render")
-    return (() => {
-      console.log("DrawingStage cleanup")
-    })
-  })
+  const Comp = React.cloneElement(<></>, {})
+
+  const [activeRef, setRef] = useState<any>(React.createRef());
+  const [_, { addItem, setDrawState }] = useAppState();
+
   const setCallback = async () => {
     const stringPayload = getSvgXML();
     const request = { params: [stringPayload] }
@@ -100,10 +81,6 @@ const DrawingStage = ({
     const refToSet = drawState === "drawing" ? renderRef : newRef;
     setRef(refToSet);
   }, [drawState]);
-  
-  // useEffect(() => {
-  //   setCompleteLine(payload);
-  // }, [payload])
 
 
   const options = { setCallback }
@@ -115,6 +92,7 @@ const DrawingStage = ({
   ] = useSvgDrawing(options);
 
   return (
-    <div id="DRAWING_REF" ref={activeRef} style={{ height: "100vh" }} />
+    <div id={drawState === "drawing" ? "DRAWING_REF" : "unset"} ref={activeRef} style={{ height: "100vh" }} />
   )
 }
+

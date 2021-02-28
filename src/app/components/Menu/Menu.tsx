@@ -57,8 +57,8 @@ const Menu = ({
    }
     
   const handleClick = useCallback((e, type) => {
-    openWindow();
-    // startDrawClick(e, type)
+    // openWindow();
+    startDrawClick(e, type)
   }, [setOpenWindowStatus])
 
   if (x !== 0 && y !== 0) {

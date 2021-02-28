@@ -149,10 +149,13 @@ export const App = (props) => {
 
   return (
     <AppComponent
+      // MenuProps
+      startDrawClick={startDrawClick}
+      onSettingsClick={onSettingsClick}
+
+      // StageProps
       onClick={onClick}
       menuOrigins={menuOrigins}
-      onSettingsClick={onSettingsClick}
-      startDrawClick={startDrawClick}
       drawState={drawState}
       items={items}
       activeItem={activeItem}
