@@ -48,6 +48,7 @@ module.exports = {
       template: path.resolve(__dirname, "src", "app", "index.html")
     }),
     new HtmlWebpackPlugin({
+      title: 'stage',
       filename: 'stage.html',
       template: path.resolve(__dirname, "src", "app", "stage.html")
     }),

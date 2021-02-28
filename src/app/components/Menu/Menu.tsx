@@ -1,7 +1,8 @@
 // @ts-nocheck
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import PieMenu, { Slice } from "react-pie-menu";
 import { ThemeProvider, css } from "styled-components";
+import useOpenPlatformWindow from "../../lib/channelHooks/useOpenPlatformWindow";
 import { SettingsIcon } from "../../icons";
 import * as styles from "./Menu.style";
 
@@ -27,7 +28,11 @@ const PieMenuThemed = (props) => (
   </ThemeProvider>
 )
 
-const Menu =  ({
+async function getOpenWindow() {
+
+}
+
+const Menu = ({
   x,
   y,
   onClick,
@@ -35,9 +40,26 @@ const Menu =  ({
   startDrawClick
 }) => { 
 
+  function sayHello() { return () => {
+    console.log("hmm what is happening ")
+  } }
+
+  const [windowState, setOpenWindowStatus] = useState(sayHello);
+
+  async function openWindow() {
+    let result;
+    try {
+      result = await useOpenPlatformWindow("openWindow");
+    } catch (e) {
+      console.log(">>BUSTED", e);
+    }
+    setOpenWindowStatus(result);
+   }
+    
   const handleClick = useCallback((e, type) => {
-    startDrawClick(e, type)
-  }, [startDrawClick])
+    openWindow();
+    // startDrawClick(e, type)
+  }, [setOpenWindowStatus])
 
   if (x !== 0 && y !== 0) {
     return (

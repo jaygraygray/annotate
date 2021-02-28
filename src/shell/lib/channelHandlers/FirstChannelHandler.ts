@@ -1,7 +1,6 @@
 import { IpcMainEvent } from "electron";
 import svgr from "@svgr/core";
 import { v4 as uuid } from "uuid";
-import { transformSvgToJsx } from "../../utils/transformSvg"
 import { IpcChannel, IpcRequest } from "../../types/IpcChannel";
 
 export class FirstChannelHandler implements IpcChannel {

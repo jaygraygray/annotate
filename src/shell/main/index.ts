@@ -2,6 +2,7 @@
 
 import { app, BrowserWindow, ipcMain, screen } from "electron";
 import { FirstChannelHandler } from "../lib/channelHandlers/FirstChannelHandler";
+import { OpenWindowHandler } from "../lib/channelHandlers/OpenWindowHandler";
 
 if (module.hot) {
   module.hot.accept();
@@ -72,7 +73,7 @@ class Main {
   
     if (isDevelopment) {
       window.loadURL(`http://localhost:8080/`);
-      //window.webContents.openDevTools();
+      window.webContents.openDevTools();
     }
   
     window.on("closed", () => {
@@ -95,5 +96,6 @@ class Main {
 }
 
 (new Main()).init([
-  new FirstChannelHandler()
+  new FirstChannelHandler(),
+  new OpenWindowHandler(),
 ])
