@@ -1,10 +1,10 @@
+// @ts-nocheck
 import React, {
   useCallback,
   useRef,
   useEffect,
   useState
 } from "react";
-
 import useFirstChannel from "../../lib/channelHooks/useFirstChannel";
 import { useSvgDrawing } from "../../utils/useSvgDraw";
 import { useAppState } from '../../AppProvider';
@@ -31,14 +31,13 @@ const StageContainer = (props) => {
   const [completeLine, setCompleteLine] = useState<string>("");
   const [{ drawState }, _] = useAppState();
 
+  // this render logic is borked.
+  // the drawing stage needs to sit on top of everything else with
+  // a transparent background. when drawing, the stage disappears.
   return (
     <>
-      <Stage
-        completeLine={completeLine}
-        {...props}
-      />
-    {drawState === "drawing" // this component needs to be rendered in the electron window.
-      // all data being passed in must be available via hook
+      <Stage {...props} />
+    {drawState === "drawing" 
         ? <DrawingStage
             drawState={drawState}
           />
@@ -52,10 +51,11 @@ const StageContainer = (props) => {
 export default StageContainer;
 
 
+// needs to be rendered in a portal
+// with a transparent background
 const DrawingStage = ({
   drawState
 }) => {
-  const Comp = React.cloneElement(<></>, {})
 
   const [activeRef, setRef] = useState<any>(React.createRef());
   const [_, { addItem, setDrawState }] = useAppState();
@@ -70,6 +70,7 @@ const DrawingStage = ({
     addItem(null, 'drawn', component, id);
     setDrawState("init");
     setRef(null);
+    document.getElementById("app").classList.remove("clickable")
 
   };
 
@@ -83,7 +84,7 @@ const DrawingStage = ({
   }, [drawState]);
 
 
-  const options = { setCallback }
+  const options = { setCallback, fill: "none" }
   const [
     renderRef,
     {
@@ -92,7 +93,39 @@ const DrawingStage = ({
   ] = useSvgDrawing(options);
 
   return (
-    <div id={drawState === "drawing" ? "DRAWING_REF" : "unset"} ref={activeRef} style={{ height: "100vh" }} />
+    <div
+      id={drawState === "drawing" ? "DRAWING_REF" : "unset"}
+      ref={activeRef}
+      style={{ height: "100vh",  backgroundColor: "transparent", zIndex: 9000, position: 'absolute', top: 0, left: 0 }}
+      >
+        the drawing stage is rendered
+      </div>
   )
 }
 
+
+import ReactDOM from "react-dom";
+const portalRoot = document.getElementById("portal-root")
+class Modal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.element = document.createElement('div')
+  }
+
+  componentDidMount() {
+    portalRoot.appendChild(this.element);
+  }
+
+  componentWillUnmount() {
+    portalRoot.removeChild(this.element);
+  }
+
+  render() {
+    return (
+      ReactDOM.createPortal(
+        this.props.children,
+        this.element
+      )
+    )
+  }
+}

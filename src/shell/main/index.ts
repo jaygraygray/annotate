@@ -73,7 +73,7 @@ class Main {
   
     if (isDevelopment) {
       window.loadURL(`http://localhost:8080/`);
-      window.webContents.openDevTools();
+      // window.webContents.openDevTools();
     }
   
     window.on("closed", () => {

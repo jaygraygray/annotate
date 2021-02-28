@@ -25,19 +25,17 @@ const Stage = (
     completeLine,
   }: Props) => {
 
-    
-
   const onEditComplete = useCallback((updatedItemStyle, itemId) => {
     let item = items.find(({ id: existingId }) => itemId === existingId);
     if (item) {
       item.payload = updatedItemStyle;
-      setActiveItem(item);
+      //setActiveItem(item);
     }
   }, [items]);
 
   const onSelectItem = useCallback((e, id) => {
     const item = items.find(({ id: existingId }) => id === existingId)
-    setActiveItem(item)
+    //setActiveItem(item)
   }, [items])
 
   useEffect(() => {
@@ -49,7 +47,7 @@ const Stage = (
   // important because all items will have different behaviors
   const renderAllFinishedShapes = () => {
     return (
-    items.length && items.map(({ payload, id, type }) => 
+    items.length && items.map(({ payload, id, type }) =>
       <ItemRenderer
         activeItemId={activeItem && activeItem.id}
         drawState={drawState}
@@ -68,20 +66,20 @@ const Stage = (
   // if (drawState === "init") {
   //   return null;
   // }
-
+  console.log("activeItem", activeItem)
   if (drawState === "drawing" && activeItem) {
     return (
-      <ItemRenderer
-        activeItemId={activeItem.id}
-        drawState={drawState}
-        id={activeItem.id}
-        key={activeItem.id}
-        onEditComplete={onEditComplete}
-        onSelectItem={onSelectItem}
-        payload={activeItem.payload}
-        setDrawState={setDrawState}
-        type={activeItem.type}
-      />
+        <ItemRenderer
+          activeItemId={activeItem.id}
+          drawState={drawState}
+          id={activeItem.id}
+          key={activeItem.id}
+          onEditComplete={onEditComplete}
+          onSelectItem={onSelectItem}
+          payload={activeItem.payload}
+          setDrawState={setDrawState}
+          type={activeItem.type}
+        />
     )
   }
 

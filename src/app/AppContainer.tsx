@@ -36,18 +36,25 @@ export const App = (props) => {
     
     let count = null;
     window.addEventListener("keydown", (e) => {
-      if (e.key === "`") {
+      /**
+       * This hotkey must also focus the electron window
+       */
+      if (e.key === hotKeyMap.menuTrigger) {
+        document.getElementById("app").classList.add("clickable")
         if (count === null) {
           count = 1;
         } else {
           count += 1;
           if (count > 25) {
-            
             count = null;
           }
         }
       }
     })
+
+    return () => {
+      window.removeEventListener("keydown");
+    }
   }, [MousePosition])
 
   useEffect(() => {
@@ -71,7 +78,7 @@ export const App = (props) => {
         payload,
       }
       
-      setActiveItem(newItem)
+      // setActiveItem(newItem)
     }
 
   }, [menuOrigins, drawState]);

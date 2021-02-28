@@ -29,7 +29,7 @@ const App = ({
   return (
       <div style={{ height: "100vh", width: "100vw" }} onClick={onClick}>
         <button onClick={handleOnClick}>Add Shape</button>
-        <button>Remove Shape</button>
+        <button className="clickable">Remove Shape</button>
         <div className="clickable">
           <Menu
             x={menuOrigins.x}
@@ -39,7 +39,7 @@ const App = ({
             startDrawClick={startDrawClick}
           />
         </div>
-            <div style={{ background: 'pink', position: 'relative' }} className="clickable">
+            <div style={{ position: 'relative', backgroundColor: "transparent"  }}>
               <Stage
                 drawState={drawState}
                 activeItem={activeItem}

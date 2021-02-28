@@ -40,7 +40,7 @@ const ItemRenderer = ({
   
   if (type === "drawn") {
     return (
-      <div style={{ position: 'absolute', top: 0, left: 0, clipPath: `url(#${id})` }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, clipPath: `url(#${id})`, fill: 'none', zIndex: 100 }}>
         <JsxParser jsx={payload} />
       </div>
     )
