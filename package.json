@@ -70,7 +70,6 @@
     "react-jsx-parser": "^1.28.3",
     "react-pie-menu": "^0.2.5",
     "react-rough": "^2.3.0",
-    "react-router-dom": "^5.2.0",
     "rxjs": "^6.6.3",
     "source-map-support": "^0.5.19",
     "styled-components": "^5.2.1",

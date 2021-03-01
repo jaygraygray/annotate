@@ -1,6 +1,6 @@
 "use strict"
 
-import { app, BrowserWindow, ipcMain, screen } from "electron";
+import { app, BrowserWindow, ipcMain, screen, globalShortcut } from "electron";
 import { FirstChannelHandler } from "../lib/channelHandlers/FirstChannelHandler";
 import { OpenWindowHandler } from "../lib/channelHandlers/OpenWindowHandler";
 
@@ -26,6 +26,9 @@ class Main {
       if (process.platform !== "darwin") {
         app.quit()
       }
+
+      globalShortcut.unregister("`");
+
     })
 
     app.on("activate", () => {
@@ -43,7 +46,11 @@ class Main {
     // create main BrowserWindow when electron is ready
     app.on("ready", () => {
       const { width, height } = screen.getPrimaryDisplay().workAreaSize
-      this.mainWindow = this.createMainWindow(width, height)
+      this.mainWindow = this.createMainWindow(width, height);
+      // globalShortcut.register("`", () => {
+      //   this.mainWindow.focus();
+      //   console.log("registered menu trigger")
+      // });
     })
 
     this.registerIpcChannels(ipcChannels);
