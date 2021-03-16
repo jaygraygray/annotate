@@ -10,11 +10,9 @@ if (module.hot) {
 
 const isDevelopment = process.env.NODE_ENV !== "production"
 
-app.commandLine.appendSwitch('disable-gpu-compositing')
 
 class Main {
   private mainWindow: BrowserWindow
-  // global reference to mainWindow (necessary to prevent window from being garbage collected)
 
   //
   // TODO: extract callbacks to class methods
@@ -27,7 +25,7 @@ class Main {
         app.quit()
       }
 
-      globalShortcut.unregister("`");
+      globalShortcut.unregisterAll();
 
     })
 
@@ -47,10 +45,10 @@ class Main {
     app.on("ready", () => {
       const { width, height } = screen.getPrimaryDisplay().workAreaSize
       this.mainWindow = this.createMainWindow(width, height);
-      // globalShortcut.register("`", () => {
-      //   this.mainWindow.focus();
-      //   console.log("registered menu trigger")
-      // });
+      globalShortcut.register("`", () => {
+        this.mainWindow.focus();
+      })
+
     })
 
     this.registerIpcChannels(ipcChannels);

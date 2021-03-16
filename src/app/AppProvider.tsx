@@ -16,11 +16,11 @@ export const AppContext = createContext<Partial<StageState>>(null);
 const StateContext = createContext<any>(state);
 const UpdateContext = createContext<any>(null);
 
+// Create consumer for ipcRenderer messages
+
 export function useAppState() {
   return [useContext(StateContext), useContext(UpdateContext)]
 }
-
-const testSvg = ''
 
 const initItems = [
   { id: 0, type: "drawn", payload: '<div>testyo</div>' }
